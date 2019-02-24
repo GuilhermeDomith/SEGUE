@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700,900');
+@import url('https://fonts.googleapis.com/css?family=Varela+Round');
+
+*{
+    font-family: 'Varela Round', sans-serif;
+    font-size: 1em;
+}
+
+.divider-vertical{
+    height: 34px;
+    margin: 15px 0;
+    border-left: 1px white solid;
+}
+
+.sidenav .collapsible-header, .sidenav.fixed .collapsible-header{
+    padding: 0 32px;
+}
+
+/*Manter footer em baixo*/
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+/*Tamanhos de fonts*/
+.font-2{
+    font-size: 1.8em;
+}
+
+/* Cores para background */
+.bgcolor-prim-1{
+    background-color: #00701a !important;
+}
+
+.bgcolor-prim-2{
+    background-color: #43a047 !important;
+}
+
+.bgcolor-sec-1{
+    background-color: #870000
+}
+
+.bgcolor-sec-2{
+    background-color: #bf360c
+}
+
+/* Cores para fonts */
+.color-prim-1{
+    color: #00701a
+}
+
+.color-prim-2{
+    color: #43a047
+}
+
+.color-sec-1{
+    color: #870000
+}
+
+.color-sec-2{
+    color: #bf360c
+}
+
+/*Margins predefinidas*/
+.mt-3{
+    margin-top: 30px;
+}

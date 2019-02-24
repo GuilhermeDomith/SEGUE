@@ -1,0 +1,24 @@
+[
+    {
+        "model": "egresso.Nivel_Formacao",
+        "pk": 1,
+        "fields":{
+            "descricao":"Técnico"
+        }
+
+    },{
+        "model": "egresso.Nivel_Formacao",
+        "pk": 2,
+        "fields":{
+            "descricao":"Graduação"
+        }
+
+    },{
+        "model": "egresso.Nivel_Formacao",
+        "pk": 3,
+        "fields":{
+            "descricao":"Pós-Graduação"
+        }
+
+    }
+]

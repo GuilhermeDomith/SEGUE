@@ -1,0 +1,24 @@
+[
+    {
+        "model": "egresso.Area_Curso",
+        "pk": 1,
+        "fields":{
+            "descricao":"Ciências Humanas"
+        }
+
+    },{
+        "model": "egresso.Area_Curso",
+        "pk": 2,
+        "fields":{
+            "descricao":"Ciências Exatas"
+        }
+
+    },{
+        "model": "egresso.Area_Curso",
+        "pk": 3,
+        "fields":{
+            "descricao":"Ciências Biológicas"
+        }
+
+    }
+]

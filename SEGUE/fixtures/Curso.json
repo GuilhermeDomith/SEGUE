@@ -1,0 +1,32 @@
+[
+    {
+        "model": "egresso.Curso",
+        "pk": 1,
+        "fields":{
+            "nome":"Sistemas para Internet"
+        }
+
+    },{
+        "model": "egresso.Curso",
+        "pk": 2,
+        "fields":{
+            "nome":"Gestão de Turismo"
+        }
+
+    },{
+        "model": "egresso.Curso",
+        "pk": 3,
+        "fields":{
+            "nome":"Gestão Ambiental"
+        }
+
+    },{
+        "model": "egresso.Curso",
+        "pk": 4,
+        "fields":{
+            "nome":"Alimentos"
+        }
+
+    }
+
+]

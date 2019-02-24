@@ -1,0 +1,138 @@
+{% load static %}
+
+<header>
+    <!-- Navbar -->
+    <nav class="bgcolor-prim-1">
+        <div class="nav-wrapper row">
+            <div class="col s12">
+                <a href="/" class="brand-logo">SEGUE</a>
+                <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <!-- Dropdown Empresas -->
+                    <li>
+                        <a class="dropdown-trigger" href="#!" data-target="dropdown-empresa">
+                            Empresas <i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                    </li>
+                    <!-- Dropdown Egressos -->
+                    <li>
+                        <a class="dropdown-trigger" href="#!" data-target="dropdown-egresso">
+                            Egressos <i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                    </li>
+                    <!-- Dropdown Administração -->
+                    <li>
+                        <a class="dropdown-trigger" href="#!" data-target="dropdown-admin">
+                            Administração <i class="material-icons right">arrow_drop_down</i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <div class="divider-vertical"></div>
+                    </li>
+
+                    <li>
+                        <a href="#"> Login </a>
+                    </li>
+                </ul>
+
+                <!-- Menu Dropdown Empresas -->
+                <ul id="dropdown-empresa" class="dropdown-content">
+                    <li><a href="#">Solicitar Acesso</a></li>
+                    <li><a href="#">Oportunidades Lançadas</a></li>
+                </ul>
+
+                <!-- Menu Dropdown Egressos -->
+                <ul id="dropdown-egresso" class="dropdown-content">
+                    <li><a href="#">Currículo</a></li>
+                    <li><a href="#">Oportunidades</a></li>
+                </ul>
+
+                <!-- Menu Dropdown Administração -->
+                <ul id="dropdown-admin" class="dropdown-content">
+                    <li><a href="#">Empresas</a></li>
+                    <li> <a href="#">Egressos</a></li>
+                    <li> <a href="#">Oportunidades</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidenav -->
+    <ul id="slide-out" class="sidenav">
+
+        <!-- Logo do sidenav -->
+        <li>
+            <div class="sidenav-top-logo">
+                <div class="logo-devjobs">
+                    SEGUE
+                </div>
+            </div>
+        </li>
+
+        <li>
+            <div class="divider"></div>
+        </li>
+
+        <li>
+            <a href="#">Login</a>
+        </li>
+
+        <!-- Menu de navegação lateral -->
+        <li>
+            <ul class="collapsible">
+
+                <!-- Menu Empresas -->
+                <li>
+                    <div class="collapsible-header">Empresas</div>
+                    <div class="collapsible-body" style="font-style: italic;">
+                        <ul>
+                            <li>
+                                <a href="#">Solicitar Acesso</a>
+                            </li>
+                            <li>
+                                <a href="#">Oportunidades Lançadas</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Menu Egressos -->
+                <li>
+                    <div class="collapsible-header">Egressos</div>
+                    <div class="collapsible-body" style="font-style: italic;">
+                        <ul>
+                            <li>
+                                <a href="#">Currículo</a>
+                            </li>
+                            <li>
+                                <a href="#">Oportunidades</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Menu Administração -->
+                <li>
+                    <div class="collapsible-header">Administração</div>
+                    <div class="collapsible-body" style="font-style: italic;">
+                        <ul>
+                            <li>
+                                <a href="#">Empresas</a>
+                            </li>
+                            <li>
+                                <a href="#">Egressos</a>
+                            </li>
+                            <li>
+                                <a href="#">Oportunidades</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+            </ul>
+
+        </li>
+    </ul>
+</header>

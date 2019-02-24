@@ -1,0 +1,17 @@
+[
+    {
+        "model": "empresa.Tipo_Oportunidade",
+        "pk": 1,
+        "fields":{
+            "descricao":"Estágio"
+        }
+
+    },{
+        "model": "empresa.Tipo_Oportunidade",
+        "pk": 2,
+        "fields":{
+            "descricao":"Emprego"
+        }
+
+    }
+]
