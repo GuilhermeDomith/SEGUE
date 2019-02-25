@@ -1,0 +1,57 @@
+{% extends 'base/base.html'%}
+
+{% block main %}
+<div class="section">
+    <div class="row">
+        <form method="POST" class="col s12 m6">
+            {% csrf_token %}
+
+            <div class="row">
+
+                <!-- Título página -->
+                <div class="col s12">
+                    <h1 class="titulo-pagina">Login</h1>
+                </div>
+
+                <!-- Mensagem de erro -->
+                <div class="col s12">
+                    {% for error in form.non_field_errors %}
+                    <p class="color-sec-2">{{error}}</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Username -->
+                <div class="input-field col s12">
+                    {% if form.username.errors %}
+                    <input id="username" name="username" type="text" class="validate invalid"
+                        value="{{ form.username.value|default_if_none:'' }}">
+                    {% else %}
+                    <input id="username" name="username" type="text" class="validate"
+                        value="{{ form.username.value|default_if_none:'' }}">
+                    {% endif %}
+                    <label for="username">Nome de Usuário</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.username.errors|first}}">
+                    </span>
+                </div>
+
+                <!-- Senha -->
+                <div class="input-field col s12">
+                    {% if form.password.errors %}
+                    <input id="password" name="password" type="password" class="validate invalid"
+                        value="{{ form.password.value|default_if_none:'' }}">
+                    {% else %}
+                    <input id="password" name="password" type="password" class="validate"
+                        value="{{ form.password.value|default_if_none:'' }}">
+                    {% endif %}
+                    <label for="password">Senha</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.password.errors|first}}">
+                    </span>
+                </div>
+
+                <div class="col s12">
+                    <button class="btn waves-effect waves-light right" type="submit" name="action">Logar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endblock %}

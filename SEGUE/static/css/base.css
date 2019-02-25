@@ -6,6 +6,10 @@
     font-size: 1em;
 }
 
+.divider{
+    margin: 4px 0 !important;
+}
+
 .divider-vertical{
     height: 34px;
     margin: 15px 0;
@@ -14,6 +18,11 @@
 
 .sidenav .collapsible-header, .sidenav.fixed .collapsible-header{
     padding: 0 32px;
+}
+
+.titulo-pagina{
+    font-size: 2.4em;
+    color: #bf360c;
 }
 
 /*Manter footer em baixo*/
@@ -42,28 +51,28 @@ main {
 }
 
 .bgcolor-sec-1{
-    background-color: #870000
+    background-color: #870000 !important;
 }
 
 .bgcolor-sec-2{
-    background-color: #bf360c
+    background-color: #bf360c !important;
 }
 
 /* Cores para fonts */
 .color-prim-1{
-    color: #00701a
+    color: #00701a !important;
 }
 
 .color-prim-2{
-    color: #43a047
+    color: #43a047 !important;
 }
 
 .color-sec-1{
-    color: #870000
+    color: #870000 !important;
 }
 
 .color-sec-2{
-    color: #bf360c
+    color: #bf360c !important;
 }
 
 /*Margins predefinidas*/
