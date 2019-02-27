@@ -1,57 +1,29 @@
 from django import forms
+from SEGUE import settings
+from .models import Egresso, Endereco
 
 class EgressoForm(forms.Form):
-    matricula = forms.CharField(
-        max_length=30,
-        help_text='1')
-    nome_completo = forms.CharField(
-        help_text='2'
-    )  
-    data_nascimento = forms.DateField(
-        help_text='3'
-    )
-    cpf = forms.CharField(
-        max_length=15,
-        help_text='4'
-    )
-    identidade = forms.CharField(
-        max_length=15,
-        help_text='5'
-    )
+    matricula = forms.CharField(max_length=30)
+    nome_completo = forms.CharField(help_text=100)  
+    data_nascimento = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS)
+    cpf = forms.CharField(max_length=15, required=False)
+    identidade = forms.CharField(max_length=15, required=False)
 
-    link_likedin = forms.CharField(
-        help_text='6'
-    )
-    link_lattes = forms.CharField(
-        help_text='7'
-    )
+    link_likedin = forms.CharField(max_length=250, required=False)
+    link_lattes = forms.CharField(max_length=250, required=False)
+    link_github = forms.CharField(max_length=250, required=False)
 
-    cep = forms.CharField(
-        max_length=15,
-        help_text='8'
-    )
-    rua = forms.CharField(
-        max_length=150,
-        help_text='9'
-    )
-    numero = forms.IntegerField(
-        help_text='10'
-    )
-    bairro = forms.CharField(
-        max_length=60, 
-        help_text='11'
-    )
-    cidade = forms.CharField(
-        max_length=60,
-        help_text='12'
-    )
-    estado = forms.CharField(
-        max_length=2,
-        help_text='13'
-    )
+    cep = forms.CharField(max_length=15, required=False)
+    rua = forms.CharField(max_length=150)
+    numero = forms.CharField(max_length=10)
+    complemento = forms.CharField(max_length=20, required=False)
+    bairro = forms.CharField(max_length=60, required=False)
+    cidade = forms.CharField(max_length=60)
+    estado = forms.CharField(max_length=2)
 
     def clean(self):
         cleaned_data = super(EgressoForm, self).clean()
+        print('cleannnnnnnnnnnnnn', cleaned_data)
         '''
         name = cleaned_data.get('name')
         email = cleaned_data.get('email')
@@ -61,3 +33,6 @@ class EgressoForm(forms.Form):
             #raise forms.ValidationError('You have to write something!')
 
         return cleaned_data
+
+    def clean_data_nascimento(self):
+        return '2014-02-27'

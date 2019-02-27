@@ -35,7 +35,7 @@
             $('.sidenav').sidenav();
             $('.collapsible').collapsible();
             $(".dropdown-trigger").dropdown();
-            $('.datepicker').datepicker({
+            var options_datepicker = {
                 format: 'dd/mm/yyyy',
                 i18n: {
                     cancel:	'Cancelar',
@@ -63,7 +63,9 @@
                         'Qui', 'Sex', 'Sab'
                     ],
                     weekdaysAbbrev:	['D','S','T','Q','Q','S','S']
-                }});
+                }};
+                
+            $('.datepicker').datepicker(options_datepicker);
         });
     </script>
     {% block script %} {% endblock %}
