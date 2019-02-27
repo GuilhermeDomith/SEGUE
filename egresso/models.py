@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 
 class Area_Curso(models.Model):
@@ -38,11 +40,15 @@ class Egresso(models.Model):
     '''
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     matricula = models.CharField(max_length=30) #Unique, PK?
-    #nome = models.CharField(max_length=30)  
-    #sobrenome = models.CharField(max_length=100)
-    data_nascimento = models.DateField()
+    nome_completo = models.CharField(max_length=100, null=True) #null porque foi adicionado depois
+    data_nascimento = models.DateField(
+        default=datetime.now() - relativedelta(years=18),
+        )
     cpf = models.CharField(max_length=15) #Unique?
     identidade = models.CharField(max_length=15) #Unique?
+
+    link_likedin = models.CharField(max_length=250, null=True) #null porque foi adicionado depois
+    link_lattes = models.CharField(max_length=250, null=True) #null porque foi adicionado depois
 
     cep = models.CharField(max_length=15)
     rua = models.CharField(max_length=150)

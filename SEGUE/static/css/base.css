@@ -25,6 +25,17 @@
     color: #bf360c;
 }
 
+.subtitulo-form hr{
+    border: #f1f1f1 1px solid;
+    margin-bottom: 20px;
+}
+
+.subtitulo-form h3{
+    font-size: 1.4em;
+    margin: 15px 0 -5px;
+    color: #43a047
+}
+
 /*Manter footer em baixo*/
 body {
     display: flex;

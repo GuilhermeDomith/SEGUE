@@ -4,7 +4,7 @@ from . import views
 app_name = 'egresso'
 
 urlpatterns = [    
-    path('cadastro/', views.cadastro_egresso, name='cadastro'),
+    path('meu-curriculo/', views.editar_meu_curriculo, name='editar-curriculo'),
     path('<int:codigo>/', views.info_egresso, name='info'), 
 ]
 

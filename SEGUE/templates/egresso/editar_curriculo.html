@@ -1,0 +1,194 @@
+{% extends 'base/base.html'%}
+
+{% block main %}
+<div class="section">
+    <form action="{% url 'egresso:editar-curriculo' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="row">
+
+            <!-- Título página -->
+            <div class="col s12">
+                <h1 class="titulo-pagina">Editar Currículo</h1>
+            </div>
+
+            <!-- Mensagem de erro -->
+            <div class="col s12">
+                {% for error in form.non_field_errors %}
+                <p class="color-sec-2">{{error}}</p>
+                {% endfor %}
+            </div>
+            <div class="col s12">
+                {{form.errors}}
+            </div>
+
+
+            <!--Subtítulo Dados Pessoais -->
+            <div class="subtitulo-form col s12">
+                <h3>Dados Pessoais</h3>
+                <hr>
+            </div>
+
+            <div class="row">
+                <!-- Matrícula -->
+                <div class="input-field col s12 m6">
+                    <input id="matricula" name="matricula" type="text"
+                        value="{{ form.matricula.value|default_if_none:'' }}">
+                    <label for="matricula">Matrícula</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.matricula.errors|first}}">
+                    </span>
+                </div>
+
+                <!-- Nome Completo -->
+                <div class="input-field col s12 m6">
+
+                        {% if form.nome_completo.errors %}
+                        <input id="nome_completo" name="nome_completo" type="text"
+                            class="validate invalid" value="{{ form.nome_completo.value|default_if_none:'' }}">
+                        {% else %}
+                        <input id="nome_completo" name="nome_completo" type="text"
+                            class="validate" value="{{ form.nome_completo.value|default_if_none:'' }}">
+                        {% endif %}
+
+                    <label for="nome_completo">Nome Completo</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.nome_completo.errors|first}}"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Data Nascimento -->
+                <div class="input-field col s12 m6">
+                    <input id="data_nascimento" name="data_nascimento" type="text" class="datepicker"
+                        value="{{ form.data_nascimento.value|default_if_none:'' }}">
+                    <label for="data_nascimento">Data de Nascimento</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.data_nascimento.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- CPF -->
+                <div class="input-field col s12 m6">
+                    <input id="cpf" name="cpf" type="text" value="{{ form.cpf.value|default_if_none:'' }}">
+                    <label for="cpf">CPF</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.cpf.errors|first}}">
+                    </span>
+                </div>
+
+                <!-- Doc Identidade -->
+                <div class="input-field col s12 m6">
+                    <input id="identidade" name="identidade" type="text"
+                        value="{{ form.identidade.value|default_if_none:'' }}">
+                    <label for="identidade">Nº de Indentidade</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.identidade.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+
+
+            <!--Subtítulo Endereço Atual -->
+            <div class="subtitulo-form col s12">
+                <h3>Endereço Atual</h3>
+                <hr>
+            </div>
+
+            <!-- CEP -->
+            <div class="input-field col s12 m6">
+                <input id="cep" name="cep" type="text" value="{{ form.cep.value|default_if_none:'' }}">
+                <label for="cep">CEP</label>
+                <span class="helper-text color-sec-2" data-error="{{form.cep.errors|first}}">
+                </span>
+            </div>
+
+            <div class="row">
+                <!-- Rua -->
+                <div class="input-field col s12 m6">
+                    <input id="rua" name="rua" type="text" value="{{ form.rua.value|default_if_none:'' }}">
+                    <label for="rua">Rua</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.rua.errors|first}}">
+                    </span>
+                </div>
+
+                <!-- Número -->
+                <div class="input-field col s12 m6">
+                    <input id="numero" name="numero" type="text" value="{{ form.numero.value|default_if_none:'' }}">
+                    <label for="numero">Número</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.numero.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Bairro -->
+                <div class="input-field col s12 m6">
+                    <input id="bairro" name="bairro" type="text" value="{{ form.bairro.value|default_if_none:'' }}">
+                    <label for="bairro">Bairro</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.bairro.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Cidade -->
+                <div class="input-field col s12 m6">
+                    <input id="cidade" name="cidade" type="text" value="{{ form.cidade.value|default_if_none:'' }}">
+                    <label for="cidade">Cidade</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.cidade.errors|first}}">
+                    </span>
+                </div>
+
+                <!-- Estado -->
+                <div class="input-field col s12 m6">
+                    <input id="estado" name="estado" type="text" value="{{ form.estado.value|default_if_none:'' }}">
+                    <label for="estado">Estado</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.estado.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+
+
+            <!--Subtítulo Formação Escolar -->
+            <div class="subtitulo-form col s12">
+                <h3>Formação Escolar</h3>
+                <hr>
+            </div>
+
+
+
+            <!--Subtítulo Outros -->
+            <div class="subtitulo-form col s12">
+                <h3>Outros</h3>
+                <hr>
+            </div>
+
+            <div class="row">
+                <!-- Link do LinkedIn -->
+                <div class="input-field col s12 m6">
+                    <input id="link_likedin" name="link_likedin" type="text"
+                        value="{{ form.link_likedin.value|default_if_none:'' }}">
+                    <label for="link_likedin">Link do Likedin</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.link_likedin.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Link do Currículo Lattes -->
+                <div class="input-field col s12 m6">
+                    <input id="link_lattes" name="link_lattes" type="text"
+                        value="{{ form.link_lattes.value|default_if_none:'' }}">
+                    <label for="link_lattes">Link do Lattes</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.link_lattes.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="col s12">
+                <button class="btn waves-effect waves-light right" type="submit" name="action">Salvar</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
