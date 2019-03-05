@@ -11,7 +11,7 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=4">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=5">
 </head>
 
 <body>
@@ -35,6 +35,8 @@
             $('.sidenav').sidenav();
             $('.collapsible').collapsible();
             $(".dropdown-trigger").dropdown();
+            $('.modal').modal();
+            $('select').formSelect();
             var options_datepicker = {
                 format: 'dd/mm/yyyy',
                 i18n: {

@@ -1,79 +1,132 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
-from .models import Egresso, Endereco
-from .forms import EgressoForm
+from .models import Egresso, Endereco, Nivel_Formacao, Curso, Area_Curso, Formacao_Escolar
+from .forms import EgressoForm, FormacaoForm
+from datetime import datetime, timedelta
 import json
 
 
+def eh_egresso(user):
+    return user.groups.filter(name='egresso').exists()
 
+
+def obter_dados_pag_curriculo(request):
+	user = User.objects.get(username=request.user.username)
+	egresso = Egresso.get_egresso_user(request.user)
+	formacoes = None
+
+	if egresso:
+		egresso_dict = egresso.__dict__
+		egresso_dict.update({'idade':egresso.get_idade()})
+		formacoes =[f.get_form_detalhado() for f in egresso.get_formacoes()]
+
+	data = {
+		'egresso': egresso_dict if egresso else {},
+		'niveis_curso': Nivel_Formacao.objects.values(),
+		'cursos': Curso.objects.values(),
+		'areas_curso': Area_Curso.objects.values(),
+		'formacoes_escolares': formacoes if formacoes else []
+	}
+
+	return data, user, egresso
+
+############ Views ############
+
+@require_http_methods(["GET", "POST"])
 @login_required
-@user_passes_test(lambda u: eh_membro_grupo(u, 'egresso'), login_url='/', redirect_field_name=None)
+@user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
 def editar_meu_curriculo(request):
-    '''
-        Esta view retorna a página para edição do currículo do egresso no caso de uma requisição GET.
-        Para uma requisição POST a view irá salvar os dados enviados do engresso e irá redirecionar 
-        para a página inicial.
+	user = User.objects.get(username=request.user.username)
+	egresso = Egresso.get_egresso_user(request.user)
+	endereco = egresso.get_endereco() if egresso else None
 
-        DECORATOR user_passes_test: Se o usuário não for membro do grupo 'egresso', logo ele não terá um 
-        currículo e será redirecionado para a página inicial. O parâmetro redirect_field_name igual 
-        a None indica que não será usado a função 'next'.
-    '''
+	if request.method == 'GET':
+		form = EgressoForm()
 
-    user = User.objects.get(username=request.user.username)
+		# Se existe egresso associado ao usuário, obtém os dados
+		if egresso:
+			dict_form = egresso.__dict__
+			dict_form.update(endereco.__dict__ if endereco else '')
+			form = EgressoForm(dict_form)
 
-    egresso = None
-    try: egresso = request.user.egresso
-    except Egresso.DoesNotExist:pass
+		return render(request, 'egresso/editar_curriculo.html', {'form': form})
 
-    
-    endereco = None
-    try:
-        if egresso: 
-            endereco = egresso.endereco
-    except Egresso.DoesNotExist:
-        pass
+	form = EgressoForm(request.POST)
+	if not form.is_valid():
+		return render(request, 'egresso/editar_curriculo.html', {'form': form})
 
-    if request.method == 'GET':
-        # Verifica se existe egresso já associado ao usuário.
-        if egresso:
-            dict_form = egresso.__dict__
-            if endereco:
-                dict_form.update(endereco.__dict__)
+	# Obtém o endereço a ser adicionado ou editado
+	endereco_update = Endereco(**Endereco.form_to_dict(form.cleaned_data))
+	endereco_update.pk = endereco.pk if endereco else None
+	endereco_update.save()
 
-            form = EgressoForm(dict_form)
-            return render(request, 'egresso/editar_curriculo.html', {'form': form})    
-        else:
-            return render(request, 'egresso/editar_curriculo.html', {'form': EgressoForm()})
-        
+	# Obtém o egresso a ser adicionado ou editado
+	egresso_update = Egresso(
+		**Egresso.form_to_dict(form.cleaned_data),
+		user=user,
+		endereco=endereco_update,
+	)
+	egresso_update.pk = egresso.pk if egresso else None
+	egresso_update.save()
 
-    form = EgressoForm(request.POST)
-    if form.is_valid():
-        if egresso:
-            egresso.matricula = form.cleaned_data['matricula']
-            print('ssssss')
-        else:
-            egresso = Egresso(
-                **Egresso.form_to_dict(form.cleaned_data), 
-                user= user
-            )
+	return HttpResponseRedirect(reverse('egresso:curriculo'))
 
-            endereco = Endereco(
-                **Endereco.form_to_dict(form.cleaned_data), 
-            )
+############
+
+@require_http_methods(["GET"])
+@login_required
+@user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
+def meu_curriculo(request):
+	data, user, egresso = obter_dados_pag_curriculo(request)
+	return render(request, 'egresso/curriculo.html', data)
+
+############
+
+@require_http_methods(["POST"])
+@login_required
+@user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
+def adicionar_formacao(request):
+	data, user, egresso = obter_dados_pag_curriculo(request)
+
+	form = FormacaoForm(request.POST)
+	if not form.is_valid():
+		data.update({'form': form, 'open_modal': 'true'})
+		return render(request, 'egresso/curriculo.html', data)
+
+	if not egresso:
+		egresso = Egresso(user=user)
+		egresso.save()
+
+	# Cria a formação a ser adicionada
+	formacao = Formacao_Escolar(
+		egresso=egresso,
+		**Formacao_Escolar.form_to_dict(form.cleaned_data)
+	)
+
+	formacao.save()
+	return HttpResponseRedirect(reverse('egresso:curriculo'))
+
+############
+
+@require_http_methods(["GET"])
+@login_required
+@user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
+def excluir_formacao(request, id):
+	egresso = Egresso.get_egresso_user(request.user)
+
+	try:
+		formacao = egresso.formacao_escolar_set.get(pk=id)
+		formacao.delete()
+	except Formacao_Escolar.DoesNotExist:
+		pass
+
+	return HttpResponseRedirect(reverse('egresso:curriculo'))
 
 
-        print(egresso.__dict__)
-        endereco.save()
-        egresso.endereco = endereco
-        egresso.save()
-        return render(request, 'index.html')
-    else:
-        return render(request, 'egresso/editar_curriculo.html', {'form': form})
+############
 
 
-def info_egresso(codigo):
-    pass
 
-def eh_membro_grupo(user, nome_grupo):
-    return user.groups.filter(name=nome_grupo).exists()

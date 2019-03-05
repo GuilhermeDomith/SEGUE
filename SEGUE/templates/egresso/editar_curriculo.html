@@ -12,16 +12,15 @@
                 <h1 class="titulo-pagina">Editar Currículo</h1>
             </div>
 
-            <!-- Mensagem de erro -->
-            <div class="col s12">
+             <!-- Mensagens de erro -->
+             <div class="col s12 color-sec-1">
+                {% if form.errors %}
+                Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
+                {% endif %}
                 {% for error in form.non_field_errors %}
-                <p class="color-sec-2">{{error}}</p>
+                {{error}}<br>
                 {% endfor %}
             </div>
-            <div class="col s12">
-                {{form.errors}}
-            </div>
-
 
             <!--Subtítulo Dados Pessoais -->
             <div class="subtitulo-form col s12">
@@ -30,6 +29,8 @@
             </div>
 
             <div class="row">
+                <input type="hidden" name="id" value="{{form.id.value}}">
+
                 <!-- Matrícula -->
                 <div class="input-field col s12 m4">
                     <input id="matricula" name="matricula" type="text"
@@ -215,16 +216,6 @@
                     </span>
                 </div>
             </div>
-
-
-
-            <!--Subtítulo Formação Escolar -->
-            <div class="subtitulo-form col s12">
-                <h3>Formação Escolar</h3>
-                <hr>
-            </div>
-
-
 
             <!--Subtítulo Outros -->
             <div class="subtitulo-form col s12">

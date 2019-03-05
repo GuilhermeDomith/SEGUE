@@ -21,7 +21,8 @@
     -->
     <div class="footer-copyright bgcolor-prim-1">
         <div class="container center">
-                Copyright © 2019- Todos os direitos reservados ao IF Sudeste de Minas Gerais - Campus Barbacena
+                {% now "Y" as current_year %}
+                Copyright © {{ current_year }}- Todos os direitos reservados ao IF Sudeste de Minas Gerais - Campus Barbacena
         </div>
     </div>
 </footer>

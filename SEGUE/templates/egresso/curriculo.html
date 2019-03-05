@@ -1,0 +1,238 @@
+{% extends 'base/base.html'%}
+
+{% load static %}
+
+{% block main %}
+<div class="section">
+    <div class="row">
+
+        <!-- Título página -->
+        <div class="col s12">
+            <h1 class="titulo-pagina">Currículo</h1>
+        </div>
+
+        <!-- Nome Completo e Idade-->
+        <div class="col s12 curriculo-destaque">
+            <h4 class="color-prim-1">{{egresso.nome_completo|default:'[Nome completo não fornecido]'}}</h4>
+            <div class="color-prim-2">{{egresso.idade|default:'[Idade não fornecida]'}}
+                {% if egresso.idade %}Anos{% endif %}</div>
+        </div>
+
+        <!-- Links de perfis em outros sites -->
+
+        {% if egresso.link_likedin %}
+        <div class="link-curriculo col s12">
+            <a href="{{egresso.link_likedin}}" class="waves-effect waves-teal btn-flat" target="_blank">
+                <i class="material-icons left"><img src="{% static 'img/icon-linkedin.svg' %}"></img></i>
+                LinkedIn
+            </a>
+        </div>
+        {% endif %}
+
+        {% if egresso.link_lattes %}
+        <div class="link-curriculo col s12">
+            <a href="{{egresso.link_lattes}}" class="waves-effect waves-teal btn-flat" target="_blank">
+                <i class="material-icons left"><img src="{% static 'img/icon-lattes.png' %}"></img></i>
+                Lattes
+            </a>
+        </div>
+        {% endif %}
+
+        {% if egresso.link_github %}
+        <div class="link-curriculo col s12">
+            <a href="{{egresso.link_github}}" class="waves-effect waves-teal btn-flat" target="_blank">
+                <i class="material-icons left"><img src="{% static 'img/icon-github.svg' %}"></img></i>
+                Github
+            </a>
+        </div>
+        {% endif %}
+
+        <div class="col s12">
+            <a href="{% url 'egresso:editar-curriculo' %}" class="btn waves-effect waves-light right">
+                <i class="material-icons left">edit</i> Editar
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <!-- Formação Escolar -->
+        <div class="subtitulo-form col s12">
+            <h3>Formação Escolar</h3>
+            <hr>
+        </div>
+
+        <div class="row">
+            <div class="s12">
+                <table class="striped centered">
+                    <thead>
+                        <th>Nível</th>
+                        <th>Curso</th>
+                        <th>Início</th>
+                        <th>Término</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+
+                        {% for f in formacoes_escolares%}
+                        <tr>
+                            <td>{{f.nivel_formacao}}</td>
+                            <td>{{f.curso}}</td>
+                            <td>{{f.ano_inicio}}</td>
+                            <td>{{f.ano_termino}}</td>
+                            <td>
+                                <a data-confirm="Are you sure?" data-method="delete"
+                                    href="{% url 'egresso:excluir-formacao' f.id %}">
+                                    <i class="material-icons">delete</i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal para edição e Formação Escolar -->
+        <form action="{% url 'egresso:add-formacao' %}" method="POST">
+            {% csrf_token %}
+
+            <div id="formacao" class="modal" data-modal="{{open_modal}}">
+                <div class="modal-content">
+                    <div class="row">
+
+                        <!-- Título do Modal -->
+                        <div class="col s12">
+                            <h5 class="titulo-pagina">Formação Escolar</h5>
+                        </div>
+
+                        <!-- Mensagens de erro -->
+                        <div class="col s12 color-sec-1">
+                            {% if form.errors %}
+                            Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
+                            {% endif %}
+                            {% for error in form.non_field_errors %}
+                            {{error}}<br>
+                            {% endfor %}
+                        </div>
+
+                        <div class="subtitulo-form col s12">
+                            <hr>
+                        </div>
+
+                        <!-- Nível -->
+                        <div class="input-field col s12 m6">
+                            <select name="nivel_formacao_id">
+                                <option value="" disabled selected>Selecione o nível</option>
+                                {% for n in niveis_curso %}
+                                <option value="{{n.id}}">{{n.descricao}}</option>
+                                {% endfor %}
+                            </select>
+                            <label>Nível do Curso</label>
+                            <span class="helper-text color-sec-2">{{form.nivel_formacao_id.errors|first}}</span>
+                        </div>
+
+
+                        <!-- Curso -->
+                        <div class="input-field col s12 m6">
+                            <select name="curso_id" class="validate invalid">
+                                <option value="" disabled selected>Selecione o curso</option>
+                                {% for c in cursos %}
+                                <option value="{{c.id}}">{{c.nome}}</option>
+                                {% endfor %}
+                            </select>
+                            <label>Nome do Curso</label>
+                            <span class="helper-text color-sec-2">{{form.curso_id.errors|first}}</span>
+                        </div>
+
+                        <!-- Área -->
+                        <div class="input-field col s12">
+                            <select name="area_id" class="validate invalid">
+                                <option value="" disabled selected>Selecione a área</option>
+                                {% for a in areas_curso %}
+                                <option value="{{a.id}}">{{a.descricao}}</option>
+                                {% endfor %}
+                            </select>
+                            <label>Área</label>
+                            <span class="helper-text color-sec-2" data-error="{{form.area_id.errors|first}}"></span>
+                        </div>
+
+
+                        <!-- Início do Curso -->
+                        <div class="input-field col s12 m6">
+
+                            <input id="inicio_curso" name="ano_inicio" type="number" {% if form.ano_termino.errors %}
+                                class="validate invalid" {% else %} class="validate" {% endif %}
+                                value="{{ form.ano_inicio.value|default_if_none:'' }}">
+
+                            <label for="inicio_curso">Início</label>
+                            <span class="helper-text color-sec-2" data-error="{{form.ano_inicio.errors|first}}"></span>
+                        </div>
+
+
+                        <!-- Término do Curso -->
+                        <div class="input-field col s12 m6">
+
+                            <input id="termino_curso" name="ano_termino" type="number" {% if form.ano_termino.errors %}
+                                class="validate invalid" {% else %} class="validate" {% endif %}
+                                value="{{ form.ano_termino.value|default_if_none:'' }}">
+
+                            <label for="termino_curso">Término</label>
+                            <span class="helper-text color-sec-2" data-error="{{form.ano_termino.errors|first}}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'egresso:curriculo' %}"
+                        class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
+                    <button type="submit" class="modal-close waves-effect waves-green btn-flat">Salvar</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="col s12">
+            <a id="add-formacao" class="waves-effect waves-light btn modal-trigger right" href="#formacao">
+                <i class="material-icons left">add_box</i> Adicionar
+            </a>
+        </div>
+
+    </div>
+
+    <div id="mensagem" class="modal" data-modal="{% if not egresso %}true{% endif %}">
+            <div class="modal-content">
+                <h4 class="color-sec-2">Atenção</h4>
+                <p>Você deve fornecer seus dados básicos primeiro.</p>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-close waves-effect waves-green btn-flat">Ok</a>
+            </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        let formacao = $('#formacao');
+
+        if (formacao.attr('data-modal')) {
+            let modal = M.Modal.getInstance(formacao);
+            modal.open();
+        }
+
+        let mensagem = $('#mensagem');
+        $('#add-formacao').on('click', function(e){
+            if(mensagem.attr('data-modal')){
+                e.stopPropagation()
+                let modal = M.Modal.getInstance(mensagem);
+                modal.open();
+            }else{
+                let modal = M.Modal.getInstance(formacao);
+                modal.open();
+            }
+        });
+
+    });
+</script>
+{% endblock %}

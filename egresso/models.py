@@ -81,6 +81,34 @@ class Egresso(models.Model):
         null=True
     )
 
+    def get_endereco(self):
+        try:
+            return self.endereco
+        except Egresso.DoesNotExist:
+            return None
+
+    def get_egresso_user(user):
+        try: 
+            egresso = Egresso.objects.get(user=user)
+            return egresso
+        except Egresso.DoesNotExist:
+            return None
+
+    def get_idade(self):
+        now = datetime.today()
+        dn = self.data_nascimento
+        if not dn:
+            return 0
+
+        return now.year - dn.year - ((now.month, now.day) < (dn.month, dn.day))
+
+    def get_formacoes(self):
+        try:
+            return self.formacao_escolar_set.all()
+        except Egresso.DoesNotExist:
+            return None
+
+
     def __str__(self):
         return '%s, %s'%(self.user.username, self.matricula)
 
@@ -88,12 +116,16 @@ class Egresso(models.Model):
         return '%s, %s'%(self.user.username, self.matricula)
 
     def form_to_dict(form_dict):
-        return {'matricula': form_dict['matricula'],
+        return {
+            'matricula': form_dict['matricula'],
             'nome_completo': form_dict['nome_completo'],
             'data_nascimento': form_dict['data_nascimento'],
             'cpf': form_dict['cpf'],
             'identidade': form_dict['identidade'],
-            }
+            'link_likedin': form_dict['link_likedin'],
+            'link_lattes': form_dict['link_lattes'],
+            'link_github': form_dict['link_github']
+        }
 
 
 class Formacao_Escolar(models.Model):
@@ -123,6 +155,31 @@ class Formacao_Escolar(models.Model):
         on_delete=models.SET_NULL,
         null=True
     ) 
+
+    def get_form_detalhado(self):
+        dict = self.__dict__
+
+        try:
+            area = self.area.descricao
+        except Exception as e:
+            area = ''
+
+        dict.update({
+            'curso': self.curso.nome,
+            'area': area,
+            'nivel_formacao': self.nivel_formacao.descricao,
+        })
+
+        return dict
+
+    def form_to_dict(form):
+        return {
+            'curso_id': form['curso_id'],
+            'nivel_formacao_id': form['nivel_formacao_id'],
+            'area_id': form['area_id'],
+            'ano_inicio': form['ano_inicio'],
+            'ano_termino': form['ano_termino'],
+        }
 
     def __str__(self):
         return '%s, %s'%(self.egresso.user.username, self.curso)
