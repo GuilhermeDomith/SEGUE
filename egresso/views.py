@@ -128,5 +128,11 @@ def excluir_formacao(request, id):
 
 ############
 
+@require_http_methods(["GET"])
+@login_required
+@user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
+def oportunidades():
+	return HttpResponseRedirect(reverse('egresso:curriculo'))
+
 
 

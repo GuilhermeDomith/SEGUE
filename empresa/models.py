@@ -29,6 +29,13 @@ class Empresa(models.Model):
         null=True
     )
 
+    def get_empresa_user(user):
+        try:
+            empresa = Empresa.objects.get(user=user)
+            return empresa
+        except Empresa.DoesNotExist:
+            return None
+
     def __str__(self):
         return self.razao_social
 
@@ -51,7 +58,7 @@ class Oportunidade(models.Model):
     horas_semana = models.IntegerField()
 
     curso_necessario = models.ForeignKey(
-        Curso, 
+        Curso,
         on_delete=models.SET_NULL,
         null=True
     )
@@ -60,10 +67,10 @@ class Oportunidade(models.Model):
         Nivel_Formacao,
         on_delete=models.SET_NULL,
         null=True
-    ) 
+    )
 
     tipo = models.ForeignKey(
-        Tipo_Oportunidade, 
+        Tipo_Oportunidade,
         on_delete=models.SET_NULL,
         null=True
     )
@@ -73,5 +80,3 @@ class Oportunidade(models.Model):
 
     def __repr__(self):
         return self.titulo
-
-

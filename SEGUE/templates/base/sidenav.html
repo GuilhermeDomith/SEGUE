@@ -50,14 +50,14 @@
 
                 <!-- Menu Dropdown Empresas -->
                 <ul id="dropdown-empresa" class="dropdown-content">
-                    <li><a href="#">Solicitar Acesso</a></li>
-                    <li><a href="#">Oportunidades Lançadas</a></li>
+                    <li><a href="{% url 'empresa:editar-dados'%}">Dados da Empresa</a></li>
+                    <li><a href="{% url 'empresa:oportunidades'%}">Oportunidades Lançadas</a></li>
                 </ul>
 
                 <!-- Menu Dropdown Egressos -->
                 <ul id="dropdown-egresso" class="dropdown-content">
                     <li><a href="{% url 'egresso:curriculo' %}">Currículo</a></li>
-                    <li><a href="#">Oportunidades</a></li>
+                    <li><a href="{% url 'egresso:oportunidades'%}">Oportunidades</a></li>
                 </ul>
 
                 <!-- Menu Dropdown Administração -->
@@ -128,10 +128,10 @@
                     <div class="collapsible-body" style="font-style: italic;">
                         <ul>
                             <li>
-                                <a href="#">Solicitar Acesso</a>
+                                <a href="{% url 'empresa:editar-dados'%}">Dados da Empresa</a>
                             </li>
                             <li>
-                                <a href="#">Oportunidades Lançadas</a>
+                                <a href="{% url 'empresa:oportunidades'%}">Oportunidades Lançadas</a>
                             </li>
                         </ul>
                     </div>
@@ -146,7 +146,7 @@
                                 <a href="{% url 'egresso:curriculo' %}">Currículo</a>
                             </li>
                             <li>
-                                <a href="#">Oportunidades</a>
+                                <a href="{% url 'egresso:oportunidades'%}">Oportunidades</a>
                             </li>
                         </ul>
                     </div>
