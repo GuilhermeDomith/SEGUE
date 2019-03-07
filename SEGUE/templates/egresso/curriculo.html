@@ -47,18 +47,20 @@
         </div>
         {% endif %}
 
+        {% if modo_edicao %}
         <div class="col s12">
             <a href="{% url 'egresso:editar-curriculo' %}" class="btn waves-effect waves-light right">
                 <i class="material-icons left">edit</i> Editar
             </a>
         </div>
+        {% endif %}
     </div>
 
     <div class="row">
 
-        <!-- Formação Escolar -->
+        <!-- Formação Acadêmica -->
         <div class="subtitulo-form col s12">
-            <h3>Formação Escolar</h3>
+            <h3>Formação Acadêmica</h3>
             <hr>
         </div>
 
@@ -70,7 +72,9 @@
                         <th>Curso</th>
                         <th>Início</th>
                         <th>Término</th>
+                        {% if modo_edicao %}
                         <th></th>
+                        {% endif %}
                     </thead>
                     <tbody>
 
@@ -80,12 +84,14 @@
                             <td>{{f.curso}}</td>
                             <td>{{f.ano_inicio}}</td>
                             <td>{{f.ano_termino}}</td>
+                            {% if modo_edicao %}
                             <td>
                                 <a data-confirm="Are you sure?" data-method="delete"
                                     href="{% url 'egresso:excluir-formacao' f.id %}">
                                     <i class="material-icons">delete</i>
                                 </a>
                             </td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -93,6 +99,7 @@
             </div>
         </div>
 
+        {% if modo_edicao %}
         <!-- Modal para edição e Formação Escolar -->
         <form action="{% url 'egresso:add-formacao' %}" method="POST">
             {% csrf_token %}
@@ -122,7 +129,7 @@
 
                         <!-- Nível -->
                         <div class="input-field col s12 m6">
-                            <select name="nivel_formacao_id">
+                            <select name="nivel_formacao_id" data-select="{{form.nivel_formacao_id.value|default_if_none:''}}">
                                 <option value="" disabled selected>Selecione o nível</option>
                                 {% for n in niveis_curso %}
                                 <option value="{{n.id}}">{{n.descricao}}</option>
@@ -135,7 +142,7 @@
 
                         <!-- Curso -->
                         <div class="input-field col s12 m6">
-                            <select name="curso_id" class="validate invalid">
+                            <select name="curso_id" class="validate invalid" data-select="{{form.curso_id.value|default_if_none:''}}">
                                 <option value="" disabled selected>Selecione o curso</option>
                                 {% for c in cursos %}
                                 <option value="{{c.id}}">{{c.nome}}</option>
@@ -147,7 +154,7 @@
 
                         <!-- Área -->
                         <div class="input-field col s12">
-                            <select name="area_id" class="validate invalid">
+                            <select name="area_id" class="validate invalid" data-select="{{form.area_id.value|default_if_none:''}}">
                                 <option value="" disabled selected>Selecione a área</option>
                                 {% for a in areas_curso %}
                                 <option value="{{a.id}}">{{a.descricao}}</option>
@@ -183,7 +190,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a href="{% url 'egresso:curriculo' %}"
+                    <a id="btn-cancelar" href="{% url 'egresso:meu-curriculo' %}"
                         class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
                     <button type="submit" class="modal-close waves-effect waves-green btn-flat">Salvar</button>
                 </div>
@@ -195,7 +202,6 @@
                 <i class="material-icons left">add_box</i> Adicionar
             </a>
         </div>
-
     </div>
 
     <div id="mensagem" class="modal" data-modal="{% if not egresso %}true{% endif %}">
@@ -207,6 +213,7 @@
                 <a class="modal-close waves-effect waves-green btn-flat">Ok</a>
             </div>
     </div>
+    {% endif %}
 
 </div>
 {% endblock %}
@@ -216,11 +223,20 @@
     $(document).ready(function () {
         let formacao = $('#formacao');
 
+        /* Verifica se é preciso abrir o modal de formacao acadêmica. */
         if (formacao.attr('data-modal')) {
             let modal = M.Modal.getInstance(formacao);
             modal.open();
         }
 
+        /* Clica em cancelar se o usuário fechar o modal clicando fora. */
+        M.Modal.getInstance(formacao).options.onCloseEnd = (e)=>{
+            $(e).find('#btn-cancelar')[0].click()
+        }
+
+        /* Se o usuário ainda não cadastrou os dados básicos e tentar adicionar
+        formação acadêmica, exibe o modal mensagem. O atributo data-modal indica 
+        se deve exibir a mensagem ao invés de cadastrar formação.*/
         let mensagem = $('#mensagem');
         $('#add-formacao').on('click', function(e){
             if(mensagem.attr('data-modal')){

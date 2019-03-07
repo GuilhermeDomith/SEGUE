@@ -6,6 +6,10 @@
     font-size: 1em;
 }
 
+.section{
+    padding-top: 30px; 
+}
+
 .divider{
     margin: 4px 0 !important;
 }
@@ -21,8 +25,13 @@
 }
 
 .titulo-pagina{
+    margin: 15px 0;
     font-size: 2.4em;
     color: #bf360c;
+}
+
+.titulo-action{
+    margin: 15px 0;
 }
 
 .subtitulo-form hr{

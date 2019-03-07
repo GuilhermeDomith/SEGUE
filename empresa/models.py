@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from egresso.models import Nivel_Formacao, Curso
+from egresso.models import Nivel_Formacao, Curso, Formacao_Escolar
 
 
 class Area_Atuacao_Empresa(models.Model):
@@ -54,6 +54,11 @@ class Tipo_Oportunidade(models.Model):
 
 
 class Oportunidade(models.Model):
+    empresa = models.ForeignKey(
+        Empresa,
+        on_delete = models.CASCADE,
+    )
+
     titulo = models.CharField(max_length=50)
     horas_semana = models.IntegerField()
 
@@ -74,6 +79,33 @@ class Oportunidade(models.Model):
         on_delete=models.SET_NULL,
         null=True
     )
+
+    cidade = models.CharField(max_length=60)
+    estado = models.CharField(max_length=2)
+
+    def get_dict_detalhado(self):
+        dict = self.__dict__
+
+        try:
+            formacoes = Formacao_Escolar.objects.filter(
+                curso_id=self.curso_necessario_id, 
+                nivel_formacao=self.nivel_formacao
+            )
+
+            egressos = [ f.egresso.dict() for f in formacoes]
+        except Exception as e:
+            print(e)
+            egressos = []
+    
+
+        dict.update({
+            'curso_necessario': self.curso_necessario.nome,
+            'nivel_formacao': self.nivel_formacao.descricao,
+            'tipo': self.tipo.descricao,
+            'egressos': egressos
+        })
+
+        return dict
 
     def __str__(self):
         return self.titulo

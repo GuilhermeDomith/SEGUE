@@ -6,8 +6,8 @@
         {% csrf_token %}
 
         <!-- Título página -->
-        <div class="col s12">
-            <h1 class="titulo-pagina">Editar Dados da Empresa</h1>
+        <div class="col s12 titulo-pagina">
+            <h1>Editar Dados da Empresa</h1>
         </div>
 
         <!-- Mensagens de erro -->
@@ -70,8 +70,8 @@
             </div>
 
             <!-- Area de atuação -->
-            <div class="input-field col s12 m6">
-                <select name="area_atuacao_id">
+            <div class="input-field col s12 m7">
+                <select name="area_atuacao_id" data-select="{{form.area_atuacao_id.value|default_if_none:''}}">
                     <option value="" disabled selected>Selecione a área de atuação</option>
                     {% for a in areas_atuacao %}Nível
                     <option value="{{a.id}}">{{a.descricao}}</option>

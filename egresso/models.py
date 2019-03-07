@@ -108,6 +108,18 @@ class Egresso(models.Model):
         except Egresso.DoesNotExist:
             return None
 
+    def dict(self):
+        dict = super(Egresso, self).__dict__
+        dict.update({'idade': self.get_idade()})
+
+        try: 
+            endereco = self.endereco.__dict__
+            del endereco['id']
+        except:
+            endereco = {}
+
+        dict.update(endereco)
+        return dict
 
     def __str__(self):
         return '%s, %s'%(self.user.username, self.matricula)
@@ -156,7 +168,7 @@ class Formacao_Escolar(models.Model):
         null=True
     ) 
 
-    def get_form_detalhado(self):
+    def get_dict_detalhado(self):
         dict = self.__dict__
 
         try:

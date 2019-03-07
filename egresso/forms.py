@@ -1,6 +1,7 @@
 from django import forms
 from SEGUE import settings
 from .models import Egresso, Endereco
+import re
 
 class EgressoForm(forms.Form):
     id = forms.IntegerField(required=False)
@@ -21,23 +22,39 @@ class EgressoForm(forms.Form):
     bairro = forms.CharField(max_length=60, required=False)
     cidade = forms.CharField(max_length=60)
     estado = forms.CharField(max_length=2)
+    
 
-    def clean(self):
-        cleaned_data = super(EgressoForm, self).clean()
-        mat = cleaned_data.get('matricula')
-        id = cleaned_data.get('id')
+    def clean_matricula(self):
+        m = self.cleaned_data['matricula']
+        id = self.cleaned_data['id']
+
         try:
-            e = Egresso.objects.get(matricula=mat)
-            if e.pk != id:
+            if Egresso.objects.get(matricula=m).pk != id:
                 raise forms.ValidationError('A matrícula fornecida já foi cadastrada.')
         except Egresso.DoesNotExist:
             pass
 
-        return cleaned_data
+        return m
+
 
     def clean_data_nascimento(self):
         d = self.cleaned_data['data_nascimento']
         return '%d-%d-%d'%(d.year,d.month,d.day) 
+    
+    def clean_link_likedin(self):
+        return EgressoForm.urlize(self.cleaned_data['link_likedin'])
+    
+    def clean_link_lattes(self):
+        return EgressoForm.urlize(self.cleaned_data['link_lattes'])
+
+    def clean_link_github(self):
+        return EgressoForm.urlize(self.cleaned_data['link_github'])
+
+    def urlize(texto):
+        if re.match('http[s]{0,1}://', texto):
+            return texto
+        return 'http://%s'%texto if texto else ''
+
 
 
 

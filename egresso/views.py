@@ -5,6 +5,7 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.models import User
 from .models import Egresso, Endereco, Nivel_Formacao, Curso, Area_Curso, Formacao_Escolar
 from .forms import EgressoForm, FormacaoForm
+from empresa.views import eh_empresa
 from datetime import datetime, timedelta
 import json
 
@@ -13,15 +14,21 @@ def eh_egresso(user):
     return user.groups.filter(name='egresso').exists()
 
 
-def obter_dados_pag_curriculo(request):
-	user = User.objects.get(username=request.user.username)
-	egresso = Egresso.get_egresso_user(request.user)
+def obter_dados_pag_curriculo(request, codigo=None):
+
+	if not codigo:
+		user = User.objects.get(username=request.user.username)
+		egresso = Egresso.get_egresso_user(request.user)
+	else:
+		egresso = Egresso.objects.get(pk=codigo)
+		print(egresso)
+		user = egresso.user
+
 	formacoes = None
 
 	if egresso:
-		egresso_dict = egresso.__dict__
-		egresso_dict.update({'idade':egresso.get_idade()})
-		formacoes =[f.get_form_detalhado() for f in egresso.get_formacoes()]
+		egresso_dict = egresso.dict()
+		formacoes =[f.get_dict_detalhado() for f in egresso.get_formacoes()]
 
 	data = {
 		'egresso': egresso_dict if egresso else {},
@@ -44,15 +51,14 @@ def editar_meu_curriculo(request):
 	endereco = egresso.get_endereco() if egresso else None
 
 	if request.method == 'GET':
-		form = EgressoForm()
+		data = {}
 
 		# Se existe egresso associado ao usuário, obtém os dados
 		if egresso:
-			dict_form = egresso.__dict__
-			dict_form.update(endereco.__dict__ if endereco else '')
-			form = EgressoForm(dict_form)
+			dict_form = egresso.dict()
+			data.update({'form': EgressoForm(dict_form)})
 
-		return render(request, 'egresso/editar_curriculo.html', {'form': form})
+		return render(request, 'egresso/editar_curriculo.html', data)
 
 	form = EgressoForm(request.POST)
 	if not form.is_valid():
@@ -72,7 +78,7 @@ def editar_meu_curriculo(request):
 	egresso_update.pk = egresso.pk if egresso else None
 	egresso_update.save()
 
-	return HttpResponseRedirect(reverse('egresso:curriculo'))
+	return HttpResponseRedirect(reverse('egresso:meu-curriculo'))
 
 ############
 
@@ -81,6 +87,17 @@ def editar_meu_curriculo(request):
 @user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
 def meu_curriculo(request):
 	data, user, egresso = obter_dados_pag_curriculo(request)
+	data['modo_edicao'] = True
+	return render(request, 'egresso/curriculo.html', data)
+
+
+############
+
+@require_http_methods(["GET"])
+@login_required
+@user_passes_test(eh_empresa, login_url='/', redirect_field_name=None)
+def ver_curriculo(request, codigo):
+	data, user, egresso = obter_dados_pag_curriculo(request, codigo)
 	return render(request, 'egresso/curriculo.html', data)
 
 ############
@@ -107,7 +124,7 @@ def adicionar_formacao(request):
 	)
 
 	formacao.save()
-	return HttpResponseRedirect(reverse('egresso:curriculo'))
+	return HttpResponseRedirect(reverse('egresso:meu-curriculo'))
 
 ############
 
@@ -123,7 +140,7 @@ def excluir_formacao(request, id):
 	except Formacao_Escolar.DoesNotExist:
 		pass
 
-	return HttpResponseRedirect(reverse('egresso:curriculo'))
+	return HttpResponseRedirect(reverse('egresso:meu-curriculo'))
 
 
 ############
@@ -131,8 +148,8 @@ def excluir_formacao(request, id):
 @require_http_methods(["GET"])
 @login_required
 @user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
-def oportunidades():
-	return HttpResponseRedirect(reverse('egresso:curriculo'))
+def oportunidades(request):
+	return HttpResponseRedirect(reverse('egresso:meu-curriculo'))
 
 
 

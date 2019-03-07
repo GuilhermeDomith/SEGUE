@@ -1,0 +1,87 @@
+{% extends 'base/base.html'%}
+
+{% load static %}
+
+{% block main %}
+<div class="section">
+
+    <div class="row">
+
+        <!-- Título página -->
+        <div class="col s12">
+            <h1 class="titulo-pagina">Oportunidades Lançadas</h1>
+        </div>
+
+        <div class="subtitulo-form col s12">
+            <hr>
+        </div>
+
+        <div class="row">
+            <ul>
+                {% for o in oportunidades %}
+                <li>
+                    <div class="card col s12">
+                        <div class="card-content">
+                            <span class="card-title color-sec-2">{{o.titulo}}</span>
+                            <div class="grey-text">{{o.tipo}}</div>
+                            <div class="grey-text">{{o.horas_semana}}Hrs/Semana</div>
+                            <div class="grey-text">{{o.nivel_formacao}} - {{o.curso_necessario}}</div>
+                            <div class="grey-text">{{o.cidade}} - {{o.estado}}</div>
+                        </div>
+                        <div class="card-action">
+                            <a href="{% url 'empresa:editar-oportunidade' o.id %}">Editar</a>
+                            <a href="{% url 'empresa:del-oportunidade' o.id %}">Excluir</a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <ul class="collection">
+                            {% for e in o.egressos %}
+                            <li class="collection-item avatar">
+                                <a href="{% url 'egresso:curriculo' e.id %}">
+                                    <i class="material-icons circle">account_circle</i>
+                                    <span class="title">{{e.nome_completo}}</span>
+                                </a>
+                                    <p>{{e.idade}} Anos</p>
+                                    <p>{{e.cidade}} - {{e.estado}}</p>
+                            </li>
+                            {% empty %}
+                            <li class="collection-item center">
+                                <p>Até o momento nenhum egresso está apto para esta oportunidade. </p>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </li>
+                {% empty %}
+                <li>Nenhuma oportunidade foi lançada.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="col s12 center">
+            <a href="{% url 'empresa:add-oportunidade' %}" class="waves-effect waves-light btn modal-trigger">
+                <i class="material-icons left">add_box</i> Nova Oportunidade
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<div id="mensagem" class="modal" data-modal="{% if not egresso %}true{% endif %}">
+    <div class="modal-content">
+        <h4 class="color-sec-2">Atenção</h4>
+        <p>Você deve fornecer seus dados básicos primeiro.</p>
+    </div>
+    <div class="modal-footer">
+        <a class="modal-close waves-effect waves-green btn-flat">Ok</a>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+
+</script>
+{% endblock %}

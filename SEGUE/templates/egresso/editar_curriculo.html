@@ -30,6 +30,7 @@
 
             <div class="row">
                 <input type="hidden" name="id" value="{{form.id.value}}">
+                {{form.id.errors}}
 
                 <!-- Matrícula -->
                 <div class="input-field col s12 m4">
@@ -169,6 +170,21 @@
             </div>
 
             <div class="row">
+                <!-- Complemento -->
+                <div class="input-field col s12 m6">
+                    <input id="complemento" name="complemento" type="text" 
+                    {% if form.complemento.errors %}
+                        class="validate invalid" 
+                    {% else %} 
+                        class="validate" 
+                    {% endif %}
+                    value="{{ form.complemento.value|default_if_none:'' }}">
+
+                    <label for="complemento">Complemento</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.complemento.errors|first}}">
+                    </span>
+                </div>
+
                 <!-- Bairro -->
                 <div class="input-field col s12 m6">
                     <input id="bairro" name="bairro" type="text" 

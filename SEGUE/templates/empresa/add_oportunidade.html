@@ -1,0 +1,131 @@
+{% extends 'base/base.html'%}
+
+{% block main %}
+<div class="section">
+    <form action="{% url 'empresa:add-oportunidade' %}" class="row" method="POST">
+        {% csrf_token %}
+
+        <!-- Título página -->
+        <div class="col s12">
+            <h1 class="titulo-pagina">Oportunidade</h1>
+        </div>
+
+        <!-- Mensagens de erro -->
+        <div class="col s12 color-sec-1">
+            {% if form.errors %}
+            Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
+            {% endif %}
+            {% for error in form.non_field_errors %}
+            {{error}}<br>
+            {% endfor %}
+            {% for error in form.errors %}
+            {{error}}<br>
+            {% endfor %}
+        </div>
+
+        <!--Subtítulo Detalhes Oportunidade -->
+        <div class="subtitulo-form col s12">
+            <h3>Detalhes da Oportunidade</h3>
+            <hr>
+        </div>
+
+        <div class="row">
+            <input type="hidden" name="id" value="{{form.id.value}}">
+
+            <!-- Título -->
+            <div class="input-field col s12 m7">
+                <input id="titulo" name="titulo" type="text" {% if form.titulo.errors %} class="validate invalid"
+                    {% else %} class="validate" {% endif %} value="{{ form.titulo.value|default_if_none:'' }}">
+
+                <label for="titulo">Título (Descrição)</label>
+                <span class="helper-text color-sec-2" data-error="{{form.titulo.errors|first}}">
+                </span>
+            </div>
+
+            <!-- Tipo de Oportunidade -->
+            <div class="col s12">
+                <div class="group-radio-button row" data-select="{{form.tipo_id.value|default_if_none:''}}">
+                    {% for t in tipos_oportunidade %}
+                    <p class="col m3">
+                        <label>
+                            <input class="with-gap" name="tipo_id" type="radio" value="{{t.id}}"/>
+                            <span>{{t.descricao}}</span>
+                        </label>
+                    </p>
+                    {% endfor %}
+                </div>
+                <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
+            </div>
+
+            <!-- Horas por Semana -->
+            <div class="row">
+                <div class="input-field col s12 m4">
+                    <input id="horas_semana" name="horas_semana" type="text" {% if form.horas_semana.errors %}
+                        class="validate invalid" {% else %} class="validate" {% endif %}
+                        value="{{ form.horas_semana.value|default_if_none:'' }}">
+
+                    <label for="horas_semana">Horas/semana</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.horas_semana.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <!-- Nível Formação Necessário-->
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <select name="nivel_formacao_id" data-select="{{form.nivel_formacao_id.value|default_if_none:''}}">
+                        <option value="" disabled selected>Selecione o nível</option>
+                        {% for n in niveis_curso %}
+                        <option value="{{n.id}}">{{n.descricao}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Nível de Formação Exigida</label>
+                    <span class="helper-text color-sec-2">{{form.nivel_formacao_id.errors|first}}</span>
+                </div>
+
+                <!-- Curso Necessário -->
+                <div class="input-field col s12 m6">
+                    <select name="curso_necessario_id" class="validate invalid"
+                        data-select="{{form.curso_necessario_id.value|default_if_none:''}}">
+                        <option value="" disabled selected>Selecione o curso</option>
+                        {% for c in cursos %}
+                        <option value="{{c.id}}">{{c.nome}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Curso Necessário</label>
+                    <span class="helper-text color-sec-2">{{form.curso_necessario_id.errors|first}}</span>
+                </div>
+            </div>
+
+            <!-- Cidade -->
+            <div class="input-field col s12 m8">
+                <input id="cidade" name="cidade" type="text" {% if form.cidade.errors %} class="validate invalid"
+                    {% else %} class="validate" {% endif %} value="{{ form.cidade.value|default_if_none:'' }}">
+
+                <label for="cidade">Cidade</label>
+                <span class="helper-text color-sec-2" data-error="{{form.cidade.errors|first}}">
+                </span>
+            </div>
+
+            <!-- Estado -->
+            <div class="input-field col s12 m4">
+                <input id="estado" name="estado" type="text" {% if form.estado.errors %} class="validate invalid"
+                    {% else %} class="validate" {% endif %} value="{{ form.estado.value|default_if_none:'' }}">
+
+                <label for="estado">Estado</label>
+                <span class="helper-text color-sec-2" data-error="{{form.estado.errors|first}}">
+                </span>
+            </div>
+
+            <div class="col s12">
+                <button class="btn waves-effect waves-light right" type="submit" name="action">Salvar</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+</script>
+{% endblock %} </div>

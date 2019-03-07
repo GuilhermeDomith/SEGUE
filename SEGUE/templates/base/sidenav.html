@@ -1,5 +1,6 @@
 {% load static %}
 
+{% with group=user.groups.values|first %}
 <header>
     <!-- Navbar -->
     <nav class="bgcolor-prim-1">
@@ -9,34 +10,26 @@
                 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <!-- Dropdown Empresas -->
-                    <li>
-                        <a class="dropdown-trigger" href="#!" data-target="dropdown-empresa">
-                            Empresas <i class="material-icons right">arrow_drop_down</i>
-                        </a>
-                    </li>
-                    <!-- Dropdown Egressos -->
-                    <li>
-                        <a class="dropdown-trigger" href="#!" data-target="dropdown-egresso">
-                            Egressos <i class="material-icons right">arrow_drop_down</i>
-                        </a>
-                    </li>
-                    <!-- Dropdown Administração -->
-                    <li>
-                        <a class="dropdown-trigger" href="#!" data-target="dropdown-admin">
-                            Administração <i class="material-icons right">arrow_drop_down</i>
-                        </a>
-                    </li>
 
-                    <li>
-                        <div class="divider-vertical"></div>
-                    </li>
-
+                    {% if user.is_superuser %}
+                    <li><a href="/admin">Empresas</a></li>
+                    <li> <a href="/admin">Egressos</a></li>
+                    <li> <a href="/admin">Oportunidades</a></li>
+                    <li><div class="divider-vertical"></div></li>
+                    <li><a href="/">{{user.username}}</a></li>
+                    {% elif 'egresso' == group.name %}
+                    <li><a href="{% url 'egresso:meu-curriculo' %}">Meu Currículo</a></li>
+                    <li><a href="{% url 'egresso:oportunidades' %}">Oportunidades</a></li>
+                    <li><div class="divider-vertical"></div></li>
+                    <li><a href="{% url 'egresso:meu-curriculo' %}">{{user.username}}</a></li>
+                    {% elif 'empresa' == group.name %}
+                    <li><a href="{% url 'empresa:editar-dados'%}">Dados da Empresa</a></li>
+                    <li><a href="{% url 'empresa:oportunidades'%}">Oportunidades Lançadas</a></li>
+                    <li><div class="divider-vertical"></div></li>
+                    <li><a href="{% url 'empresa:editar-dados'%}">{{user.username}}</a></li>
+                    {% endif %}
 
                     {% if user.is_authenticated %}
-                    <li>
-                        <a href="#"> {{user.username}} </a>
-                    </li>
                     <li>
                         <a href="/logout">Sair</a>
                     </li>
@@ -48,24 +41,6 @@
 
                 </ul>
 
-                <!-- Menu Dropdown Empresas -->
-                <ul id="dropdown-empresa" class="dropdown-content">
-                    <li><a href="{% url 'empresa:editar-dados'%}">Dados da Empresa</a></li>
-                    <li><a href="{% url 'empresa:oportunidades'%}">Oportunidades Lançadas</a></li>
-                </ul>
-
-                <!-- Menu Dropdown Egressos -->
-                <ul id="dropdown-egresso" class="dropdown-content">
-                    <li><a href="{% url 'egresso:curriculo' %}">Currículo</a></li>
-                    <li><a href="{% url 'egresso:oportunidades'%}">Oportunidades</a></li>
-                </ul>
-
-                <!-- Menu Dropdown Administração -->
-                <ul id="dropdown-admin" class="dropdown-content">
-                    <li><a href="#">Empresas</a></li>
-                    <li> <a href="#">Egressos</a></li>
-                    <li> <a href="#">Oportunidades</a></li>
-                </ul>
             </div>
         </div>
     </nav>
@@ -80,7 +55,7 @@
                 <div class="background">
                     <!-- <img src="{% static 'img/default-capa.jpg' %}" width="100%"> -->
                     <div class="center">
-                            <h3 class="color-prim-2">SEGUE</h3>
+                        <h3 class="color-prim-2">SEGUE</h3>
                     </div>
                 </div>
                 <!--<a href="#user"><img class="circle" src="{% static 'img/default.jpg' %}"></a>-->
@@ -115,7 +90,7 @@
         {% endif %}
 
         <li>
-                <div class="divider"></div>
+            <div class="divider"></div>
         </li>
 
         <!-- Menu de navegação lateral -->
@@ -143,10 +118,10 @@
                     <div class="collapsible-body" style="font-style: italic;">
                         <ul>
                             <li>
-                                <a href="{% url 'egresso:curriculo' %}">Currículo</a>
+                                <a href="{% url 'egresso:meu-curriculo' %}">Currículo</a>
                             </li>
                             <li>
-                                <a href="{% url 'egresso:oportunidades'%}">Oportunidades</a>
+                                <a href="{% url 'egresso:oportunidades' %}">Oportunidades</a>
                             </li>
                         </ul>
                     </div>
@@ -175,3 +150,4 @@
         </li>
     </ul>
 </header>
+{% endwith %}
