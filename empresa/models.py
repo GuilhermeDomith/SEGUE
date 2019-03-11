@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
-from egresso.models import Nivel_Formacao, Curso, Formacao_Escolar
+from egresso.models import Nivel_Formacao, Curso, Formacao_Academica
+from SEGUE import settings
 
 
 class Area_Atuacao_Empresa(models.Model):
@@ -17,7 +17,7 @@ class Empresa(models.Model):
     '''
         Os campos email e senha são herdados de User.
     '''
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     razao_social = models.CharField(max_length=100)
     cnpj = models.CharField(max_length=18)
     telefone = models.CharField(max_length=20)
@@ -84,10 +84,10 @@ class Oportunidade(models.Model):
     estado = models.CharField(max_length=2)
 
     def get_dict_detalhado(self):
-        dict = self.__dict__
+        dict = self.as_dict()
 
         try:
-            formacoes = Formacao_Escolar.objects.filter(
+            formacoes = Formacao_Academica.objects.filter(
                 curso_id=self.curso_necessario_id, 
                 nivel_formacao=self.nivel_formacao
             )
@@ -99,12 +99,19 @@ class Oportunidade(models.Model):
     
 
         dict.update({
-            'curso_necessario': self.curso_necessario.nome,
-            'nivel_formacao': self.nivel_formacao.descricao,
-            'tipo': self.tipo.descricao,
             'egressos': egressos
         })
 
+        return dict
+
+    def as_dict(self):
+        dict = self.__dict__
+
+        dict.update({
+            'curso_necessario': self.curso_necessario.nome,
+            'nivel_formacao': self.nivel_formacao.descricao,
+            'tipo': self.tipo.descricao,
+        })
         return dict
 
     def __str__(self):

@@ -29,13 +29,15 @@ ALLOWED_HOSTS = [
     '*'
 ]
 
+AUTH_USER_MODEL = 'account.User'
 
 # Application definition
 
 INSTALLED_APPS = [
     'SEGUE',
-    'empresa.apps.EmpresaConfig',
-    'egresso.apps.EgressoConfig',
+    'account',
+    'empresa',
+    'egresso',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

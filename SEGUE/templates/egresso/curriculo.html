@@ -20,9 +20,9 @@
 
         <!-- Links de perfis em outros sites -->
 
-        {% if egresso.link_likedin %}
+        {% if egresso.link_linkedin %}
         <div class="link-curriculo col s12">
-            <a href="{{egresso.link_likedin}}" class="waves-effect waves-teal btn-flat" target="_blank">
+            <a href="{{egresso.link_linkedin}}" class="waves-effect waves-teal btn-flat" target="_blank">
                 <i class="material-icons left"><img src="{% static 'img/icon-linkedin.svg' %}"></img></i>
                 LinkedIn
             </a>
@@ -210,6 +210,7 @@
                 <p>Você deve fornecer seus dados básicos primeiro.</p>
             </div>
             <div class="modal-footer">
+                <a href="{% url 'egresso:editar-curriculo' %}" class="modal-close waves-effect waves-green btn-flat">Adicionar Agora</a>
                 <a class="modal-close waves-effect waves-green btn-flat">Ok</a>
             </div>
     </div>

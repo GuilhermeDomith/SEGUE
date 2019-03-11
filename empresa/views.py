@@ -2,21 +2,22 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.http import require_http_methods
-from django.contrib.auth.models import User
-from egresso.models import Egresso, Endereco, Nivel_Formacao, Curso, Area_Curso, Formacao_Escolar
+#from django.contrib.auth.models import User
+from account.models import User
+from egresso.models import Egresso, Endereco, Nivel_Formacao, Curso, Area_Curso, Formacao_Academica
 from .models import Empresa, Area_Atuacao_Empresa, Tipo_Oportunidade, Oportunidade
 from .forms import EmpresaForm, OportunidadeForm
 import json
 
 
-def eh_empresa(user):
-    return user.groups.filter(name='empresa').exists()
+#def eh_empresa(user):
+#    return 'empresa' in user.tipo_usuario.tipo
 
 ############ Views ############
 
 @require_http_methods(["GET", "POST"])
 @login_required
-@user_passes_test(eh_empresa, login_url='/', redirect_field_name=None)
+@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
 def editar_dados(request):
 
     data = {'areas_atuacao': Area_Atuacao_Empresa.objects.values()}
@@ -52,13 +53,19 @@ def editar_dados(request):
 
 @require_http_methods(["GET"])
 @login_required
-@user_passes_test(eh_empresa, login_url='/', redirect_field_name=None)
+@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
 def oportunidades_lancadas(request):
     user = User.objects.get(username=request.user.username)
     empresa = Empresa.get_empresa_user(request.user)
 
+
+    try:
+        oportunidades = empresa.oportunidade_set.all()
+    except:
+        oportunidades = []
+
     data = {
-        'oportunidades':[o.get_dict_detalhado() for o in empresa.oportunidade_set.all()]
+        'oportunidades':[o.get_dict_detalhado() for o in oportunidades]
 	}
 
     return render(request, 'empresa/oportunidades_lancadas.html', data)
@@ -67,7 +74,7 @@ def oportunidades_lancadas(request):
 
 @require_http_methods(["GET", "POST"])
 @login_required
-@user_passes_test(eh_empresa, login_url='/', redirect_field_name=None)
+@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
 def adicionar_oportunidade(request, codigo=None):
     user = User.objects.get(username=request.user.username)
     empresa = Empresa.get_empresa_user(request.user)
@@ -105,7 +112,7 @@ def adicionar_oportunidade(request, codigo=None):
 
 @require_http_methods(["GET", "POST"])
 @login_required
-@user_passes_test(eh_empresa, login_url='/', redirect_field_name=None)
+@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
 def excluir_oportunidade(request, codigo):
     empresa = Empresa.get_empresa_user(request.user)
     oportunidade = empresa.oportunidade_set.get(pk=codigo)

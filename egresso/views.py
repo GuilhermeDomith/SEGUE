@@ -2,19 +2,22 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.http import require_http_methods
-from django.contrib.auth.models import User
-from .models import Egresso, Endereco, Nivel_Formacao, Curso, Area_Curso, Formacao_Escolar
-from .forms import EgressoForm, FormacaoForm
-from empresa.views import eh_empresa
 from datetime import datetime, timedelta
 import json
 
+#from empresa.views import eh_empresa
+from account.models import User
+from empresa.models import Oportunidade
+from .models import Egresso, Endereco, Nivel_Formacao, Curso, Area_Curso, Formacao_Academica
+from .forms import EgressoForm, FormacaoForm
 
-def eh_egresso(user):
-    return user.groups.filter(name='egresso').exists()
+
+#def eh_egresso(user):
+#    return 'egresso' in user.tipo_usuario.tipo
 
 
 def obter_dados_pag_curriculo(request, codigo=None):
+	""" Se nenhum código for fornecido é obtido os dados do usuário logado (Egresso)"""
 
 	if not codigo:
 		user = User.objects.get(username=request.user.username)
@@ -44,7 +47,7 @@ def obter_dados_pag_curriculo(request, codigo=None):
 
 @require_http_methods(["GET", "POST"])
 @login_required
-@user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
+@user_passes_test(lambda u: u.is_tipo('egresso'), login_url='/', redirect_field_name=None)
 def editar_meu_curriculo(request):
 	user = User.objects.get(username=request.user.username)
 	egresso = Egresso.get_egresso_user(request.user)
@@ -84,7 +87,7 @@ def editar_meu_curriculo(request):
 
 @require_http_methods(["GET"])
 @login_required
-@user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
+@user_passes_test(lambda u: u.is_tipo('egresso'), login_url='/', redirect_field_name=None)
 def meu_curriculo(request):
 	data, user, egresso = obter_dados_pag_curriculo(request)
 	data['modo_edicao'] = True
@@ -95,7 +98,7 @@ def meu_curriculo(request):
 
 @require_http_methods(["GET"])
 @login_required
-@user_passes_test(eh_empresa, login_url='/', redirect_field_name=None)
+@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
 def ver_curriculo(request, codigo):
 	data, user, egresso = obter_dados_pag_curriculo(request, codigo)
 	return render(request, 'egresso/curriculo.html', data)
@@ -104,7 +107,7 @@ def ver_curriculo(request, codigo):
 
 @require_http_methods(["POST"])
 @login_required
-@user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
+@user_passes_test(lambda u: u.is_tipo('egresso'), login_url='/', redirect_field_name=None)
 def adicionar_formacao(request):
 	data, user, egresso = obter_dados_pag_curriculo(request)
 
@@ -118,9 +121,9 @@ def adicionar_formacao(request):
 		egresso.save()
 
 	# Cria a formação a ser adicionada
-	formacao = Formacao_Escolar(
+	formacao = Formacao_Academica(
 		egresso=egresso,
-		**Formacao_Escolar.form_to_dict(form.cleaned_data)
+		**Formacao_Academica.form_to_dict(form.cleaned_data)
 	)
 
 	formacao.save()
@@ -130,14 +133,14 @@ def adicionar_formacao(request):
 
 @require_http_methods(["GET"])
 @login_required
-@user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
+@user_passes_test(lambda u: u.is_tipo('egresso'), login_url='/', redirect_field_name=None)
 def excluir_formacao(request, id):
 	egresso = Egresso.get_egresso_user(request.user)
 
 	try:
-		formacao = egresso.formacao_escolar_set.get(pk=id)
+		formacao = egresso.Formacao_Academica_set.get(pk=id)
 		formacao.delete()
-	except Formacao_Escolar.DoesNotExist:
+	except Formacao_Academica.DoesNotExist:
 		pass
 
 	return HttpResponseRedirect(reverse('egresso:meu-curriculo'))
@@ -147,9 +150,24 @@ def excluir_formacao(request, id):
 
 @require_http_methods(["GET"])
 @login_required
-@user_passes_test(eh_egresso, login_url='/', redirect_field_name=None)
+@user_passes_test(lambda u: u.is_tipo('egresso'), login_url='/', redirect_field_name=None)
 def oportunidades(request):
-	return HttpResponseRedirect(reverse('egresso:meu-curriculo'))
+	user = User.objects.get(username=request.user.username)
+	egresso = Egresso.get_egresso_user(request.user)
+
+	oportunidades = []
+	for f in egresso.formacao_academica_set.all():
+		try:
+			oport = Oportunidade.objects.filter(
+					curso_necessario=f.curso,
+					nivel_formacao=f.nivel_formacao
+			)
+
+			oportunidades += [o.as_dict() for o in oport]
+		except:
+			pass
+	data = {'oportunidades': oportunidades}
+	return render(request, 'egresso/oportunidades.html', data)
 
 
 

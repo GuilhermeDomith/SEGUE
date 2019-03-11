@@ -1,0 +1,24 @@
+[
+    {
+        "model": "account.TipoUsuario",
+        "pk": 1,
+        "fields":{
+            "tipo":"admin"
+        }
+
+    },{
+        "model": "account.TipoUsuario",
+        "pk": 2,
+        "fields":{
+            "tipo":"egresso"
+        }
+
+    },{
+        "model": "account.TipoUsuario",
+        "pk": 3,
+        "fields":{
+            "tipo":"empresa"
+        }
+
+    }
+]

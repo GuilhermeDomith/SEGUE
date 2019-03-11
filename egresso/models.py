@@ -1,7 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from SEGUE import settings
 
 
 class Area_Curso(models.Model):
@@ -64,14 +64,14 @@ class Egresso(models.Model):
     '''
         Os campos email e senha são herdados de User.
     '''
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     matricula = models.CharField(max_length=30, unique=True)
     nome_completo = models.CharField(max_length=100)
     data_nascimento = models.DateField(default=datetime.now() - relativedelta(years=18))
     cpf = models.CharField(max_length=15, blank=True, null=True)
     identidade = models.CharField(max_length=15, blank=True, null=True)
 
-    link_likedin = models.CharField(max_length=250, blank=True, null=True)
+    link_linkedin = models.CharField(max_length=250, blank=True, null=True)
     link_lattes = models.CharField(max_length=250, blank=True, null=True)
     link_github = models.CharField(max_length=250, blank=True, null=True)
 
@@ -104,7 +104,7 @@ class Egresso(models.Model):
 
     def get_formacoes(self):
         try:
-            return self.formacao_escolar_set.all()
+            return self.formacao_academica_set.all()
         except Egresso.DoesNotExist:
             return None
 
@@ -122,10 +122,10 @@ class Egresso(models.Model):
         return dict
 
     def __str__(self):
-        return '%s, %s'%(self.user.username, self.matricula)
+        return '%s, %s'%(self.user.email, self.matricula)
 
     def __repr__(self):
-        return '%s, %s'%(self.user.username, self.matricula)
+        return '%s, %s'%(self.user.email, self.matricula)
 
     def form_to_dict(form_dict):
         return {
@@ -134,13 +134,13 @@ class Egresso(models.Model):
             'data_nascimento': form_dict['data_nascimento'],
             'cpf': form_dict['cpf'],
             'identidade': form_dict['identidade'],
-            'link_likedin': form_dict['link_likedin'],
+            'link_linkedin': form_dict['link_linkedin'],
             'link_lattes': form_dict['link_lattes'],
             'link_github': form_dict['link_github']
         }
 
 
-class Formacao_Escolar(models.Model):
+class Formacao_Academica(models.Model):
     egresso = models.ForeignKey(
         Egresso,
         on_delete = models.CASCADE,
@@ -194,7 +194,7 @@ class Formacao_Escolar(models.Model):
         }
 
     def __str__(self):
-        return '%s, %s'%(self.egresso.user.username, self.curso)
+        return '%s, %s'%(self.egresso.user.email, self.curso)
 
     def __repr__(self):
-        return '%s, %s'%(self.egresso.user.username, self.curso)
+        return '%s, %s'%(self.egresso.user.email, self.curso)

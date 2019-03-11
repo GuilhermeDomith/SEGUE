@@ -1,0 +1,50 @@
+{% extends 'base/base.html'%}
+
+{% load static %}
+
+{% block main %}
+<div class="section">
+
+    <div class="row">
+
+        <!-- Título página -->
+        <div class="col s12">
+            <h1 class="titulo-pagina">Oportunidades</h1>
+        </div>
+
+        <div class="subtitulo-form col s12">
+            <hr>
+        </div>
+
+        <div class="row">
+            <ul>
+                {% for o in oportunidades %}
+                <li>
+                    <div class="card col s12">
+                        <div class="card-content">
+                            <span class="card-title color-sec-2">{{o.titulo}}</span>
+                            <div class="grey-text">{{o.tipo}}</div>
+                            <div class="grey-text">{{o.horas_semana}}Hrs/Semana</div>
+                            <div class="grey-text">{{o.nivel_formacao}} - {{o.curso_necessario}}</div>
+                            <div class="grey-text">{{o.cidade}} - {{o.estado}}</div>
+                        </div>
+                        <div class="card-action">
+                            <a href="#">Demonstrar Interesse</a>
+                        </div>
+                    </div>
+                </li>
+                {% empty %}
+                <li>Nenhuma oportunidade encontrada.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+
+</script>
+{% endblock %}

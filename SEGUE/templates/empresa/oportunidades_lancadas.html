@@ -54,13 +54,13 @@
                     </div>
                 </li>
                 {% empty %}
-                <li>Nenhuma oportunidade foi lançada.</li>
+                <li class="col s12">Nenhuma oportunidade foi lançada.</li>
                 {% endfor %}
             </ul>
         </div>
 
         <div class="col s12 center">
-            <a href="{% url 'empresa:add-oportunidade' %}" class="waves-effect waves-light btn modal-trigger">
+            <a id="add-oportunidade" href="{% url 'empresa:add-oportunidade' %}" class="waves-effect waves-light btn modal-trigger">
                 <i class="material-icons left">add_box</i> Nova Oportunidade
             </a>
         </div>
@@ -68,12 +68,13 @@
     </div>
 </div>
 
-<div id="mensagem" class="modal" data-modal="{% if not egresso %}true{% endif %}">
+<div id="mensagem" class="modal" data-modal="{% if not user.empresa %}true{% endif %}">
     <div class="modal-content">
         <h4 class="color-sec-2">Atenção</h4>
         <p>Você deve fornecer seus dados básicos primeiro.</p>
     </div>
     <div class="modal-footer">
+        <a href="{% url 'empresa:editar-dados' %}" class="modal-close waves-effect waves-green btn-flat">Adicionar Agora</a>
         <a class="modal-close waves-effect waves-green btn-flat">Ok</a>
     </div>
 </div>
@@ -82,6 +83,19 @@
 
 {% block script %}
 <script>
+
+     /* Se o usuário ainda não cadastrou os dados básicos e tentar adicionar
+        uma nova oportunidade, exibe o modal mensagem. O atributo data-modal indica 
+        se deve exibir a mensagem ao invés de cadastrar oportunidade.*/
+        let mensagem = $('#mensagem');
+        $('#add-oportunidade').on('click', function(e){
+            if(mensagem.attr('data-modal')){
+                console.log(e)
+                e.preventDefault()
+                let modal = M.Modal.getInstance(mensagem);
+                modal.open();
+            }
+        });
 
 </script>
 {% endblock %}

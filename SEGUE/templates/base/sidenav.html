@@ -1,6 +1,5 @@
 {% load static %}
 
-{% with group=user.groups.values|first %}
 <header>
     <!-- Navbar -->
     <nav class="bgcolor-prim-1">
@@ -11,18 +10,18 @@
 
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
 
-                    {% if user.is_superuser %}
-                    <li><a href="/admin">Empresas</a></li>
-                    <li> <a href="/admin">Egressos</a></li>
-                    <li> <a href="/admin">Oportunidades</a></li>
+                    {% if user.tipo_usuario.tipo == 'admin' %}
+                    <li><a href="admin/account/user/?tipo_usuario__id__exact=3">Empresas</a></li>
+                    <li> <a href="admin/account/user/?tipo_usuario__id__exact=2">Egressos</a></li>
+                    <li> <a href="/admin/empresa/oportunidade/">Oportunidades</a></li>
                     <li><div class="divider-vertical"></div></li>
                     <li><a href="/">{{user.username}}</a></li>
-                    {% elif 'egresso' == group.name %}
+                    {% elif user.tipo_usuario.tipo == 'egresso' %}
                     <li><a href="{% url 'egresso:meu-curriculo' %}">Meu Currículo</a></li>
                     <li><a href="{% url 'egresso:oportunidades' %}">Oportunidades</a></li>
                     <li><div class="divider-vertical"></div></li>
                     <li><a href="{% url 'egresso:meu-curriculo' %}">{{user.username}}</a></li>
-                    {% elif 'empresa' == group.name %}
+                    {% elif user.tipo_usuario.tipo == 'empresa'  %}
                     <li><a href="{% url 'empresa:editar-dados'%}">Dados da Empresa</a></li>
                     <li><a href="{% url 'empresa:oportunidades'%}">Oportunidades Lançadas</a></li>
                     <li><div class="divider-vertical"></div></li>
@@ -150,4 +149,3 @@
         </li>
     </ul>
 </header>
-{% endwith %}

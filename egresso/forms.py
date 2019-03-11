@@ -11,7 +11,7 @@ class EgressoForm(forms.Form):
     cpf = forms.CharField(max_length=15, required=False)
     identidade = forms.CharField(max_length=15, required=False)
 
-    link_likedin = forms.CharField(max_length=250, required=False)
+    link_linkedin = forms.CharField(max_length=250, required=False)
     link_lattes = forms.CharField(max_length=250, required=False)
     link_github = forms.CharField(max_length=250, required=False)
 
@@ -41,8 +41,8 @@ class EgressoForm(forms.Form):
         d = self.cleaned_data['data_nascimento']
         return '%d-%d-%d'%(d.year,d.month,d.day) 
     
-    def clean_link_likedin(self):
-        return EgressoForm.urlize(self.cleaned_data['link_likedin'])
+    def clean_link_linkedin(self):
+        return EgressoForm.urlize(self.cleaned_data['link_linkedin'])
     
     def clean_link_lattes(self):
         return EgressoForm.urlize(self.cleaned_data['link_lattes'])

@@ -242,16 +242,16 @@
             <div class="row">
                 <!-- Link do LinkedIn -->
                 <div class="input-field col s12 m6">
-                    <input id="link_likedin" name="link_likedin" type="text"
-                    {% if form.link_likedin.errors %}
+                    <input id="link_linkedin" name="link_linkedin" type="text"
+                    {% if form.link_linkedin.errors %}
                         class="validate invalid" 
                     {% else %} 
                         class="validate" 
                     {% endif %}
-                        value="{{ form.link_likedin.value|default_if_none:'' }}">
+                        value="{{ form.link_linkedin.value|default_if_none:'' }}">
 
-                    <label for="link_likedin">Link do Likedin</label>
-                    <span class="helper-text color-sec-2" data-error="{{form.link_likedin.errors|first}}">
+                    <label for="link_linkedin">Link do Likedin</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.link_linkedin.errors|first}}">
                     </span>
                 </div>
             </div>
