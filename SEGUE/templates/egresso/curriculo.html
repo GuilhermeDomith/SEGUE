@@ -104,7 +104,7 @@
         <form action="{% url 'egresso:add-formacao' %}" method="POST">
             {% csrf_token %}
 
-            <div id="formacao" class="modal" data-modal="{{open_modal}}">
+            <div id="formacao" class="modal" data-modal="{{open_formacao}}">
                 <div class="modal-content">
                     <div class="row">
 
@@ -126,6 +126,8 @@
                         <div class="subtitulo-form col s12">
                             <hr>
                         </div>
+
+                        <input type="hidden" name="egresso_id" value="{{egresso.id}}">
 
                         <!-- Nível -->
                         <div class="input-field col s12 m6">
@@ -241,6 +243,7 @@
         let mensagem = $('#mensagem');
         $('#add-formacao').on('click', function(e){
             if(mensagem.attr('data-modal')){
+                e.preventDefault()
                 e.stopPropagation()
                 let modal = M.Modal.getInstance(mensagem);
                 modal.open();

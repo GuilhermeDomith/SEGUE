@@ -30,7 +30,8 @@
 
             <div class="row">
                 <input type="hidden" name="id" value="{{form.id.value}}">
-                {{form.id.errors}}
+                <input type="hidden" name="endereco_id" value="{{form.endereco_id.value}}">
+                <input type="hidden" name="user_id" value="{% if form.user_id.value %} {{form.user_id.value}} {% else %} {{user.id}} {% endif %}">
 
                 <!-- Matrícula -->
                 <div class="input-field col s12 m4">

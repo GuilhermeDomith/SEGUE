@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.http import require_http_methods
 #from django.contrib.auth.models import User
@@ -10,9 +11,6 @@ from .forms import EmpresaForm, OportunidadeForm
 import json
 
 
-#def eh_empresa(user):
-#    return 'empresa' in user.tipo_usuario.tipo
-
 ############ Views ############
 
 @require_http_methods(["GET", "POST"])
@@ -21,13 +19,13 @@ import json
 def editar_dados(request):
 
     data = {'areas_atuacao': Area_Atuacao_Empresa.objects.values()}
-    user = User.objects.get(username=request.user.username)
+    user = User.objects.get(email=request.user.email)
     empresa = Empresa.get_empresa_user(user)
 
     if request.method == "GET":
-        empresa_dict = empresa.__dict__ if empresa else {}
-        empresa_dict['email'] = user.email    
-        data.update({'form': EmpresaForm(empresa_dict)})
+        if empresa:
+            data.update({'form': EmpresaForm(empresa.__dict__)})
+
         return render(request, 'empresa/dados_empresa.html', data)
 
     form = EmpresaForm(request.POST)
@@ -35,18 +33,7 @@ def editar_dados(request):
         data.update({'form': form})
         return render(request, 'empresa/dados_empresa.html', data)
 
-    empresa_dict = form.cleaned_data.copy()
-    del empresa_dict['email']
-
-    empresa = Empresa(
-        pk=empresa.pk if empresa else None,
-        user = user,
-        **empresa_dict        
-    )
-    empresa.save()
-
-    user.email = form.cleaned_data['email']
-    user.save()
+    form.save()
     return HttpResponseRedirect("/")
 
 ############
@@ -55,19 +42,23 @@ def editar_dados(request):
 @login_required
 @user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
 def oportunidades_lancadas(request):
-    user = User.objects.get(username=request.user.username)
+    user = User.objects.get(email=request.user.email)
     empresa = Empresa.get_empresa_user(request.user)
+    oportunidades = empresa.get_oportunidades() if empresa else []
 
+    print(oportunidades)
+    data = {'oportunidades':[]}
+    for o in oportunidades:
+        oport_dict = o.as_dict()
+        formacoes = Formacao_Academica.get_formacoes(
+            curso_id= o.curso_necessario_id, 
+            nivel_formacao= o.nivel_formacao
+        )
 
-    try:
-        oportunidades = empresa.oportunidade_set.all()
-    except:
-        oportunidades = []
+        oport_dict['egressos'] = [ f.egresso.as_dict() for f in formacoes]
+        data['oportunidades'].append(oport_dict)
 
-    data = {
-        'oportunidades':[o.get_dict_detalhado() for o in oportunidades]
-	}
-
+    data['empresa'] = empresa
     return render(request, 'empresa/oportunidades_lancadas.html', data)
 
 ############
@@ -82,7 +73,8 @@ def adicionar_oportunidade(request, codigo=None):
     data = {
         'niveis_curso': Nivel_Formacao.objects.values(),
 		'cursos': Curso.objects.values(),
-        'tipos_oportunidade': Tipo_Oportunidade.objects.values()
+        'tipos_oportunidade': Tipo_Oportunidade.objects.values(),
+        'empresa': empresa 
 	}
 
     if request.method == "GET":
@@ -95,17 +87,10 @@ def adicionar_oportunidade(request, codigo=None):
 
     form = OportunidadeForm(request.POST)
     if not form.is_valid():
-        print(request.POST)
         data.update({'form': form})
         return render(request, 'empresa/add_oportunidade.html', data)
 
-    print('-->', form.cleaned_data)
-    oportunidade = Oportunidade(
-        **form.cleaned_data,
-        empresa = empresa
-    )
-
-    oportunidade.save()
+    form.save()    
     return HttpResponseRedirect(reverse('empresa:oportunidades'))
 
 ############
@@ -119,3 +104,22 @@ def excluir_oportunidade(request, codigo):
     oportunidade.delete()
     return HttpResponseRedirect(reverse('empresa:oportunidades'))
 
+
+############
+
+@require_http_methods(["POST"])
+@login_required
+@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
+def enviar_email_egresso(request):
+
+    print(request.POST)
+    return HttpResponseRedirect(reverse('empresa:oportunidades'))
+    send_mail(
+        'Teste de email do django',
+        'Estou testando o envio de email, apenas isso',
+        'guilhermedomith@hotmail.com',
+        ['guilhermedomith@gmail.com'],
+        fail_silently=False,
+    )
+
+    return HttpResponseRedirect(reverse('empresa:oportunidades'))

@@ -15,12 +15,6 @@
             {% if form.errors %}
             Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
             {% endif %}
-            {% for error in form.non_field_errors %}
-            {{error}}<br>
-            {% endfor %}
-            {% for error in form.errors %}
-            {{error}}<br>
-            {% endfor %}
         </div>
 
         <!--Subtítulo Detalhes Oportunidade -->
@@ -31,6 +25,7 @@
 
         <div class="row">
             <input type="hidden" name="id" value="{{form.id.value}}">
+            <input type="hidden" name="empresa_id" value="{% if form.empresa_id.value %}{{form.empresa_id.value}}{% else %}{{empresa.id}}{% endif %}">
 
             <!-- Título -->
             <div class="input-field col s12 m7">

@@ -49,15 +49,7 @@ class Endereco(models.Model):
     def __repr__(self):
         return '%s, %s, %s'%(self.cidade, self.rua, self.cep)
 
-    def form_to_dict(form_dict):
-        return {'cep': form_dict['cep'],
-            'rua': form_dict['rua'],
-            'numero': form_dict['numero'],
-            'complemento': form_dict['complemento'],
-            'bairro': form_dict['bairro'],
-            'cidade': form_dict['cidade'],
-            'estado': form_dict['estado'],
-        }
+    
 
 
 class Egresso(models.Model):
@@ -108,8 +100,9 @@ class Egresso(models.Model):
         except Egresso.DoesNotExist:
             return None
 
-    def dict(self):
+    def as_dict(self):
         dict = super(Egresso, self).__dict__
+        dict['email'] = self.user.email
         dict.update({'idade': self.get_idade()})
 
         try: 
@@ -127,17 +120,6 @@ class Egresso(models.Model):
     def __repr__(self):
         return '%s, %s'%(self.user.email, self.matricula)
 
-    def form_to_dict(form_dict):
-        return {
-            'matricula': form_dict['matricula'],
-            'nome_completo': form_dict['nome_completo'],
-            'data_nascimento': form_dict['data_nascimento'],
-            'cpf': form_dict['cpf'],
-            'identidade': form_dict['identidade'],
-            'link_linkedin': form_dict['link_linkedin'],
-            'link_lattes': form_dict['link_lattes'],
-            'link_github': form_dict['link_github']
-        }
 
 
 class Formacao_Academica(models.Model):
@@ -168,13 +150,17 @@ class Formacao_Academica(models.Model):
         null=True
     ) 
 
-    def get_dict_detalhado(self):
+    def get_formacoes(**args):
+        try:
+            return Formacao_Academica.objects.filter(**args)
+        except:
+            return []
+
+    def as_dict(self):
         dict = self.__dict__
 
-        try:
-            area = self.area.descricao
-        except Exception as e:
-            area = ''
+        try: area = self.area.descricao
+        except Exception as e: area = ''
 
         dict.update({
             'curso': self.curso.nome,
@@ -184,14 +170,6 @@ class Formacao_Academica(models.Model):
 
         return dict
 
-    def form_to_dict(form):
-        return {
-            'curso_id': form['curso_id'],
-            'nivel_formacao_id': form['nivel_formacao_id'],
-            'area_id': form['area_id'],
-            'ano_inicio': form['ano_inicio'],
-            'ano_termino': form['ano_termino'],
-        }
 
     def __str__(self):
         return '%s, %s'%(self.egresso.user.email, self.curso)

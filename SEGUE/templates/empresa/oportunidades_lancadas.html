@@ -6,6 +6,7 @@
 <div class="section">
 
     <div class="row">
+        <input type="hidden" id="info_empresa" value="{{empresa.razao_social}}">
 
         <!-- Título página -->
         <div class="col s12">
@@ -21,7 +22,7 @@
                 {% for o in oportunidades %}
                 <li>
                     <div class="card col s12">
-                        <div class="card-content">
+                        <div id="oport_{{o.id}}" class="card-content">
                             <span class="card-title color-sec-2">{{o.titulo}}</span>
                             <div class="grey-text">{{o.tipo}}</div>
                             <div class="grey-text">{{o.horas_semana}}Hrs/Semana</div>
@@ -35,15 +36,19 @@
                     </div>
 
                     <div class="row">
-                        <ul class="collection">
+                        <ul class="collection" data-oport="{{o}}">
                             {% for e in o.egressos %}
                             <li class="collection-item avatar">
                                 <a href="{% url 'egresso:curriculo' e.id %}">
                                     <i class="material-icons circle">account_circle</i>
                                     <span class="title">{{e.nome_completo}}</span>
                                 </a>
-                                    <p>{{e.idade}} Anos</p>
-                                    <p>{{e.cidade}} - {{e.estado}}</p>
+                                
+                                <p>{{e.idade}} Anos</p>
+                                <p>{{e.cidade}} - {{e.estado}}</p>
+                                
+                                <a href="#!" data-email="{{e.email}}" data-nome="{{e.nome_completo}}" data-oport="oport_{{o.id}}"
+                                class="secondary-content send-email"><i class="material-icons">email</i></a>
                             </li>
                             {% empty %}
                             <li class="collection-item center">
@@ -66,7 +71,49 @@
         </div>
 
     </div>
+
 </div>
+
+<!-- Modal para edição e Formação Escolar -->
+<form action="{% url 'empresa:email_egresso' %}" method="POST">
+    {% csrf_token %}
+
+    <div id="send_email" class="modal">
+        <div class="modal-content">
+            <div class="row">
+
+                <!-- Título do Modal -->
+                <div class="col s12">
+                    <h5 class="titulo-pagina">Enviar Email</h5>
+                </div>
+
+                <div class="subtitulo-form col s12">
+                    <hr>
+                </div>
+
+                <input id="to_email" type="hidden" name="to_email">
+
+                <!-- Assunto Email -->
+                <div class="input-field col s12 m8">
+                    <input id="assunto_email" type="text" name="assunto">
+                    <label>Assunto</label>
+                </div>
+
+                <!-- Conteúdo Email -->
+                <div class="input-field col s12">
+                    <textarea id="msg_email" name="mensagem" class="materialize-textarea">
+                    </textarea>
+                    <label>Mensagem</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a id="btn-cancelar" href="{% url 'empresa:oportunidades' %}"
+                class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
+            <button type="submit" class="modal-close waves-effect waves-green btn-flat">Enviar</button>
+        </div>
+    </div>
+</form>
 
 <div id="mensagem" class="modal" data-modal="{% if not user.empresa %}true{% endif %}">
     <div class="modal-content">
@@ -74,7 +121,8 @@
         <p>Você deve fornecer seus dados básicos primeiro.</p>
     </div>
     <div class="modal-footer">
-        <a href="{% url 'empresa:editar-dados' %}" class="modal-close waves-effect waves-green btn-flat">Adicionar Agora</a>
+        <a href="{% url 'empresa:editar-dados' %}" class="modal-close waves-effect waves-green btn-flat">Adicionar
+            Agora</a>
         <a class="modal-close waves-effect waves-green btn-flat">Ok</a>
     </div>
 </div>
@@ -84,18 +132,53 @@
 {% block script %}
 <script>
 
-     /* Se o usuário ainda não cadastrou os dados básicos e tentar adicionar
+    $(document).ready(()=>{
+
+        /* Se o usuário ainda não cadastrou os dados básicos e tentar adicionar
         uma nova oportunidade, exibe o modal mensagem. O atributo data-modal indica 
         se deve exibir a mensagem ao invés de cadastrar oportunidade.*/
         let mensagem = $('#mensagem');
         $('#add-oportunidade').on('click', function(e){
             if(mensagem.attr('data-modal')){
-                console.log(e)
                 e.preventDefault()
                 let modal = M.Modal.getInstance(mensagem);
                 modal.open();
             }
         });
 
+        let send_email = $('#send_email')
+        $('a.send-email').on('click', (e)=>{
+            let elem = $(e.target);
+            let email = elem.attr('data-email') || elem.parent().attr('data-email');
+            let nome = elem.attr('data-nome') || elem.parent().attr('data-nome');
+            let id_oportunidade = elem.attr('data-oport') || elem.parent().attr('data-oport');
+            let div_oportunidade = $('#'+id_oportunidade).children()
+            let tipo_oportunidade = $(div_oportunidade[1]).text().toLowerCase()
+
+            let detalhes_vaga = ''
+            div_oportunidade.each((i, e)=>{
+                detalhes_vaga += '\n'+$(e).text() 
+            })
+
+            $('#to_email').val(email)
+
+            let assunto = 'Oportunidade de {0} na plataforma SEGUE';
+            assunto = assunto.replace('{0}', tipo_oportunidade);
+            $('#assunto_email').val(assunto);
+            M.updateTextFields();
+
+            let msg = 'Olá {0}.\n\nA empresa {1} gostaria de marcar uma entrevista com você '+
+            'para uma oportunidade de {2}.\nVocê estaria interessado?\n\nDetalhes da vaga:\n{3}'
+            msg = msg.replace('{0}', nome)
+            msg = msg.replace('{1}', $('#info_empresa').val());
+            msg = msg.replace('{2}', tipo_oportunidade);
+            msg = msg.replace('{3}', detalhes_vaga);
+            $('#msg_email').text(msg)
+            M.textareaAutoResize($('#msg_email'));
+
+            let modal = M.Modal.getInstance(send_email);
+            modal.open();
+        })
+    });
 </script>
 {% endblock %}

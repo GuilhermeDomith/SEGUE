@@ -27,6 +27,7 @@
 
         <div class="row">
             <input type="hidden" name="id" value="{{form.id.value}}">
+            <input type="hidden" name="user_id" value="{% if form.user_id.value %}{{form.user_id.value}}{% else %}{{user.id}}{% endif%}">
 
             <!-- Razão Social -->
             <div class="input-field col s12 m7">
@@ -49,16 +50,6 @@
                 </span>
             </div>
 
-            <!-- Email -->
-            <div class="input-field col s12 m7">
-                <input id="email" name="email" type="text" {% if form.email.errors %} class="validate invalid"
-                    {% else %} class="validate" {% endif %} value="{{ form.email.value|default_if_none:'' }}">
-
-                <label for="email">Email</label>
-                <span class="helper-text color-sec-2" data-error="{{form.email.errors|first}}">
-                </span>
-            </div>
-
             <!-- Telefone -->
             <div class="input-field col s12 m7">
                 <input id="telefone" name="telefone" type="text" {% if form.telefone.errors %} class="validate invalid"
@@ -68,6 +59,13 @@
                 <span class="helper-text color-sec-2" data-error="{{form.telefone.errors|first}}">
                 </span>
             </div>
+
+            <!-- Email -->
+            <div class="input-field col s12 m7">
+                <input disabled id="email" name="email" type="text"  value="{{ user.email }}">
+                <label for="email">Email</label>
+                </span>
+            </div> 
 
             <!-- Area de atuação -->
             <div class="input-field col s12 m7">

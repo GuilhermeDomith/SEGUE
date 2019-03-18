@@ -29,6 +29,12 @@ class Empresa(models.Model):
         null=True
     )
 
+    def get_oportunidades(self):
+        try:
+            return self.oportunidade_set.all()
+        except:
+            return []
+
     def get_empresa_user(user):
         try:
             empresa = Empresa.objects.get(user=user)
@@ -41,6 +47,7 @@ class Empresa(models.Model):
 
     def __repr__(self):
         return self.razao_social
+
 
 
 class Tipo_Oportunidade(models.Model):
@@ -82,6 +89,12 @@ class Oportunidade(models.Model):
 
     cidade = models.CharField(max_length=60)
     estado = models.CharField(max_length=2)
+
+    def get_oportunidades(**args):
+        try:
+            return Oportunidade.objects.filter(**args)
+        except:
+            return []
 
     def get_dict_detalhado(self):
         dict = self.as_dict()

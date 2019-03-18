@@ -9,5 +9,6 @@ urlpatterns = [
     path('oportunidade/', views.adicionar_oportunidade, name='add-oportunidade'),
     path('oportunidade/<int:codigo>', views.adicionar_oportunidade, name='editar-oportunidade'),
     path('oportunidade/<int:codigo>/del', views.excluir_oportunidade, name='del-oportunidade'),
+    path('email_egresso/', views.enviar_email_egresso, name='email_egresso')
 ]
 
