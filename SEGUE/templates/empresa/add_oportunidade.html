@@ -2,7 +2,7 @@
 
 {% block main %}
 <div class="section">
-    <form action="{% url 'empresa:add-oportunidade' %}" class="row" method="POST">
+    <form action="{% url 'oportunidade:add' %}" class="row" method="POST">
         {% csrf_token %}
 
         <!-- Título página -->

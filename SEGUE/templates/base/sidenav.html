@@ -13,24 +13,25 @@
                     {% if user.tipo_usuario.tipo == 'admin' %}
                     <li><a href="admin/account/user/?tipo_usuario__id__exact=3">Empresas</a></li>
                     <li> <a href="admin/account/user/?tipo_usuario__id__exact=2">Egressos</a></li>
-                    <li> <a href="/admin/empresa/oportunidade/">Oportunidades</a></li>
-                    <li><div class="divider-vertical"></div></li>
-                    <li><a href="/">{{user.username}}</a></li>
+                    <li> <a href="/admin/oportunidade/oportunidade/">Oportunidades</a></li>
                     {% elif user.tipo_usuario.tipo == 'egresso' %}
                     <li><a href="{% url 'egresso:meu-curriculo' %}">Meu Currículo</a></li>
                     <li><a href="{% url 'egresso:oportunidades' %}">Oportunidades</a></li>
-                    <li><div class="divider-vertical"></div></li>
-                    <li><a href="{% url 'egresso:meu-curriculo' %}">{{user.username}}</a></li>
                     {% elif user.tipo_usuario.tipo == 'empresa'  %}
                     <li><a href="{% url 'empresa:editar-dados'%}">Dados da Empresa</a></li>
                     <li><a href="{% url 'empresa:oportunidades'%}">Oportunidades Lançadas</a></li>
-                    <li><div class="divider-vertical"></div></li>
-                    <li><a href="{% url 'empresa:editar-dados'%}">{{user.username}}</a></li>
                     {% endif %}
 
                     {% if user.is_authenticated %}
-                    <li>
-                        <a href="/logout">Sair</a>
+                    <ul id="user-dropdown" class="dropdown-content">
+                            <li><a href="/logout">Sair</a></li>
+                    </ul>
+
+                    <li><div class="divider-vertical"></div></li>
+                    <li><a class="dropdown-trigger" href="#!" data-target="user-dropdown">
+                        <i class="material-icons left">account_circle</i>
+                        {{user.username}}
+                        <i class="material-icons right">arrow_drop_down</i></a>
                     </li>
                     {% else %}
                     <li>

@@ -3,15 +3,15 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.http import require_http_methods
-#from django.contrib.auth.models import User
+
+from .models import Empresa, Area_Atuacao_Empresa
+from egresso.models import Egresso, Endereco, Formacao_Academica
+from curso.models import Curso, Area_Curso, Nivel_Curso
+from oportunidade.models import Tipo_Oportunidade, Oportunidade
 from account.models import User
-from egresso.models import Egresso, Endereco, Nivel_Formacao, Curso, Area_Curso, Formacao_Academica
-from .models import Empresa, Area_Atuacao_Empresa, Tipo_Oportunidade, Oportunidade
-from .forms import EmpresaForm, OportunidadeForm
-import json
+from .forms import EmpresaForm
 
 
-############ Views ############
 
 @require_http_methods(["GET", "POST"])
 @login_required
@@ -35,6 +35,7 @@ def editar_dados(request):
 
     form.save()
     return HttpResponseRedirect("/")
+
 
 ############
 
@@ -63,50 +64,6 @@ def oportunidades_lancadas(request):
 
 ############
 
-@require_http_methods(["GET", "POST"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
-def adicionar_oportunidade(request, codigo=None):
-    user = User.objects.get(username=request.user.username)
-    empresa = Empresa.get_empresa_user(request.user)
-
-    data = {
-        'niveis_curso': Nivel_Formacao.objects.values(),
-		'cursos': Curso.objects.values(),
-        'tipos_oportunidade': Tipo_Oportunidade.objects.values(),
-        'empresa': empresa 
-	}
-
-    if request.method == "GET":
-        if codigo:
-            oportunidade = Oportunidade.objects.get(pk=codigo)
-            form = OportunidadeForm(oportunidade.__dict__)
-            data.update({'form': form})
-        
-        return render(request, 'empresa/add_oportunidade.html', data)
-
-    form = OportunidadeForm(request.POST)
-    if not form.is_valid():
-        data.update({'form': form})
-        return render(request, 'empresa/add_oportunidade.html', data)
-
-    form.save()    
-    return HttpResponseRedirect(reverse('empresa:oportunidades'))
-
-############
-
-@require_http_methods(["GET", "POST"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
-def excluir_oportunidade(request, codigo):
-    empresa = Empresa.get_empresa_user(request.user)
-    oportunidade = empresa.oportunidade_set.get(pk=codigo)
-    oportunidade.delete()
-    return HttpResponseRedirect(reverse('empresa:oportunidades'))
-
-
-############
-
 @require_http_methods(["POST"])
 @login_required
 @user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
@@ -123,3 +80,4 @@ def enviar_email_egresso(request):
     )
 
     return HttpResponseRedirect(reverse('empresa:oportunidades'))
+

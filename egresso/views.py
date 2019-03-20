@@ -3,17 +3,12 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
-import json
 
-#from empresa.views import eh_empresa
+from .models import Egresso, Endereco, Formacao_Academica
+from oportunidade.models import Oportunidade
+from curso.models import Curso, Area_Curso, Nivel_Curso
 from account.models import User
-from empresa.models import Oportunidade
-from .models import Egresso, Endereco, Nivel_Formacao, Curso, Area_Curso, Formacao_Academica
 from .forms import EgressoForm, FormacaoForm
-
-
-#def eh_egresso(user):
-#    return 'egresso' in user.tipo_usuario.tipo
 
 
 def obter_dados_pag_curriculo(request, codigo=None):
@@ -34,7 +29,7 @@ def obter_dados_pag_curriculo(request, codigo=None):
 
 	data = {
 		'egresso': egresso_dict if egresso else {},
-		'niveis_curso': Nivel_Formacao.objects.values(),
+		'niveis_curso': Nivel_Curso.objects.values(),
 		'cursos': Curso.objects.values(),
 		'areas_curso': Area_Curso.objects.values(),
 		'formacoes_escolares': formacoes if formacoes else []
@@ -112,7 +107,7 @@ def excluir_formacao(request, id):
 	egresso = Egresso.get_egresso_user(request.user)
 
 	try:
-		formacao = egresso.Formacao_Academica_set.get(pk=id)
+		formacao = egresso.formacao_academica_set.get(pk=id)
 		formacao.delete()
 	except Formacao_Academica.DoesNotExist:
 		pass
@@ -127,18 +122,22 @@ def excluir_formacao(request, id):
 @user_passes_test(lambda u: u.is_tipo('egresso'), login_url='/', redirect_field_name=None)
 def oportunidades(request):
 	user = User.objects.get(email=request.user.email)
-	egresso = Egresso.get_egresso_user(request.user)
-
+	egresso = Egresso.get_egresso_user(user)
 	oportunidades = []
-	for f in egresso.formacao_academica_set.all():
-		oport = Oportunidade.get_oportunidades(
-			curso_necessario=f.curso,
-			nivel_formacao=f.nivel_formacao
-		)
 
-		oportunidades += [o.as_dict() for o in oport]
-		
-	data = {'oportunidades': oportunidades}
+	print(egresso)
+
+	if egresso:
+		for f in egresso.formacao_academica_set.all():
+			oport = Oportunidade.get_oportunidades(
+				curso_necessario=f.curso,
+				nivel_formacao=f.nivel_formacao
+			)
+
+			oportunidades += [o.as_dict() for o in oport]
+
+	data = {'egresso': egresso}	
+	data.update({'oportunidades': oportunidades})
 	return render(request, 'egresso/oportunidades.html', data)
 
 

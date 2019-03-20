@@ -18,9 +18,9 @@
 
         <div class="row">
             <ul>
-                {% for o in oportunidades %}
-                <li>
-                    <div class="card col s12">
+                <li class="col s12">
+                    {% for o in oportunidades %}
+                    <div class="card">
                         <div class="card-content">
                             <span class="card-title color-sec-2">{{o.titulo}}</span>
                             <div class="grey-text">{{o.tipo}}</div>
@@ -32,11 +32,23 @@
                             <a href="#">Demonstrar Interesse</a>
                         </div>
                     </div>
+                    {% empty %}
+                    <div class="center">Nenhuma oportunidade encontrada.</div>
+                    {% endfor %}
                 </li>
-                {% empty %}
-                <li>Nenhuma oportunidade encontrada.</li>
-                {% endfor %}
             </ul>
+        </div>
+
+        <div id="mensagem" class="modal" data-modal="{% if not egresso %}true{% endif %}">
+                <div class="modal-content">
+                    <h4 class="color-sec-2">Atenção</h4>
+                    <p>Você deve fornecer seus dados básicos primeiro. <br>
+                    Após isso você poderá ver oportunidades direcionadas ao seu perfil.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'egresso:editar-curriculo' %}" class="modal-close waves-effect waves-green btn-flat">Adicionar Agora</a>
+                    <a class="modal-close waves-effect waves-green btn-flat">Ok</a>
+                </div>
         </div>
     </div>
 </div>
@@ -45,6 +57,14 @@
 
 {% block script %}
 <script>
+    $(document).ready(function () {
+        /* Exibe a mensagem se o usuário ainda não cadastrou os dados básicos.*/
+        let mensagem = $('#mensagem');
+        if(mensagem.attr('data-modal')){
+            let modal = M.Modal.getInstance(mensagem);
+            modal.open();
+        }
+    });
 
 </script>
 {% endblock %}

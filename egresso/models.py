@@ -1,37 +1,10 @@
 from django.db import models
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+
+from curso.models import Curso, Area_Curso, Nivel_Curso
 from SEGUE import settings
 
-
-class Area_Curso(models.Model):
-    descricao = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.descricao
-
-    def __repr__(self):
-        return self.descricao
-
-
-class Curso(models.Model):
-    nome = models.CharField(max_length=80)
-
-    def __str__(self):
-        return self.nome
-
-    def __repr__(self):
-        return self.nome
-
-
-class Nivel_Formacao(models.Model):
-    descricao = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.descricao
-
-    def __repr__(self):
-        return self.descricao
 
 
 class Endereco(models.Model):
@@ -42,6 +15,10 @@ class Endereco(models.Model):
     bairro = models.CharField(max_length=60)
     cidade = models.CharField(max_length=60)
     estado = models.CharField(max_length=2)
+
+    class Meta:
+        verbose_name = 'Endereço'
+        verbose_name_plural = 'Endereços'
 
     def __str__(self):
         return '%s, %s, %s'%(self.cidade, self.rua, self.cep)
@@ -145,10 +122,14 @@ class Formacao_Academica(models.Model):
     ano_termino = models.IntegerField(default=0)
 
     nivel_formacao = models.ForeignKey(
-        Nivel_Formacao,
+        Nivel_Curso,
         on_delete=models.SET_NULL,
         null=True
     ) 
+
+    class Meta:
+        verbose_name = 'Formação Acadêmica'
+        verbose_name_plural = 'Formações Acadêmicas'
 
     def get_formacoes(**args):
         try:

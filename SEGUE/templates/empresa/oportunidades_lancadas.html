@@ -30,8 +30,8 @@
                             <div class="grey-text">{{o.cidade}} - {{o.estado}}</div>
                         </div>
                         <div class="card-action">
-                            <a href="{% url 'empresa:editar-oportunidade' o.id %}">Editar</a>
-                            <a href="{% url 'empresa:del-oportunidade' o.id %}">Excluir</a>
+                            <a href="{% url 'oportunidade:editar' o.id %}">Editar</a>
+                            <a href="{% url 'oportunidade:delete' o.id %}">Excluir</a>
                         </div>
                     </div>
 
@@ -65,7 +65,7 @@
         </div>
 
         <div class="col s12 center">
-            <a id="add-oportunidade" href="{% url 'empresa:add-oportunidade' %}" class="waves-effect waves-light btn modal-trigger">
+            <a id="add-oportunidade" href="{% url 'oportunidade:add' %}" class="waves-effect waves-light btn modal-trigger">
                 <i class="material-icons left">add_box</i> Nova Oportunidade
             </a>
         </div>
@@ -84,7 +84,7 @@
 
                 <!-- Título do Modal -->
                 <div class="col s12">
-                    <h5 class="titulo-pagina">Enviar Email</h5>
+                    <h5 class="titulo-pagina">Novo Email</h5>
                 </div>
 
                 <div class="subtitulo-form col s12">
@@ -152,23 +152,27 @@
             let email = elem.attr('data-email') || elem.parent().attr('data-email');
             let nome = elem.attr('data-nome') || elem.parent().attr('data-nome');
             let id_oportunidade = elem.attr('data-oport') || elem.parent().attr('data-oport');
-            let div_oportunidade = $('#'+id_oportunidade).children()
-            let tipo_oportunidade = $(div_oportunidade[1]).text().toLowerCase()
+            let oport_detalhes = $('#'+id_oportunidade).children()
 
+            let tipo_oportunidade = $(oport_detalhes[1]).text().toLowerCase()
             let detalhes_vaga = ''
-            div_oportunidade.each((i, e)=>{
+
+            oport_detalhes.each((i, e)=>{
                 detalhes_vaga += '\n'+$(e).text() 
             })
-
+            
+            /*Insere email de destino no formulário  */
             $('#to_email').val(email)
 
+            /*Insere assunto padrão do email */
             let assunto = 'Oportunidade de {0} na plataforma SEGUE';
             assunto = assunto.replace('{0}', tipo_oportunidade);
             $('#assunto_email').val(assunto);
             M.updateTextFields();
 
+            /*Insere mensagem padrão do email */
             let msg = 'Olá {0}.\n\nA empresa {1} gostaria de marcar uma entrevista com você '+
-            'para uma oportunidade de {2}.\nVocê estaria interessado?\n\nDetalhes da vaga:\n{3}'
+            'para uma oportunidade de {2}. Você estaria interessado?\n\nDetalhes da vaga:\n{3}'
             msg = msg.replace('{0}', nome)
             msg = msg.replace('{1}', $('#info_empresa').val());
             msg = msg.replace('{2}', tipo_oportunidade);

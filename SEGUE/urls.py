@@ -8,6 +8,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('egresso/', include('egresso.urls')),
     path('empresa/', include('empresa.urls')),
+    #path('curso/', include('curso.urls')),
+    path('oportunidade/', include('oportunidade.urls')),
     path('login/', auth_views.LoginView.as_view(), name='login'), 
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]

@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'account',
     'empresa',
     'egresso',
+    'curso',
+    'oportunidade',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
