@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'egresso',
     'curso',
     'oportunidade',
+    'pwa',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -137,3 +138,18 @@ LOGOUT_REDIRECT_URL = LOGIN_URL
 
 ########### FORMATO DATA ###########
 DATE_INPUT_FORMATS = ['%d/%m/%Y']
+
+########### PWA Config ###########
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'SEGUE/static/js', 'serviceworker.js')
+PWA_APP_NAME = 'My Kickass App'
+PWA_APP_DESCRIPTION = "Do kickass things all day long without that pesky browser chrome"
+PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_START_URL = '/'
+'''PWA_APP_ICONS = [
+    {
+        'src': '/static/images/my_app_icon.png',
+        'sizes': '160x160'
+    }
+]'''
