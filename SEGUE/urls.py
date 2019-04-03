@@ -5,7 +5,6 @@ from django.contrib.auth import views as auth_views
 from account.views import base_layout
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html')),
     path('', include('pwa.urls')),
     path('admin/', admin.site.urls),
     path('egresso/', include('egresso.urls')),
@@ -13,6 +12,7 @@ urlpatterns = [
     #path('curso/', include('curso.urls')),
     path('oportunidade/', include('oportunidade.urls')),
 
+    path('', TemplateView.as_view(template_name='index.html')),
     path('base_layout/', base_layout, name='base_layout'), 
     path('login/', auth_views.LoginView.as_view(), name='login'), 
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
