@@ -26,7 +26,7 @@ SECRET_KEY = 'xv-3fp($84b)vapu6f2!&k1%iq-m$7@7sok1ig8i^8w=str!!v'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '*'
+    '192.168.0.24'
 ]
 
 AUTH_USER_MODEL = 'account.User'
@@ -143,7 +143,7 @@ DATE_INPUT_FORMATS = ['%d/%m/%Y']
 PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'SEGUE','static', 'js', 'serviceworker.js')
 PWA_APP_NAME = 'SEGUE APP'
 PWA_APP_DESCRIPTION = "Uma plataforma para controle de egressos"
-PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_THEME_COLOR = '#43a047'
 PWA_APP_BACKGROUND_COLOR = '#ffffff'
 PWA_APP_DISPLAY = 'standalone'
 PWA_APP_START_URL = '/'
