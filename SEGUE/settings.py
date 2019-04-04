@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'egresso',
     'curso',
     'oportunidade',
+    'custom_admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
