@@ -40,11 +40,8 @@ INSTALLED_APPS = [
     'egresso',
     'curso',
     'oportunidade',
-<<<<<<< HEAD
     'pwa',
-=======
     'custom_admin',
->>>>>>> e5edae091456559c11c836c9bcb4eb7b33d73a3d
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
