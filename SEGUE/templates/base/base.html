@@ -1,3 +1,4 @@
+{% load pwa %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -7,11 +8,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% progressive_web_app_meta %}
+    
     <title>SEGUE</title>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}?v=5">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}?v=5""
+
 </head>
 
 <body>
@@ -27,11 +32,12 @@
 
     {% include 'base/footer.html' %}
 
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="{% static 'js/config_ajax.js' %}"></script>
     <script src="{% static 'js/base.js' %}"></script>
-    
+
     {% block script %} {% endblock %}
 </body>
 
