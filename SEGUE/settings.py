@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -60,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'SEGUE.urls'
@@ -132,6 +134,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+########### Static Files Gunicorn Config ###########
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Extra places for collectstatic to find static files.
+#STATICFILES_DIRS = (
+#    os.path.join(BASE_DIR, 'static'),
+#)
+
 ########### LOGIN URLS ###########
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
@@ -163,4 +173,7 @@ PWA_APP_SPLASH_SCREEN = [{
     'src': '/static/img/favicon.ico',
     'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
 }]
+
+########### Activate Django Heroku ###########
+django_heroku.settings(locals())
 
