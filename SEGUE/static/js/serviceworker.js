@@ -1,24 +1,28 @@
-let CACHE_ESTATICO = 'SEGUE_ES_v1.3';
-let CACHE_DINAMICO = 'SEGUE_DI_v1';
+const CACHE_ESTATICO = 'SEGUE_ES_v1.3';
+const CACHE_DINAMICO = 'SEGUE_DI_v1';
+const FILES_TO_CACHE = [
+  '/',
+  '/base_layout',
+  '/login',
+
+  'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js',
+  'https://fonts.googleapis.com/css?family=Roboto:300,400,700,900',
+  'https://fonts.googleapis.com/icon?family=Material+Icons',
+
+  'static/js/base.js',
+  'static/js/config_ajax.js',
+  '/static/css/base.css',
+  '/static/css/materialize.min.css',
+  '/static/img/favicon.ico',
+]
+
 
 /** Armazenar os ativos da página em cache */
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(CACHE_ESTATICO)
     .then(function(cache) {
-        cache.addAll([
-          '/',
-          '/base_layout',
-          '/login',
-          'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js',
-          'https://fonts.googleapis.com/css?family=Roboto:300,400,700,900',
-          'https://fonts.googleapis.com/icon?family=Material+Icons',
-          'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css',
-          'static/js/base.js',
-          'static/js/config_ajax.js',
-          '/static/css/base.css',
-          '/static/img/favicon.ico',
-        ]);
+        cache.addAll(FILES_TO_CACHE);
     }).catch(function(err){
       console.log('Erro ao acessar cache',err)
     })
