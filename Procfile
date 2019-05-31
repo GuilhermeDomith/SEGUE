@@ -1,2 +1,2 @@
-web: gunicorn SEGUE.wsgi
+web: gunicorn SEGUE.wsgi --log-file -
 

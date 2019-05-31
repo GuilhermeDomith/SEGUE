@@ -166,7 +166,7 @@ PWA_APP_LANG = 'pt-BR'
 
 PWA_APP_ICONS = [{
         'src': '/static/img/favicon.ico',
-        'sizes': '160x160'
+        'sizes': '16x16'
 }]
 
 PWA_APP_SPLASH_SCREEN = [{
