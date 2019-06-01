@@ -24,7 +24,7 @@
 
                     {% if user.is_authenticated %}
                     <ul id="user-dropdown" class="dropdown-content">
-                            <li><a href="/logout">Sair</a></li>
+                            <li><a href="{% url 'account:logout'%}">Sair</a></li>
                     </ul>
 
                     <li><div class="divider-vertical"></div></li>
@@ -35,7 +35,7 @@
                     </li>
                     {% else %}
                     <li>
-                        <a href="/login"> Login </a>
+                        <a href="{% url 'account:login'%}"> Login </a>
                     </li>
                     {% endif %}
 
@@ -81,11 +81,11 @@
         <!-- Login e Logout-->
         {% if user.is_authenticated %}
         <li>
-            <a href="/logout">Sair</a>
+            <a href="{% url 'account:logout'%}">Sair</a>
         </li>
         {% else %}
         <li>
-            <a href="/login"> Login </a>
+            <a href="{% url 'account:login'%}"> Login </a>
         </li>
         {% endif %}
 
