@@ -1,10 +1,10 @@
-const CACHE_ESTATICO = 'SEGUE_ES_v1.4';
-const CACHE_DINAMICO = 'SEGUE_DI_v1.4';
+const CACHE_ESTATICO = 'SEGUE_ES_v1.7';
+const CACHE_DINAMICO = 'SEGUE_DI_v1.7';
 /*'/base_layout',*/
 const FILES_TO_CACHE = [
   '/',
-  '/login',
-  '/offline',
+  '/login/',
+  '/offline/',
 
   'https://fonts.googleapis.com/css?family=Roboto:300,400,700,900',
   'https://fonts.googleapis.com/icon?family=Material+Icons',
@@ -17,7 +17,6 @@ const FILES_TO_CACHE = [
   '/static/js/materialize.min.js',
   
   '/static/css/base.css',
-  '/static/css/django-pwa-app.css',
   '/static/css/materialize.min.css',
 
   '/static/img/favicon.ico',
@@ -37,7 +36,7 @@ self.addEventListener('install', function(event) {
     .then(function(cache) {
         cache.addAll(FILES_TO_CACHE)
         .then(()=>{console.log('DONE: Todas as páginas de FILE_TO_CACHE foram salvas em cache')})
-        .catch(()=>{console.log('ERROR: As páginas de FILE_TO_CACHE não foram salvas em cache')})
+        .catch((e)=>{console.log('ERROR: As páginas de FILE_TO_CACHE não foram salvas em cache', e)})
     }).catch(function(err){
       console.log('Erro ao acessar cache',err)
     })
@@ -53,7 +52,11 @@ self.addEventListener('fetch', function(event) {
   if(event.request.url.indexOf('serviceworker.js') > -1 ||
     event.request.url.indexOf('manifest.json') > -1){
     console.log('[SW] Fetch {Está página não pode ser adicionada em cache}');
-    event.respondWith(fetch(event.request))
+
+    event.respondWith(
+      fetch(event.request)
+      .catch((e)=>{console.log('Falha ao fazer requisição de {'+event.request.url+'}')})
+    )
   }else{
 
     // Primeiro verifica se o item está no cache.
@@ -83,7 +86,7 @@ self.addEventListener('fetch', function(event) {
               .catch(function(){
                 // Página retornada caso esteja offline e a página requisitada 
                 // não esteja em cache.
-                return caches.match('offline')
+                return caches.match('/offline/')
               })
           }
 
@@ -95,19 +98,21 @@ self.addEventListener('fetch', function(event) {
 
 
 // Clear cache on activate
-/*
+
 self.addEventListener('activate', event => {
   event.waitUntil( 
     caches.keys()
     .then(cacheNames => {
       return Promise.all(
         cacheNames
-        .filter(cacheName => (cacheName.startsWith("django-pwa-")))
-        .filter(cacheName => (cacheName !== staticCacheName))
+        .filter(cacheName => (cacheName.startsWith("SEGUE_ES_v1.6")))
+        .filter(cacheName => (cacheName.startsWith("SEGUE_DI_v1.6")))
+        .filter(cacheName => (cacheName !== CACHE_ESTATICO))
+        .filter(cacheName => (cacheName !== CACHE_DINAMICO))
         .map(cacheName => caches.delete(cacheName))
       );
     })
   );
 });
-*/
+
   

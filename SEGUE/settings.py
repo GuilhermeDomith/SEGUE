@@ -26,7 +26,6 @@ SECRET_KEY = 'xv-3fp($84b)vapu6f2!&k1%iq-m$7@7sok1ig8i^8w=str!!v'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.0.24',
     '*'
 ]
 
@@ -152,17 +151,20 @@ LOGOUT_REDIRECT_URL = LOGIN_URL
 DATE_INPUT_FORMATS = ['%d/%m/%Y']
 
 ########### PWA Config ###########
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'SEGUE','static', 'js', 'serviceworker.js')
-PWA_APP_NAME = 'SEGUE APP'
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'SEGUE','static', 'serviceworker.js')
+PWA_MANIFEST_JSON = os.path.join(BASE_DIR, 'SEGUE','static', 'manifest.json')
+
+"""PWA_APP_NAME = 'SEGUE APP'
 PWA_APP_DESCRIPTION = "Uma plataforma para controle de egressos"
 PWA_APP_THEME_COLOR = '#43a047'
 PWA_APP_BACKGROUND_COLOR = '#ffffff'
 PWA_APP_DISPLAY = 'standalone'
-PWA_APP_SCOPE = '/',
+PWA_APP_SCOPE = '.',
 PWA_APP_ORIENTATION = 'any'
 PWA_APP_START_URL = '/'
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'pt-BR'
+#"homepage_url": "https://curiosity.com",
 
 PWA_APP_ICONS = [{
         'src': '/static/img/favicon.ico',
@@ -172,7 +174,7 @@ PWA_APP_ICONS = [{
 PWA_APP_SPLASH_SCREEN = [{
     'src': '/static/img/favicon.ico',
     'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
-}]
+}]"""
 
 ########### Activate Django Heroku ###########
 django_heroku.settings(locals())
