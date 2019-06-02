@@ -18,6 +18,17 @@
     width: 30%
 }
 
+.logo-sidenav{
+    margin: 80px 20%;
+    width:60%;
+}
+
+.username-sidenav a{
+    display: block;
+    padding-left: 32px;
+    margin-top: -30px;
+}
+
 .clean-button{
     background-color: #43a047;
     border-radius: 4px;

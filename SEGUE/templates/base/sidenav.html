@@ -57,16 +57,14 @@
         <!-- Logo do sidenav -->
         {% if user.is_authenticated %}
         <li>
-            <div class="user-view">
-                <div class="background">
-                    <!-- <img src="{% static 'img/default-capa.jpg' %}" width="100%"> -->
-                    <div class="center">
-                        <h3 class="color-prim-2">SEGUE</h3>
-                    </div>
+            <div>
+                
+                <img class="logo-sidenav" src="{% static 'logo/segue-cor.svg' %}">
+
+                <div class="username-sidenav">
+                    <a href="#name"><span class="black-text">{{ user.username }}</span></a>
+                    <a href="#email"><span class="black-text">{{ user.email }}</span></a>
                 </div>
-                <!--<a href="#user"><img class="circle" src="{% static 'img/default.jpg' %}"></a>-->
-                <a href="#name"><span class="black-text name">{{ user.username }}</span></a>
-                <a href="#email"><span class="black-text email">{{ user.email }}</span></a>
             </div>
         </li>
         {% else %}
