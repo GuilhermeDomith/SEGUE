@@ -1,14 +1,20 @@
 {% extends 'base/base.html'%}
+{% load static %}
 
 {% block main %}
 <div class="section">
     <div>
-        <h1 class="color-prim-2">SEGUE</h1>
-        <p class="color-sec-2 font-2">
+        <img class="logo animated bounceInLeft" 
+            src="{% static 'logo/segue-cor.svg' %}" 
+            alt="Logo do sistema SEGUE"/>
+
+        <p class="color-sec-2 font-2 animated fadeInUp delay-1s">
             Sistema Estratégico de <br>Gestão Unificada de Egressos
         </p>
-
-        <p class="font-2">Intituto Federal do Sudeste de Minas Gerais</p>
+    
+        <p class="font-2 animated fadeInUp delay-2s">
+            Intituto Federal do Sudeste de Minas Gerais
+        </p>
     </div>
 </div>
 {% endblock %}

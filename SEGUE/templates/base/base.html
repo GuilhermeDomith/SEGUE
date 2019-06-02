@@ -15,34 +15,31 @@
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="SEGUE APP">
+    <meta name="application-name" content="SEGUE">
 
     <!-- Chrome for Android theme color -->
     <meta name="theme-color" content="#43a047">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="SEGUE APP">
+    <meta name="apple-mobile-web-app-title" content="SEGUE">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-    <link rel="apple-touch-icon" href="{% static 'img/favicon.ico' %}" sizes="">
+    <link rel="apple-touch-icon" href="{% static 'icons/icon-152x152.png' %}">
 
-    <link href="{% static 'img/favicon.ico' %}"
+    <link href="{% static 'icons/favicon.ico' %}"
         media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
         rel="apple-touch-startup-image" />
 
     <!-- Tile for Win8 -->
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="{% static 'img/favicon.ico' %}">
-
-    <link rel="icon" sizes="" href="{% static 'img/favicon.ico' %}">
+    <meta name="msapplication-TileColor" content="#00701a">
+    <meta name="msapplication-TileImage" content="{% static 'icons/favicon.ico' %}">
 
     <script type="text/javascript">
         // Initialize the service worker
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register("/serviceworker.js", {
-                scope: '.'
-            }).then(function (registration) {
+            navigator.serviceWorker.register("/serviceworker.js", {scope: '.'})
+            .then(function (registration) {
                 // Registration was successful
                 console.log('django-pwa: ServiceWorker registration successful with scope: ', registration.scope);
             }, function (err) {
@@ -59,7 +56,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="icon" href="{% static 'icons/favicon.ico' %}">
 
 </head>
 
@@ -79,7 +77,11 @@
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/materialize.min.js' %}"></script>
     <script src="{% static 'js/config_ajax.js' %}"></script>
+    <script src="{% static 'js/wow.min.js' %}"></script>
     <script src="{% static 'js/base.js' %}"></script>
+    <script>
+        var wow = new WOW().init();
+    </script>
 
     {% block script %} {% endblock %}
 </body>

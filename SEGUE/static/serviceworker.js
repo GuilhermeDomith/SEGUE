@@ -1,6 +1,10 @@
-const CACHE_ESTATICO = 'SEGUE_ES_v1.7';
-const CACHE_DINAMICO = 'SEGUE_DI_v1.7';
-/*'/base_layout',*/
+const VERSAO = 3.4
+
+const CACHE_ESTATICO = `SEGUE_ES_v${VERSAO}`
+const CACHE_DINAMICO = `SEGUE_DI_v${VERSAO}`
+const LAST_CACHE_ESTATICO = `SEGUE_ES_v${VERSAO-0.1}`
+const LAST_CACHE_DINAMICO = `SEGUE_DI_v${VERSAO-0.1}`
+
 const FILES_TO_CACHE = [
   '/',
   '/login/',
@@ -15,15 +19,32 @@ const FILES_TO_CACHE = [
   '/static/js/config_ajax.js',
   '/static/js/jquery.min.js',
   '/static/js/materialize.min.js',
+  '/static/js/wow.min.js',
   
+  '/static/css/animate.css',
   '/static/css/base.css',
   '/static/css/materialize.min.css',
 
-  '/static/img/favicon.ico',
+  '/static/icons/favicon.ico',
+  '/static/icons/icon-128x128.png',
+  '/static/icons/icon-144x144.png',
+  '/static/icons/icon-152x152.png',
+  '/static/icons/icon-192x192.png',
+  '/static/icons/icon-256x256.png',
+  '/static/icons/icon-512x512.png',
+
+  '/static/logo/segue-bp.png',
+  '/static/logo/segue-bp.svg',
+  '/static/logo/segue-cor.png',
+  '/static/logo/segue-cor.svg',
+  '/static/logo/segue-pb.png',
+  '/static/logo/segue-pb.svg',
+
   '/static/img/icon-github.svg',
   '/static/img/icon-lattes.png',
   '/static/img/icon-linkedin.svg',
-
+  '/static/img/seta-pb.svg',
+  '/static/img/seta.svg',
 ]
 
 
@@ -43,15 +64,17 @@ self.addEventListener('install', function(event) {
   );
 });
 
+
 self.addEventListener('fetch', function(event) {
   console.log('[SW] Fetch {'+event.request.url+'}');
+  console.log('mode: ', event.request.mode !== 'navigate')
 
   // Se na url possui o endereço da nossa API de informações dinâmicas, não guardar no cache
   // No index.html possui um link para o service worker. Ele precisa estar explícito nesta lista
   // de exclusão, pois ao ser clicado ele não pode ser adicionado em cache.
   if(event.request.url.indexOf('serviceworker.js') > -1 ||
     event.request.url.indexOf('manifest.json') > -1){
-    console.log('[SW] Fetch {Está página não pode ser adicionada em cache}');
+    console.log('[SW] Fetch {Esta página não pode ser adicionada em cache}');
 
     event.respondWith(
       fetch(event.request)
@@ -84,8 +107,7 @@ self.addEventListener('fetch', function(event) {
                   })
               })
               .catch(function(){
-                // Página retornada caso esteja offline e a página requisitada 
-                // não esteja em cache.
+                // Retorna a página que informa o status offline
                 return caches.match('/offline/')
               })
           }
@@ -98,21 +120,11 @@ self.addEventListener('fetch', function(event) {
 
 
 // Clear cache on activate
-
 self.addEventListener('activate', event => {
-  event.waitUntil( 
-    caches.keys()
-    .then(cacheNames => {
-      return Promise.all(
-        cacheNames
-        .filter(cacheName => (cacheName.startsWith("SEGUE_ES_v1.6")))
-        .filter(cacheName => (cacheName.startsWith("SEGUE_DI_v1.6")))
-        .filter(cacheName => (cacheName !== CACHE_ESTATICO))
-        .filter(cacheName => (cacheName !== CACHE_DINAMICO))
-        .map(cacheName => caches.delete(cacheName))
-      );
-    })
-  );
-});
 
+  event.waitUntil( 
+    caches.delete(LAST_CACHE_ESTATICO) &&
+    caches.delete(LAST_CACHE_DINAMICO)
+  )
+});
   
