@@ -44,10 +44,10 @@
 
 .titulo-pagina:before {
     background-image: url('/static/img/seta.svg');
-    background-size: 40px 40px;
+    background-size: 30px 30px;
     display: inline-block;
-    width: 40px; 
-    height: 40px;
+    width: 30px; 
+    height: 30px;
     content:"";
 }
 
@@ -102,16 +102,61 @@ main {
     flex: 1 0 auto;
 }
 
-/** Only Mobile */
-@media only screen and (max-width: 600px){
-    .modal{
-        width: 90%;
-    }
-}
-
 /*Tamanhos de fonts*/
 .font-2{
-    font-size: 1.8em;
+    font-size: 1.3em;
+}
+
+/*Cores*/
+.btn,.btn-large,.btn-small,.btn-flat{
+    background-color: #bf360c;
+    text-transform: capitalize;
+}
+
+.btn:hover,.btn-large:hover,.btn-small:hover,.btn-floating:hover{
+    background-color: #870000;
+}
+
+/* label color */
+.input-field label {
+    color: #5e5e5e;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label, 
+.input-field input[type=password]:focus + label {
+color: #43a047 !important;
+}
+
+.input-field input[type=text].invalid:focus + label, 
+.input-field input[type=password].invalid:focus + label {
+    color: #bf360c !important;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus,
+.input-field input[type=password]:focus {
+border-bottom: 1px solid #43a047 !important;
+box-shadow: 0 1px 0 0 #000;
+}
+/* valid color */
+.input-field input[type=text].valid,
+.input-field input[type=password].valid {
+border-bottom: 1px solid #43a047 !important;
+box-shadow: 0 1px 0 0 #000;
+}
+/* invalid color */
+.input-field input[type=text].invalid, 
+.input-field input[type=password].invalid {
+border-bottom: 1px solid #bf360c !important;
+box-shadow: 0 1px 0 0 #000;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+color: #43a047 !important;
+}
+.helper-text[data-error]:after{
+    content:attr(data-error);
+    color: #bf360c !important;
 }
 
 /* Cores para background */
@@ -151,4 +196,26 @@ main {
 /*Margins predefinidas*/
 .mt-3{
     margin-top: 30px;
+}
+
+@media only screen and (max-width: 992px){
+    .logo{
+        width: 25%
+    }
+
+    /*Tamanhos de fonts*/
+    .font-2{
+        font-size: 1em;
+    }
+}
+
+/** Only Mobile */
+@media only screen and (max-width: 600px){
+    .logo{
+        width: 50%
+    }
+
+    .modal{
+        width: 90%;
+    }
 }
