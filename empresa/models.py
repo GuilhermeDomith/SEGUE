@@ -45,6 +45,11 @@ class Empresa(models.Model):
         except Empresa.DoesNotExist:
             return None
 
+    def as_dict(self):
+        dict = super(Empresa, self).__dict__
+        del dict['_state']
+        return dict
+
     def __str__(self):
         return self.razao_social
 

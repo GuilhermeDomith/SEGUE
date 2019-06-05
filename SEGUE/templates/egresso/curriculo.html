@@ -206,16 +206,8 @@
         </div>
     </div>
 
-    <div id="mensagem" class="modal" data-modal="{% if not egresso %}true{% endif %}">
-            <div class="modal-content">
-                <h4 class="color-sec-2">Atenção</h4>
-                <p>Você deve fornecer seus dados básicos primeiro.</p>
-            </div>
-            <div class="modal-footer">
-                <a href="{% url 'egresso:editar-curriculo' %}" class="modal-close waves-effect waves-green btn-flat">Adicionar Agora</a>
-                <a class="modal-close waves-effect waves-green btn-flat">Ok</a>
-            </div>
-    </div>
+    {{ egresso|json_script:"dados-egresso" }}
+
     {% endif %}
 
 </div>
@@ -226,11 +218,14 @@
     $(document).ready(function () {
         let formacao = $('#formacao');
 
-        /* Verifica se é preciso abrir o modal de formacao acadêmica. */
-        if (formacao.attr('data-modal')) {
+        function abrirModalFormacao(){
             let modal = M.Modal.getInstance(formacao);
             modal.open();
         }
+
+        /* Verifica se é preciso abrir o modal de formacao acadêmica. */
+        if (formacao.attr('data-modal'))
+            abrirModalFormacao()
 
         /* Clica em cancelar se o usuário fechar o modal clicando fora. */
         M.Modal.getInstance(formacao).options.onCloseEnd = (e)=>{
@@ -238,18 +233,27 @@
         }
 
         /* Se o usuário ainda não cadastrou os dados básicos e tentar adicionar
-        formação acadêmica, exibe o modal mensagem. O atributo data-modal indica 
-        se deve exibir a mensagem ao invés de cadastrar formação.*/
+        formação acadêmica exibe uma mensagem.*/
+        let egresso = JSON.parse($('#dados-egresso').text())
         let mensagem = $('#mensagem');
+
         $('#add-formacao').on('click', function(e){
-            if(mensagem.attr('data-modal')){
+            if( $.isEmptyObject(egresso) ){
                 e.preventDefault()
                 e.stopPropagation()
-                let modal = M.Modal.getInstance(mensagem);
-                modal.open();
+
+                exibirMensagem({
+                    titulo: 'Atenção',
+                    descricao: 'Você deve fornecer seus dados básicos primeiro.',
+                    buttons: [{
+                        text: 'Adicionar Agora',
+                        href:"{% url 'egresso:editar-curriculo' %}",
+                    },{
+                        text: 'Ok'
+                    }]
+                })
             }else{
-                let modal = M.Modal.getInstance(formacao);
-                modal.open();
+                abrirModalFormacao()
             }
         });
     });

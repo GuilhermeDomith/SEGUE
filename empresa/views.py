@@ -59,7 +59,7 @@ def oportunidades_lancadas(request):
         oport_dict['egressos'] = [ f.egresso.as_dict() for f in formacoes]
         data['oportunidades'].append(oport_dict)
 
-    data['empresa'] = empresa
+    data['empresa'] = empresa.as_dict()
     return render(request, 'empresa/oportunidades_lancadas.html', data)
 
 ############

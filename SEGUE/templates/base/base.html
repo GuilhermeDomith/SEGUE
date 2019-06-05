@@ -38,7 +38,7 @@
     <script type="text/javascript">
         // Initialize the service worker
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register("/serviceworker.js", {scope: '.'})
+            navigator.serviceWorker.register("/serviceworker.js")
             .then(function (registration) {
                 // Registration was successful
                 console.log('django-pwa: ServiceWorker registration successful with scope: ', registration.scope);
@@ -69,8 +69,15 @@
         <div class="container">
             {% block main %} {% endblock %}
         </div>
+        <div id="mensagem" class="modal" ">
+                <div class="modal-content">
+                    <h4 id="titulo-msg" class="color-sec-2"> </h4>
+                    <p id="descricao-msg"> </p>
+                </div>
+                <div id="acoes-msg"class="modal-footer">
+                </div>
+        </div>
     </main>
-
 
     {% include 'base/footer.html' %}
 
@@ -81,6 +88,28 @@
     <script src="{% static 'js/base.js' %}"></script>
     <script>
         var wow = new WOW().init();
+    </script>
+    <script>
+        function criarBotaoMensagem(button){
+            let btn = $('<a href="" class="modal-close waves-effect waves-red btn-flat"> </a>')
+            btn.text(button.text)
+            btn.attr('href', button.href)
+            return btn
+        }
+
+        function exibirMensagem(msg){
+            let botoes = []
+            msg.buttons.forEach((obj)=>{
+                botoes.push( criarBotaoMensagem(obj) )
+            })
+
+            $('#titulo-msg').text(msg.titulo)
+            $('#descricao-msg').text(msg.descricao)
+            $('#acoes-msg').empty().prepend(botoes)
+            
+            let modal = M.Modal.getInstance($('#mensagem'));
+            modal.open();
+        }
     </script>
 
     {% block script %} {% endblock %}

@@ -4,7 +4,6 @@
     "description": "Uma plataforma para controle de egressos",
     "start_url": "/",
     "display": "standalone",
-    "scope": "/",
     "orientation": "any",
     "background_color": "#43a047",
     "theme_color": "#43a047",

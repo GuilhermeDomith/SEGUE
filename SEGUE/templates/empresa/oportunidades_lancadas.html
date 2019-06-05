@@ -115,17 +115,7 @@
     </div>
 </form>
 
-<div id="mensagem" class="modal" data-modal="{% if not user.empresa %}true{% endif %}">
-    <div class="modal-content">
-        <h4 class="color-sec-2">Atenção</h4>
-        <p>Você deve fornecer seus dados básicos primeiro.</p>
-    </div>
-    <div class="modal-footer">
-        <a href="{% url 'empresa:editar-dados' %}" class="modal-close waves-effect waves-green btn-flat">Adicionar
-            Agora</a>
-        <a class="modal-close waves-effect waves-green btn-flat">Ok</a>
-    </div>
-</div>
+{{ empresa |json_script:"dados-empresa" }}
 
 {% endblock %}
 
@@ -134,17 +124,32 @@
 
     $(document).ready(()=>{
 
-        /* Se o usuário ainda não cadastrou os dados básicos e tentar adicionar
-        uma nova oportunidade, exibe o modal mensagem. O atributo data-modal indica 
-        se deve exibir a mensagem ao invés de cadastrar oportunidade.*/
-        let mensagem = $('#mensagem');
-        $('#add-oportunidade').on('click', function(e){
-            if(mensagem.attr('data-modal')){
+        function mensagemDadosFaltantes(){
+            exibirMensagem({
+                titulo: 'Atenção',
+                descricao: 'Você deve fornecer seus dados básicos primeiro.',
+                buttons: [{
+                    text: 'Adicionar Agora',
+                    href:"{% url 'empresa:editar-dados' %}",
+                },{
+                    text: 'Ok',
+                    href: '#'
+                }]
+            })
+        }
+
+        let empresa = JSON.parse( $('#dados-empresa').text() );
+
+        /* Exibe a mensagem se o usuário ainda não cadastrou os dados básicos.*/
+        if( $.isEmptyObject(empresa) )
+            mensagemDadosFaltantes()
+
+        $('#add-oportunidade').on('click', (e)=>{
+            if( $.isEmptyObject(empresa) ){
                 e.preventDefault()
-                let modal = M.Modal.getInstance(mensagem);
-                modal.open();
+                mensagemDadosFaltantes()
             }
-        });
+        })
 
         let send_email = $('#send_email')
         $('a.send-email').on('click', (e)=>{
