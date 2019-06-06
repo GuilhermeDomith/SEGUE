@@ -1,4 +1,4 @@
-const VERSAO = 4.1
+const VERSAO = 5.4
 
 const CACHE_ESTATICO = `SEGUE_ES_v${VERSAO}`
 const CACHE_DINAMICO = `SEGUE_DI_v${VERSAO}`
@@ -84,10 +84,7 @@ self.addEventListener('fetch', function (event) {
 
 				console.log('Nao está em cache estatico', event.request.url)
 				return fetch(event.request).then((response) => {
-						//Request realizada com sucesso
-						return response
-
-						/* Salva recursos dinâmicas para acessa-los quando offline
+						/* Salva recursos dinâmicas para acessa-los quando offline */
 
 						//Recursos que não devem ser armazenados em cache
 						if (event.request.url.indexOf('serviceworker.js') >= 0 ||
@@ -108,10 +105,13 @@ self.addEventListener('fetch', function (event) {
 							console.log(`ERROR: Não foi possível abrir o ${CACHE_DINAMICO}`, err);
 							return response
 						})
-						*/
 
 				}).catch(e => {
-					//Erro ao fazer request
+					/* Erro ao fazer request */
+					return caches.match('/')
+
+					/* Cache dinâmico não utilizado
+
 					//verifica se a página existe em cache dinamico
 					return caches.match(event.request)
 						.then((response) => {
@@ -121,6 +121,7 @@ self.addEventListener('fetch', function (event) {
 							// Retorna a página que informa o status offline
 							return caches.match('/offline/')
 						})
+					*/
 				})
 			})
 		})

@@ -39,13 +39,13 @@
         // Initialize the service worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register("/serviceworker.js")
-            .then(function (registration) {
-                // Registration was successful
-                console.log('django-pwa: ServiceWorker registration successful with scope: ', registration.scope);
-            }, function (err) {
-                // registration failed :(
-                console.log('django-pwa: ServiceWorker registration failed: ', err);
-            });
+                .then(function (registration) {
+                    // Registration was successful
+                    console.log('django-pwa: ServiceWorker registration successful with scope: ', registration.scope);
+                }, function (err) {
+                    // registration failed :(
+                    console.log('django-pwa: ServiceWorker registration failed: ', err);
+                });
         }
     </script>
 
@@ -70,12 +70,12 @@
             {% block main %} {% endblock %}
         </div>
         <div id="mensagem" class="modal" ">
-                <div class="modal-content">
-                    <h4 id="titulo-msg" class="color-sec-2"> </h4>
-                    <p id="descricao-msg"> </p>
-                </div>
-                <div id="acoes-msg"class="modal-footer">
-                </div>
+                <div class=" modal-content">
+            <h4 id="titulo-msg" class="color-sec-2"> </h4>
+            <p id="descricao-msg"> </p>
+        </div>
+        <div id="acoes-msg" class="modal-footer">
+        </div>
         </div>
     </main>
 
@@ -90,26 +90,48 @@
         var wow = new WOW().init();
     </script>
     <script>
-        function criarBotaoMensagem(button){
+        function criarBotaoMensagem(button) {
             let btn = $('<a href="" class="modal-close waves-effect waves-red btn-flat"> </a>')
             btn.text(button.text)
             btn.attr('href', button.href)
             return btn
         }
 
-        function exibirMensagem(msg){
+        function exibirMensagem(msg) {
             let botoes = []
-            msg.buttons.forEach((obj)=>{
-                botoes.push( criarBotaoMensagem(obj) )
+            msg.buttons.forEach((obj) => {
+                botoes.push(criarBotaoMensagem(obj))
             })
 
             $('#titulo-msg').text(msg.titulo)
             $('#descricao-msg').text(msg.descricao)
             $('#acoes-msg').empty().prepend(botoes)
-            
-            let modal = M.Modal.getInstance($('#mensagem'));
+
+            let modal = M.Modal.getInstance(document.getElementById('mensagem'));
+            console.log(modal)
             modal.open();
         }
+
+        function statusOffline(){
+            exibirMensagem({
+                    titulo: 'Você está offline',
+                    descricao: 'Conecte-se a internet para continuar usando os serviçoes do SEGUE',
+                    buttons: [{
+                        text: 'Ok',
+                        href: '#'
+                    }]
+            })
+        }
+
+        $(document).ready(()=>{
+            if(!navigator.onLine)
+                statusOffline()
+
+            window.addEventListener('offline', function (e) {
+                console.log('offline');
+                statusOffline()
+            });
+        })
     </script>
 
     {% block script %} {% endblock %}
