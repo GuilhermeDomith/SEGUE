@@ -107,8 +107,7 @@
             $('#descricao-msg').text(msg.descricao)
             $('#acoes-msg').empty().prepend(botoes)
 
-            let modal = M.Modal.getInstance(document.getElementById('mensagem'));
-            console.log(modal)
+            let modal = M.Modal.getInstance($('#mensagem'))
             modal.open();
         }
 

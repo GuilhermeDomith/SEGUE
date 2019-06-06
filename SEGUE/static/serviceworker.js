@@ -1,4 +1,4 @@
-const VERSAO = 5.4
+const VERSAO = 5.
 
 const CACHE_ESTATICO = `SEGUE_ES_v${VERSAO}`
 const CACHE_DINAMICO = `SEGUE_DI_v${VERSAO}`
@@ -12,11 +12,8 @@ const FILES_TO_CACHE = [
 	'https://fonts.googleapis.com/css?family=Varela+Round',
 	'https://fonts.gstatic.com/s/materialicons/v47/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2',
 	'https://fonts.gstatic.com/s/varelaround/v11/w8gdH283Tvk__Lua32TysjIfp8uPLdshZg.woff2',
-	//Django Admin
-	'http://127.0.0.1:8000/static/admin/fonts/Roboto-Regular-webfont.woff',
-	'http://127.0.0.1:8000/static/admin/img/sorting-icons.svg',
-
-
+	'/static/admin/fonts/Roboto-Regular-webfont.woff',
+	'/static/admin/img/sorting-icons.svg',
 
 	'/static/js/base.js',
 	'/static/js/config_ajax.js',
@@ -53,7 +50,7 @@ const FILES_TO_CACHE = [
 
 /** Armazenar os ativos da página em cache */
 self.addEventListener('install', function (event) {
-	this.skipWaiting(); /* */
+	this.skipWaiting();
 
 	event.waitUntil(
 		caches.open(CACHE_ESTATICO)
@@ -62,7 +59,7 @@ self.addEventListener('install', function (event) {
 			.then(()=>{console.log('DONE: Os recursos estáticos foram salvos em cache')})
 			.catch((err) => { console.log('ERROR: Os recursos estáticos não foram salvos em cache', e) })
 		}).catch(function (err) {
-			console.log(`ERROR: Não foi possível abrir o ${CACHE_DINAMICO}`, err);
+			console.log(`ERROR: Não foi possível abrir o ${CACHE_ESTATICO}`, err);
 		})
 	);
 });
