@@ -1,0 +1,25 @@
+<!-- Template padrão sem Navbar e Footer -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'base/includes/head.html' %}
+    {% block style %} {% endblock %}
+</head>
+<body>
+    {% block navbar %} {% endblock %}
+
+    <main class="container">
+        {% block main %} {% endblock %}
+    </main>
+
+    {% include 'base/includes/msg_dialog.html' %}
+    {% block footer %} {% endblock %}
+
+    <!-- Scripts -->
+    {% include 'base/includes/scripts.html' %}
+    {% block script %} {% endblock %}
+</body>
+</html>

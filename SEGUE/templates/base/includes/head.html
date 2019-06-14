@@ -1,0 +1,55 @@
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<!---->
+
+<!-- Path to manifest.json -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="SEGUE">
+
+<!-- Chrome for Android theme color -->
+<meta name="theme-color" content="#43a047">
+
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SEGUE">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<link rel="apple-touch-icon" href="{% static 'icons/icon-152x152.png' %}">
+
+<link href="{% static 'icons/favicon.ico' %}"
+    media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+    rel="apple-touch-startup-image" />
+
+<!-- Tile for Win8 -->
+<meta name="msapplication-TileColor" content="#43a047">
+<meta name="msapplication-TileImage" content="{% static 'icons/favicon.ico' %}">
+
+<script type="text/javascript">
+    // Initialize the service worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register("/serviceworker.js")
+            .then(function (registration) {
+                // Registration was successful
+                console.log('django-pwa: ServiceWorker registration successful with scope: ', registration.scope);
+            }, function (err) {
+                // registration failed :(
+                console.log('django-pwa: ServiceWorker registration failed: ', err);
+            });
+    }
+</script>
+
+<!---->
+
+<title>SEGUE</title>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/materialize.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+<link rel="icon" href="{% static 'icons/favicon.ico' %}">

@@ -73,5 +73,4 @@ $(document).ready(function () {
 
         radio.checked = true;
     });
-
 });

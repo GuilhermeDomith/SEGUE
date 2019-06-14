@@ -1,0 +1,35 @@
+#container-logo{
+    padding: 20px 30% 10px;
+}
+
+form{
+    padding: 50px 20% !important;
+}
+
+#logar-btn .btn{
+    width: 40%;       
+}
+
+@media only screen and (max-width: 992px){
+    #container-logo{
+        padding: 100px 10% 30px;
+    }
+
+    #logar-btn .btn{
+        width: 60%;       
+    }
+}
+
+@media only screen and (max-width: 600px){
+    #container-logo{
+        padding: 30px 0;
+    }
+
+    form{
+        padding: 50px 10% !important;
+    }
+
+    #logar-btn .btn{
+        width: 90%;       
+    }
+}

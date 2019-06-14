@@ -1,0 +1,64 @@
+.container{
+    padding-top: 100px;
+}
+
+#acesso{
+    padding-bottom: 10px;
+    padding-top: 50px;
+}
+
+#descricao{
+    text-align: left;
+    width: 80%;
+    margin: 0 10%;
+
+}
+
+#acesso .btn{
+    width: 100%;
+}
+
+#acesso .btn:first-child{
+    margin-bottom: 20px;
+}
+
+#acesso div:last-child .btn:last-child{
+    background-color: transparent;
+    color: brown;
+    border: solid 1px brown !important;
+}
+
+.divider-vertical{
+    height: 180px;
+    margin: 15px 0;
+    border-left: 1px #bebebe solid;
+}
+
+.divider{
+    margin: 0 40% !important;
+}
+
+@media only screen and (min-width: 601px) and (max-width: 992px){
+    #acesso{
+        padding: 30px 20%;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    #acesso{
+        padding-top: 0;
+        position: fixed;
+        bottom: 0vh;
+        width: 90vw;
+    }
+
+    #divider{
+        position: fixed;
+        bottom: 18vh;
+        width: 90vw;
+    }
+
+    .divider{
+        margin: 0 25% !important;
+    }
+}

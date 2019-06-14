@@ -1,11 +1,12 @@
-const VERSAO = 5.4
+const VERSAO = 6
 
 const CACHE_ESTATICO = `SEGUE_ES_v${VERSAO}`
 const CACHE_DINAMICO = `SEGUE_DI_v${VERSAO}`
 
+/* Modificar a versão do cache no caso de modificar 
+a lista de arquivos abaixo */
 const FILES_TO_CACHE = [
 	'/',
-	'/offline/',
 
 	'https://fonts.googleapis.com/css?family=Roboto:300,400,700,900',
 	'https://fonts.googleapis.com/icon?family=Material+Icons',
@@ -20,9 +21,12 @@ const FILES_TO_CACHE = [
 	'/static/js/jquery.min.js',
 	'/static/js/materialize.min.js',
 	'/static/js/wow.min.js',
+	'/static/js/mensagem.js',
 
 	'/static/css/animate.css',
 	'/static/css/base.css',
+	'/static/css/login.css',
+	'/static/css/index.css',
 	'/static/css/materialize.min.css',
 
 	'/static/icons/favicon.ico',
@@ -48,7 +52,7 @@ const FILES_TO_CACHE = [
 ]
 
 
-/** Armazenar os ativos da página em cache */
+/** Armazenar os arquivos em cache */
 self.addEventListener('install', function (event) {
 	this.skipWaiting();
 
@@ -70,11 +74,13 @@ self.addEventListener('fetch', function (event) {
 	// Responde com o recurso que está em cache estático.
 	// Se não, faz uma requisição e o salva em cache dinâmico.
 	console.log('Irá atender requisição', event.request.url)
+
 	event.respondWith(
 		caches.open(CACHE_ESTATICO)
 		.then((cache)=>{
 			return cache.match(event.request).then((response)=>{
-				if(response){
+
+				if(response && event.request.url != '/'){
 					console.log('Foi encontrado em cache estatico', event.request.url)
 					return response
 				}
