@@ -1,4 +1,4 @@
-const VERSAO = 6
+const VERSAO = 6.1
 
 const CACHE_ESTATICO = `SEGUE_ES_v${VERSAO}`
 const CACHE_DINAMICO = `SEGUE_DI_v${VERSAO}`
@@ -74,13 +74,17 @@ self.addEventListener('fetch', function (event) {
 	// Responde com o recurso que está em cache estático.
 	// Se não, faz uma requisição e o salva em cache dinâmico.
 	console.log('Irá atender requisição', event.request.url)
+	url = new URL(event.request.url)
 
 	event.respondWith(
 		caches.open(CACHE_ESTATICO)
 		.then((cache)=>{
 			return cache.match(event.request).then((response)=>{
 
-				if(response && event.request.url != '/'){
+				// Não permite que a página raiz seja usada diretamente do cache.
+				// Isso forçara o usuário ir para a página de acordo com o seu usuário,
+				// e não acessar a raiz em cache.
+				if(response && url.pathname != '/'){
 					console.log('Foi encontrado em cache estatico', event.request.url)
 					return response
 				}
