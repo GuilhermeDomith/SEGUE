@@ -1,4 +1,4 @@
-const VERSAO = 6.2
+const VERSAO = 6.3
 
 const CACHE_ESTATICO = `SEGUE_ES_v${VERSAO}`
 const CACHE_DINAMICO = `SEGUE_DI_v${VERSAO}`
@@ -105,6 +105,15 @@ self.addEventListener('fetch', function (event) {
 							return response
 						}
 
+						// Não permite que o raiz seja salvo em dinâmico, somente estático.
+						if(url.pathname == '/')
+							return caches.open(CACHE_ESTATICO).then(function (cache) {
+								// Substitue a página em cache estático
+								cache.put(event.request.url, response.clone())
+								return response	
+							})
+						
+						// Outros conteúdos serão salvos em cache dinâmico
 						console.log('O cache Dinamico vai ser feito', event.request.url)
 						return caches.open(CACHE_DINAMICO).then(function (cache) {
 							// Substitue a página em cache se já existe
