@@ -1,4 +1,4 @@
-const VERSAO = 6.3
+const VERSAO = 6.4
 
 const CACHE_ESTATICO = `SEGUE_ES_v${VERSAO}`
 const CACHE_DINAMICO = `SEGUE_DI_v${VERSAO}`
@@ -81,17 +81,10 @@ self.addEventListener('fetch', function (event) {
 		.then((cache)=>{
 			return cache.match(event.request).then((response)=>{
 
-				// Não permite que a página raiz seja usada diretamente do cache.
-				// Isso forçara o usuário ir para a página de acordo com o seu usuário,
-				// e não acessar a raiz em cache.
+				// A página raiz será online first, não será usado o cache neste momento
 				if(response && url.pathname != '/'){
 					console.log('Foi encontrado em cache estatico', event.request.url)
 					return response
-				}
-
-				if(url.pathname == '/'){
-					if(response) console.log('-----> Tem no cache mas nao usou')
-					else console.log('-----> Não tem no cache, vai requisitar')
 				}
 
 				console.log('Nao está em cache estatico', event.request.url)
@@ -132,25 +125,8 @@ self.addEventListener('fetch', function (event) {
 						})
 
 				}).catch(e => {
-
-					if(url.pathname == '/'){
-						console.log('-----> Usou o cache')
-					}
 					/* Erro ao fazer request */
 					return caches.match('/')
-
-					/* Cache dinâmico não utilizado
-
-					//verifica se a página existe em cache dinamico
-					return caches.match(event.request)
-						.then((response) => {
-							if(response) return response
-							
-							console.log('Nao está em cache Dinamico', event.request.url)
-							// Retorna a página que informa o status offline
-							return caches.match('/offline/')
-						})
-					*/
 				})
 			})
 		})

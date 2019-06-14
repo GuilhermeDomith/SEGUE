@@ -1,15 +1,12 @@
 $(document).ready(function () {
+    // Verifica se o navegador está offline
+    if(!navigator.onLine)
+        setTimeout(statusOffline, 2000)
 
-    $(document).ready(()=>{
-        if(!navigator.onLine)
-            statusOffline()
-
-        window.addEventListener('offline', function (e) {
-            console.log('offline');
-            statusOffline()
-        });
-    })
-    
+    window.addEventListener('offline', function (e) {
+        console.log('offline');
+        setTimeout(statusOffline, 2000)
+    });
 })
 
 function criarBotaoMensagem(button) {
@@ -22,7 +19,7 @@ function criarBotaoMensagem(button) {
 function statusOffline(){
     exibirMensagem({
             titulo: 'Você está offline',
-            descricao: 'Conecte-se a internet para continuar usando os serviçoes do SEGUE',
+            descricao: 'Conecte-se a internet para acessar o SEGUE',
             buttons: [{
                 text: 'Ok',
                 href: '#'
