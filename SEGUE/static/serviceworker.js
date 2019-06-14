@@ -1,4 +1,4 @@
-const VERSAO = 6.1
+const VERSAO = 6.2
 
 const CACHE_ESTATICO = `SEGUE_ES_v${VERSAO}`
 const CACHE_DINAMICO = `SEGUE_DI_v${VERSAO}`
@@ -89,6 +89,11 @@ self.addEventListener('fetch', function (event) {
 					return response
 				}
 
+				if(url.pathname == '/'){
+					if(response) console.log('-----> Tem no cache mas nao usou')
+					else console.log('-----> Não tem no cache, vai requisitar')
+				}
+
 				console.log('Nao está em cache estatico', event.request.url)
 				return fetch(event.request).then((response) => {
 						/* Salva recursos dinâmicas para acessa-los quando offline */
@@ -100,13 +105,17 @@ self.addEventListener('fetch', function (event) {
 							return response
 						}
 
-						console.log('pag:', response.clone())
-
 						console.log('O cache Dinamico vai ser feito', event.request.url)
 						return caches.open(CACHE_DINAMICO).then(function (cache) {
 							// Substitue a página em cache se já existe
 							cache.put(event.request.url, response.clone())
 							console.log(`UPDATE: Conteúdo atualizado em cache ${event.request.url}`);
+
+							if(url.pathname == '/'){
+								if(response) console.log('-----> Requisição foi feita com sucesso')
+								else console.log('-----> Nao funcionou a requisicao, vai usar cache msm')
+							}
+
 							return response
 						}).catch((err) => {
 							console.log(`ERROR: Não foi possível abrir o ${CACHE_DINAMICO}`, err);
@@ -114,6 +123,10 @@ self.addEventListener('fetch', function (event) {
 						})
 
 				}).catch(e => {
+
+					if(url.pathname == '/'){
+						console.log('-----> Usou o cache')
+					}
 					/* Erro ao fazer request */
 					return caches.match('/')
 
