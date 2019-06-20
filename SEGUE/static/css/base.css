@@ -234,6 +234,10 @@ color: #43a047 !important;
 /** Only Mobile */
 @media only screen and (max-width: 600px){
 
+    .logo{
+        width: 80%;
+    }
+
     .modal{
         width: 90%;
     }

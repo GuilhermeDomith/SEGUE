@@ -136,7 +136,7 @@ def oportunidades(request):
 
 			oportunidades += [o.as_dict() for o in oport]
 
-	data = {'egresso': egresso}	
+	data = {'egresso': egresso.as_dict()}	
 	data.update({'oportunidades': oportunidades})
 	return render(request, 'egresso/oportunidades.html', data)
 

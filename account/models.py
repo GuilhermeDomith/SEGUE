@@ -57,7 +57,7 @@ class TipoUsuario(models.Model):
 
 class User(AbstractBaseUser):
     
-    username = models.CharField(_('username'), max_length=50)
+    username = models.CharField(_('name'), max_length=50)
     email = models.EmailField(_('email address'), max_length=255, unique=True)
     tipo_usuario = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE)
     is_staff = models.BooleanField(_('staff status'), default=False, help_text=_('Designates whether the user can log into this admin site.'))

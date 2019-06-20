@@ -3,7 +3,7 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
 from curso.models import Curso, Area_Curso, Nivel_Curso
-from SEGUE import settings
+from SEGUE import settings, utils
 
 
 
@@ -78,17 +78,17 @@ class Egresso(models.Model):
             return None
 
     def as_dict(self):
-        dict = super(Egresso, self).__dict__
-        dict['email'] = self.user.email
-        dict.update({'idade': self.get_idade()})
+        dict = utils.to_dict(self)
 
-        try: 
-            endereco = self.endereco.__dict__
-            del endereco['id']
-        except:
-            endereco = {}
+        dict.update({
+            'idade': self.get_idade(),
+            'email': self.user.email
+        })
 
+        endereco = utils.to_dict(self.endereco)
+        del endereco['id']
         dict.update(endereco)
+
         return dict
 
     def __str__(self):
@@ -138,10 +138,10 @@ class Formacao_Academica(models.Model):
             return []
 
     def as_dict(self):
-        dict = self.__dict__
+        dict = utils.to_dict(self)
 
         try: area = self.area.descricao
-        except Exception as e: area = ''
+        except: area = ''
 
         dict.update({
             'curso': self.curso.nome,

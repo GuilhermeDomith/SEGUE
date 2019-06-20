@@ -46,7 +46,7 @@ class Empresa(models.Model):
             return None
 
     def as_dict(self):
-        dict = super(Empresa, self).__dict__
+        dict = self.__dict__.copy()
         del dict['_state']
         return dict
 
