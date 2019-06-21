@@ -1,21 +1,20 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core.mail import send_mail
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.http import require_http_methods
 
 from .models import Tipo_Oportunidade, Oportunidade
+from .forms import OportunidadeForm
 from empresa.models import Empresa, Area_Atuacao_Empresa
 from egresso.models import Egresso, Endereco, Formacao_Academica
 from curso.models import Curso, Area_Curso, Nivel_Curso
 from account.models import User
-from .forms import OportunidadeForm
+from SEGUE.decorators import is_user
 
 
 
 @require_http_methods(["GET", "POST"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
+@is_user('empresa')
 def adicionar_oportunidade(request, codigo=None):
     user = User.objects.get(username=request.user.username)
     empresa = Empresa.get_empresa_user(request.user)
@@ -47,8 +46,7 @@ def adicionar_oportunidade(request, codigo=None):
 ############
 
 @require_http_methods(["GET", "POST"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
+@is_user('empresa')
 def excluir_oportunidade(request, codigo):
     empresa = Empresa.get_empresa_user(request.user)
     oportunidade = empresa.oportunidade_set.get(pk=codigo)

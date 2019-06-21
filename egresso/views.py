@@ -1,14 +1,14 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 
 from .models import Egresso, Endereco, Formacao_Academica
+from .forms import EgressoForm, FormacaoForm
 from oportunidade.models import Oportunidade
 from curso.models import Curso, Area_Curso, Nivel_Curso
 from account.models import User
-from .forms import EgressoForm, FormacaoForm
+from SEGUE.decorators import is_user
 
 
 def obter_dados_pag_curriculo(request, codigo=None):
@@ -40,8 +40,7 @@ def obter_dados_pag_curriculo(request, codigo=None):
 ############ Views ############
 
 @require_http_methods(["GET", "POST"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('egresso'), login_url='/', redirect_field_name=None)
+@is_user('egresso')
 def editar_meu_curriculo(request):
 	user = User.objects.get(email=request.user.email)
 	egresso = Egresso.get_egresso_user(request.user)
@@ -65,8 +64,7 @@ def editar_meu_curriculo(request):
 ############
 
 @require_http_methods(["GET"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('egresso'), login_url='/', redirect_field_name=None)
+@is_user('egresso')
 def meu_curriculo(request):
 	data, _, _ = obter_dados_pag_curriculo(request)
 	data['modo_edicao'] = True
@@ -76,8 +74,7 @@ def meu_curriculo(request):
 ############
 
 @require_http_methods(["GET"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
+@is_user('egresso')
 def ver_curriculo(request, codigo):
 	data, _, _ = obter_dados_pag_curriculo(request, codigo)
 	return render(request, 'egresso/curriculo.html', data)
@@ -85,8 +82,7 @@ def ver_curriculo(request, codigo):
 ############
 
 @require_http_methods(["POST"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('egresso'), login_url='/', redirect_field_name=None)
+@is_user('egresso')
 def adicionar_formacao(request):
 	data, _, _ = obter_dados_pag_curriculo(request)
 
@@ -101,8 +97,7 @@ def adicionar_formacao(request):
 ############
 
 @require_http_methods(["GET"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('egresso'), login_url='/', redirect_field_name=None)
+@is_user('egresso')
 def excluir_formacao(request, id):
 	egresso = Egresso.get_egresso_user(request.user)
 
@@ -118,8 +113,7 @@ def excluir_formacao(request, id):
 ############
 
 @require_http_methods(["GET"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('egresso'), login_url='/', redirect_field_name=None)
+@is_user('egresso')
 def oportunidades(request):
 	user = User.objects.get(email=request.user.email)
 	egresso = Egresso.get_egresso_user(user)

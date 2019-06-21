@@ -1,21 +1,20 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core.mail import send_mail
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.http import require_http_methods
 
 from .models import Empresa, Area_Atuacao_Empresa
+from .forms import EmpresaForm
 from egresso.models import Egresso, Endereco, Formacao_Academica
 from curso.models import Curso, Area_Curso, Nivel_Curso
 from oportunidade.models import Tipo_Oportunidade, Oportunidade
 from account.models import User
-from .forms import EmpresaForm
+from SEGUE.decorators import is_user
 
 
 
 @require_http_methods(["GET", "POST"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
+@is_user('empresa')
 def editar_dados(request):
 
     data = {'areas_atuacao': Area_Atuacao_Empresa.objects.values()}
@@ -40,8 +39,7 @@ def editar_dados(request):
 ############
 
 @require_http_methods(["GET"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
+@is_user('empresa')
 def oportunidades_lancadas(request):
     user = User.objects.get(email=request.user.email)
     empresa = Empresa.get_empresa_user(request.user)
@@ -65,8 +63,7 @@ def oportunidades_lancadas(request):
 ############
 
 @require_http_methods(["POST"])
-@login_required
-@user_passes_test(lambda u: u.is_tipo('empresa'), login_url='/', redirect_field_name=None)
+@is_user('empresa')
 def enviar_email_egresso(request):
 
     print(request.POST)
