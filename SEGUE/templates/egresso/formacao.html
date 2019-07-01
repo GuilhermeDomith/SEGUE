@@ -1,0 +1,110 @@
+{% extends 'base/base.html'%}
+{% load custom_tags %}
+
+{% block main %}
+<div class="section">
+    <form action="{% url 'egresso:add-formacao' %}" method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <!-- Título página -->
+            <div class="col s12">
+                <h1 class="titulo-pagina">Formação Escolar</h1>
+            </div>
+
+            <!-- Mensagens de erro -->
+            <div class="col s12 color-sec-1">
+                {% if form.errors %}
+                Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
+                {% endif %}
+                {% for error in form.non_field_errors %}
+                {{error}}<br>
+                {% endfor %}
+                {% for e in form.errors%}
+                {{e}}
+                {% endfor %}
+            </div>
+
+            <!--Subtítulo Detalhes Oportunidade -->
+            <div class="subtitulo-form col s12">
+                <hr>
+            </div>
+
+            <input type="hidden" name="egresso_id" value="{{egresso.id}}">
+            <input type="hidden" name="curso_id" value="{{curso_id}}">
+
+            <!-- Curso -->
+            <div class="input-field col s12 m6">
+                <input name="nome" type="text" {% if form.nome.errors %}
+                    class="validate invalid" {% else %} class="validate" {% endif %}
+                    value="{{ form.nome.value|default_if_none:'' }}">
+
+                <label>Nome do Curso</label>
+                <span class="helper-text color-sec-2">{{form.nome.errors|first}}</span>
+            </div>
+
+            <!-- Nível -->
+            <div class="input-field col s12 m6">
+                <select name="nivel_curso_id" data-select="{{form.nivel_curso_id.value|default_if_none:''}}">
+                    <option value="" disabled selected>Selecione o nível</option>
+                    {% for n in 'curso.nivelcurso'|values %}
+                    <option value="{{n.id}}">{{n.descricao}}</option>
+                    {% endfor %}
+                </select>
+                <label>Nível do Curso</label>
+                <span class="helper-text color-sec-2">{{form.nivel_curso_id.errors|first}}</span>
+            </div>
+
+
+            <!-- Área -->
+            <div class="input-field col s12">
+                <select name="area_atuacao_id" class="validate invalid" data-select="{{form.area_atuacao_id.value|default_if_none:''}}">
+                    <option value="" disabled selected>Selecione a área</option>
+                    {% for a in 'curso.areaatuacao'|values %}
+                    <option value="{{a.id}}">{{a.descricao}}</option>
+                    {% endfor %}
+                </select>
+                <label>Área</label>
+                <span class="helper-text color-sec-2" data-error="{{form.area_atuacao_id.errors|first}}"></span>
+            </div>
+
+
+            <!-- Início do Curso -->
+            <div class="input-field col s12 m6">
+                <input name="ano_inicio" type="number" {% if form.ano_termino.errors %}
+                    class="validate invalid" {% else %} class="validate" {% endif %}
+                    value="{{ form.ano_inicio.value|default_if_none:'' }}">
+
+                <label for="inicio_curso">Início</label>
+                <span class="helper-text color-sec-2" data-error="{{form.ano_inicio.errors|first}}"></span>
+            </div>
+
+
+            <!-- Término do Curso -->
+            <div class="input-field col s12 m6">
+
+                <input name="ano_termino" type="number" {% if form.ano_termino.errors %}
+                    class="validate invalid" {% else %} class="validate" {% endif %}
+                    value="{{ form.ano_termino.value|default_if_none:'' }}">
+
+                <label for="termino_curso">Término</label>
+                <span class="helper-text color-sec-2" data-error="{{form.ano_termino.errors|first}}"></span>
+            </div>  
+
+            <div class="col s12 buttons-action">
+                <div class="right">
+                    <a href="{% url 'egresso:meu-curriculo' %}" class="btn waves-effect waves-light">Cancelar</a>
+                    <button class="btn waves-effect waves-light" type="submit" name="action">Salvar</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+</script>
+{% endblock %}

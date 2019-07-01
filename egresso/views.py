@@ -2,62 +2,61 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
+from django.views.generic.edit import CreateView 
 
-from .models import Egresso, Endereco, Formacao_Academica
-from .forms import EgressoForm, FormacaoForm
-from oportunidade.models import Oportunidade
-from curso.models import Curso, Area_Curso, Nivel_Curso
+from .models import Egresso, Endereco, Formacao, obter_egresso, obter_formacoes
+from .forms import FormacaoForm, DadosPessoaisForm, EnderecoForm
+from oportunidade.models import Oportunidade, obter_oportunidades
+from curso.models import Curso, AreaAtuacao, NivelCurso
 from account.models import User
 from SEGUE.decorators import is_user
 
-
-def obter_dados_pag_curriculo(request, codigo=None):
-	""" Se nenhum código for fornecido é obtido os dados do usuário logado (Egresso)"""
-
-	if not codigo:
-		user = User.objects.get(email=request.user.email)
-		egresso = Egresso.get_egresso_user(user)
-	else:
-		egresso = Egresso.objects.get(pk=codigo)
-		user = egresso.user
-
-	formacoes = None
-
-	if egresso:
-		egresso_dict = egresso.as_dict()
-		formacoes =[f.as_dict() for f in egresso.get_formacoes()]
-
-	data = {
-		'egresso': egresso_dict if egresso else {},
-		'niveis_curso': Nivel_Curso.objects.values(),
-		'cursos': Curso.objects.values(),
-		'areas_curso': Area_Curso.objects.values(),
-		'formacoes_escolares': formacoes if formacoes else []
-	}
-
-	return data, user, egresso
 
 ############ Views ############
 
 @require_http_methods(["GET", "POST"])
 @is_user('egresso')
-def editar_meu_curriculo(request):
-	user = User.objects.get(email=request.user.email)
-	egresso = Egresso.get_egresso_user(request.user)
+def dados_pessoais(request):
+	egresso = obter_egresso(user=request.user)
+	data = {'egresso': egresso.as_dict()}
 
 	if request.method == 'GET':
-		data = {}
-		# Se existe egresso associado ao usuário, obtém os dados
-		if egresso:
-			dict_form = egresso.as_dict()
-			data.update({'form': EgressoForm(dict_form)})
-		return render(request, 'egresso/editar_curriculo.html', data)
+		if data['egresso']['dados']:
+			data['egresso']['dados'].update(egresso_id=egresso.pk)
+			
+			form = DadosPessoaisForm(
+				data['egresso']['dados'],
+			)
+			data.update({'form': form})
+		return render(request, 'egresso/dados_pessoais.html', data)
 
-	form = EgressoForm(request.POST)
+	form = DadosPessoaisForm(request.POST)
 	if not form.is_valid():
-		return render(request, 'egresso/editar_curriculo.html', {'form': form})
+		data.update({'form': form})
+		return render(request, 'egresso/dados_pessoais.html', data)
 	
-	print(form.cleaned_data)
+	form.save()
+	return HttpResponseRedirect(reverse('egresso:meu-curriculo'))
+
+############
+
+@require_http_methods(["GET", "POST"])
+@is_user('egresso')
+def endereco(request):
+	egresso = obter_egresso(user=request.user)
+	data = {'egresso': egresso.as_dict()}
+
+	if request.method == 'GET':
+		endereco_dict = data['egresso']['endereco']
+		if endereco_dict:
+			data.update({'form': EnderecoForm(endereco_dict)})
+		return render(request, 'egresso/endereco.html', data)
+
+	form = EnderecoForm(request.POST)
+	if not form.is_valid():
+		data.update({'form': form})
+		return render(request, 'egresso/endereco.html', data)
+	
 	form.save()
 	return HttpResponseRedirect(reverse('egresso:meu-curriculo'))
 
@@ -66,7 +65,13 @@ def editar_meu_curriculo(request):
 @require_http_methods(["GET"])
 @is_user('egresso')
 def meu_curriculo(request):
-	data, _, _ = obter_dados_pag_curriculo(request)
+	egresso = obter_egresso(user=request.user)
+
+	data = {
+		'egresso': egresso.as_dict(),
+		'formacoes_escolares': egresso.get_formacoes_dict()
+	}
+
 	data['modo_edicao'] = True
 	return render(request, 'egresso/curriculo.html', data)
 
@@ -74,24 +79,38 @@ def meu_curriculo(request):
 ############
 
 @require_http_methods(["GET"])
-@is_user('egresso')
+@is_user('empresa')
 def ver_curriculo(request, codigo):
-	data, _, _ = obter_dados_pag_curriculo(request, codigo)
+	egresso = obter_egresso(pk=codigo)
+
+	data = {
+		'egresso': egresso.as_dict(),
+		'formacoes_escolares': egresso.get_formacoes_dict()
+	}
+
+	data['modo_edicao'] = False
 	return render(request, 'egresso/curriculo.html', data)
 
 ############
 
-@require_http_methods(["POST"])
+@require_http_methods(["GET", "POST"])
 @is_user('egresso')
 def adicionar_formacao(request):
-	data, _, _ = obter_dados_pag_curriculo(request)
+	user = User.objects.get(username=request.user.username)
+	egresso = obter_egresso(user=request.user)
+	data = {'egresso': egresso.as_dict()}
+
+	if request.method == "GET":
+		form = FormacaoForm()
+		data.update({'form': form})
+		return render(request, 'egresso/formacao.html', data)
 
 	form = FormacaoForm(request.POST)
 	if not form.is_valid():
-		data.update({'form': form, 'open_formacao': 'true'})
-		return render(request, 'egresso/curriculo.html', data)
+		data.update({'form': form})
+		return render(request, 'egresso/formacao.html', data)
 
-	form.save()
+	form.save()    
 	return HttpResponseRedirect(reverse('egresso:meu-curriculo'))
 
 ############
@@ -99,12 +118,12 @@ def adicionar_formacao(request):
 @require_http_methods(["GET"])
 @is_user('egresso')
 def excluir_formacao(request, id):
-	egresso = Egresso.get_egresso_user(request.user)
+	egresso = obter_egresso(user=request.user)
 
 	try:
-		formacao = egresso.formacao_academica_set.get(pk=id)
+		formacao = egresso.formacao_set.get(pk=id)
 		formacao.delete()
-	except Formacao_Academica.DoesNotExist:
+	except Formacao.DoesNotExist:
 		pass
 
 	return HttpResponseRedirect(reverse('egresso:meu-curriculo'))
@@ -116,16 +135,16 @@ def excluir_formacao(request, id):
 @is_user('egresso')
 def oportunidades(request):
 	user = User.objects.get(email=request.user.email)
-	egresso = Egresso.get_egresso_user(user)
+	egresso = obter_egresso(user=user)
 	oportunidades = []
 
 	print(egresso)
 
 	if egresso:
-		for f in egresso.formacao_academica_set.all():
-			oport = Oportunidade.get_oportunidades(
-				curso_necessario=f.curso,
-				nivel_formacao=f.nivel_formacao
+		for f in egresso.formacao_set.all():
+			oport = obter_oportunidades(
+				curso__nome=f.curso.nome,
+				curso__nivel_curso=f.curso.nivel_curso
 			)
 
 			oportunidades += [o.as_dict() for o in oport]

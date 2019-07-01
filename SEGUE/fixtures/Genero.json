@@ -1,0 +1,23 @@
+[
+{
+    "model": "egresso.genero",
+    "pk": 1,
+    "fields": {
+        "descricao": "Feminino"
+    }
+},
+{
+    "model": "egresso.genero",
+    "pk": 2,
+    "fields": {
+        "descricao": "Masculino"
+    }
+},
+{
+    "model": "egresso.genero",
+    "pk": 3,
+    "fields": {
+        "descricao": "Trans (Transg\u00eanero, Transsexual, Travesti)"
+    }
+}
+]

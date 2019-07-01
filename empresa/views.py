@@ -3,11 +3,11 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.views.decorators.http import require_http_methods
 
-from .models import Empresa, Area_Atuacao_Empresa
+from .models import Empresa
 from .forms import EmpresaForm
-from egresso.models import Egresso, Endereco, Formacao_Academica
-from curso.models import Curso, Area_Curso, Nivel_Curso
-from oportunidade.models import Tipo_Oportunidade, Oportunidade
+from egresso.models import Egresso, Endereco, Formacao
+from curso.models import Curso, AreaAtuacao, NivelCurso
+from oportunidade.models import TipoOportunidade, Oportunidade
 from account.models import User
 from SEGUE.decorators import is_user
 
@@ -17,7 +17,7 @@ from SEGUE.decorators import is_user
 @is_user('empresa')
 def editar_dados(request):
 
-    data = {'areas_atuacao': Area_Atuacao_Empresa.objects.values()}
+    data = {}
     user = User.objects.get(email=request.user.email)
     empresa = Empresa.get_empresa_user(user)
 
@@ -49,7 +49,7 @@ def oportunidades_lancadas(request):
     data = {'oportunidades':[]}
     for o in oportunidades:
         oport_dict = o.as_dict()
-        formacoes = Formacao_Academica.get_formacoes(
+        formacoes = Formacao.get_formacoes(
             curso_id= o.curso_necessario_id, 
             nivel_formacao= o.nivel_formacao
         )

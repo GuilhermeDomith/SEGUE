@@ -1,13 +1,13 @@
 [
     {
-        "model": "oportunidade.Tipo_Oportunidade",
+        "model": "oportunidade.TipoOportunidade",
         "pk": 1,
         "fields":{
             "descricao":"Estágio"
         }
 
     },{
-        "model": "oportunidade.Tipo_Oportunidade",
+        "model": "oportunidade.TipoOportunidade",
         "pk": 2,
         "fields":{
             "descricao":"Emprego"

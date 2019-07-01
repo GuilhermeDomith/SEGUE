@@ -40,10 +40,10 @@
                 <!-- Username -->
                 <div class="input-field col s12">
                     {% if form.username.errors %}
-                    <input id="username" name="username" type="text" class="validate invalid"
+                    <input id="username" name="username" type="text" class="validate invalid lowercase"
                         value="{{ form.username.value|default_if_none:'' }}">
                     {% else %}
-                    <input id="username" name="username" type="text" class="validate"
+                    <input id="username" name="username" type="text" class="validate lowercase"
                         value="{{ form.username.value|default_if_none:'' }}">
                     {% endif %}
                     <label for="username">Email</label>

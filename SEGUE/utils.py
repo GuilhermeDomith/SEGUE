@@ -1,6 +1,9 @@
 from django.db.models.fields.related import ManyToManyField
 
 def to_dict(instance):
+    if not instance:
+        return {}
+        
     opts = instance._meta
     data = {}
     for f in opts.concrete_fields + opts.many_to_many:

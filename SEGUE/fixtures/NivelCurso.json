@@ -1,20 +1,20 @@
 [
     {
-        "model": "curso.Nivel_Curso",
+        "model": "curso.NivelCurso",
         "pk": 1,
         "fields":{
             "descricao":"Técnico"
         }
 
     },{
-        "model": "curso.Nivel_Curso",
+        "model": "curso.NivelCurso",
         "pk": 2,
         "fields":{
             "descricao":"Graduação"
         }
 
     },{
-        "model": "curso.Nivel_Curso",
+        "model": "curso.NivelCurso",
         "pk": 3,
         "fields":{
             "descricao":"Pós-Graduação"

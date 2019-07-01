@@ -1,0 +1,92 @@
+{% extends 'base/base.html'%}
+
+{% block main %}
+<div class="section">
+    <form action="{% url 'egresso:dados-pessoais' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="row">
+
+            <!-- Título página -->
+            <div class="col s12">
+                <h1 class="titulo-pagina">Outros Perfis</h1>
+            </div>
+
+             <!-- Mensagens de erro -->
+             <div class="col s12 color-sec-1">
+                {% if form.errors %}
+                Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
+                {% endif %}
+                {% for error in form.non_field_errors %}
+                {{error}}<br>
+                {% endfor %}
+            </div>
+
+            <div class="subtitulo-form col s12">
+                <hr>
+            </div>
+
+            <div class="row">
+                <!-- Link do LinkedIn -->
+                <div class="input-field col s12 m6">
+                    <input id="link_linkedin" name="link_linkedin" type="text"
+                    {% if form.link_linkedin.errors %}
+                        class="validate invalid" 
+                    {% else %} 
+                        class="validate" 
+                    {% endif %}
+                        value="{{ form.link_linkedin.value|default_if_none:'' }}">
+
+                    <label for="link_linkedin">Link do Likedin</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.link_linkedin.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Link do Currículo Lattes -->
+                <div class="input-field col s12 m6">
+                    <input id="link_lattes" name="link_lattes" type="text"
+                    {% if form.link_lattes.errors %}
+                        class="validate invalid" 
+                    {% else %} 
+                        class="validate" 
+                    {% endif %}
+                        value="{{ form.link_lattes.value|default_if_none:'' }}">
+
+                    <label for="link_lattes">Link do Lattes</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.link_lattes.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Link do Github -->
+                <div class="input-field col s12 m6">
+                    <input id="link_github" name="link_github" type="text"
+                    {% if form.link_github.errors %}
+                        class="validate invalid" 
+                    {% else %} 
+                        class="validate" 
+                    {% endif %}
+                        value="{{ form.link_github.value|default_if_none:'' }}">
+
+                    <label for="link_github">Link do Github</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.link_github.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="col s12">
+                <button class="btn waves-effect waves-light right" type="submit" name="action">Salvar</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block script %} 
+<script>
+    
+</script>
+{% endblock %}

@@ -1,20 +1,20 @@
 [
     {
-        "model": "curso.Area_Curso",
+        "model": "curso.AreaAtuacao",
         "pk": 1,
         "fields":{
             "descricao":"Ciências Humanas"
         }
 
     },{
-        "model": "curso.Area_Curso",
+        "model": "curso.AreaAtuacao",
         "pk": 2,
         "fields":{
             "descricao":"Ciências Exatas"
         }
 
     },{
-        "model": "curso.Area_Curso",
+        "model": "curso.AreaAtuacao",
         "pk": 3,
         "fields":{
             "descricao":"Ciências Biológicas"

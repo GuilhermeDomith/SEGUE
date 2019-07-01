@@ -1,31 +1,19 @@
 from django import forms
 from SEGUE import settings
-from .models import Egresso, Endereco, Formacao_Academica
+from .models import Egresso, Endereco, Formacao, DadosPessoais, obter_egresso, PerfilSites
+from curso.models import Curso
 import re
 
-class EgressoForm(forms.Form):
-    id = forms.IntegerField(required=False)
-    user_id = forms.IntegerField()
-    matricula = forms.CharField(max_length=30)
-    nome_completo = forms.CharField(help_text=100)  
-    data_nascimento = forms.DateField(input_formats=settings.DATE_INPUT_FORMATS)
-    cpf = forms.CharField(max_length=15, required=False)
-    identidade = forms.CharField(max_length=15, required=False)
+class DadosPessoaisForm(forms.ModelForm):
+    class Meta:
+        model = DadosPessoais
+        exclude = ['genero', 'estado_civil']
 
-    link_linkedin = forms.CharField(max_length=250, required=False)
-    link_lattes = forms.CharField(max_length=250, required=False)
-    link_github = forms.CharField(max_length=250, required=False)
+    estado_civil_id = forms.IntegerField(required=False)
+    genero_id = forms.IntegerField(required=False)
+    egresso_id = forms.IntegerField()
 
-    endereco_id = forms.IntegerField(required=False)
-    cep = forms.CharField(max_length=15, required=False)
-    rua = forms.CharField(max_length=150)
-    numero = forms.CharField(max_length=10)
-    complemento = forms.CharField(max_length=20, required=False)
-    bairro = forms.CharField(max_length=60, required=False)
-    cidade = forms.CharField(max_length=60)
-    estado = forms.CharField(max_length=2)
-    
-
+    """
     def clean_matricula(self):
         mat = self.cleaned_data['matricula']
         id = self.cleaned_data['id']
@@ -37,12 +25,54 @@ class EgressoForm(forms.Form):
             pass
 
         return mat
-
+    """
 
     def clean_data_nascimento(self):
         d = self.cleaned_data['data_nascimento']
-        return '%d-%d-%d'%(d.year,d.month,d.day) 
-    
+        return '%d-%d-%d'%(d.year,d.month,d.day)
+
+    def save(self, commit=True):
+        cleaned_data = self.cleaned_data
+
+        egresso = obter_egresso(id=cleaned_data['egresso_id'])
+        del cleaned_data['egresso_id']
+        dados_pessoais = DadosPessoais( **cleaned_data )
+
+        if commit:
+            dados_pessoais.save()
+            egresso.dados_id = dados_pessoais.pk
+            egresso.save()
+
+        return dados_pessoais
+
+
+class EnderecoForm(forms.ModelForm):
+    class Meta:
+        model = Endereco
+        exclude = []
+
+    egresso_id = forms.IntegerField()
+
+    def save(self, commit=True):
+        cleaned_data = self.cleaned_data
+
+        egresso = obter_egresso(id=cleaned_data['egresso_id'])
+        del cleaned_data['egresso_id']
+        endereco = Endereco( **cleaned_data )
+
+        if commit:
+            endereco.save()
+            egresso.endereco_id = endereco.pk
+            egresso.save()
+
+        return endereco
+
+
+class PerfilSitesForm(forms.ModelForm):
+    class Meta:
+        model = PerfilSites
+        exclude = []
+
     def clean_link_linkedin(self):
         return EgressoForm.urlize(self.cleaned_data['link_linkedin'])
     
@@ -57,64 +87,22 @@ class EgressoForm(forms.Form):
             return texto
         return 'http://%s'%texto if texto else ''
 
-    def form_to_dict_egresso(self):
-        form_dict = self.cleaned_data
-        return {
-            'pk': form_dict['id'],
-            'user_id': form_dict['user_id'],
-            'matricula': form_dict['matricula'],
-            'nome_completo': form_dict['nome_completo'],
-            'data_nascimento': form_dict['data_nascimento'],
-            'cpf': form_dict['cpf'],
-            'identidade': form_dict['identidade'],
-            'link_linkedin': form_dict['link_linkedin'],
-            'link_lattes': form_dict['link_lattes'],
-            'link_github': form_dict['link_github']
-        }
-    
-    def form_to_dict_endereco(self):
-        form_dict = self.cleaned_data
-        return {
-            'pk': form_dict['endereco_id'],
-            'cep': form_dict['cep'],
-            'rua': form_dict['rua'],
-            'numero': form_dict['numero'],
-            'complemento': form_dict['complemento'],
-            'bairro': form_dict['bairro'],
-            'cidade': form_dict['cidade'],
-            'estado': form_dict['estado'],
-        }
 
+class FormacaoForm(forms.ModelForm):
+    class Meta:
+        model = Formacao
+        fields = ['ano_inicio', 'ano_termino']
 
-    def save(self, commit=True):
-        # Obtém o endereço a ser adicionado ou editado
-        endereco_update = Endereco( **self.form_to_dict_endereco() )
+    curso_id = forms.IntegerField(required=False)
+    egresso_id = forms.IntegerField(required=False)
 
-        # Obtém o egresso a ser adicionado ou editado
-        egresso_update = Egresso( **self.form_to_dict_egresso() )
-
-        if commit:
-            endereco_update.save()
-            egresso_update.endereco_id = endereco_update.pk
-            egresso_update.save()
-
-        return egresso_update, endereco_update
-
-
-
-
-
-class FormacaoForm(forms.Form):
-    egresso_id = forms.IntegerField()
-    nivel_formacao_id = forms.IntegerField(error_messages={'required': 'Selecione o nível do curso'})
-    curso_id = forms.IntegerField(error_messages={'required': 'Selecione o nome do curso'}) #forms.CharField(max_length=80)
-    area_id = forms.IntegerField(required=False) #forms.CharField(max_length=100, required=False)
-    ano_inicio = forms.IntegerField()
-    ano_termino = forms.IntegerField()
-
+    nome = forms.CharField(error_messages={'required': 'O nome do curso é necessário'})
+    nivel_curso_id = forms.IntegerField(error_messages={'required': 'Selecione o nível do curso'})
+    area_atuacao_id = forms.IntegerField(error_messages={'required': 'Selecione o nome do curso'})
 
     def clean(self):
         cleaned_data = super(FormacaoForm, self).clean()
+
         inicio = cleaned_data.get('ano_inicio')
         termino = cleaned_data.get('ano_termino')
         if (inicio and termino) and (inicio > termino):
@@ -125,16 +113,27 @@ class FormacaoForm(forms.Form):
         return {
             'egresso_id': dict_form['egresso_id'],
             'curso_id': dict_form['curso_id'],
-            'nivel_formacao_id': dict_form['nivel_formacao_id'],
-            'area_id': dict_form['area_id'],
             'ano_inicio': dict_form['ano_inicio'],
             'ano_termino': dict_form['ano_termino'],
         }
 
+    def form_to_dict_curso(self):
+        dict_form = self.cleaned_data
+        return {
+            'id': dict_form['curso_id'],
+            'nome': dict_form['nome'],
+            'nivel_curso_id': dict_form['nivel_curso_id'],
+            'area_atuacao_id': dict_form['area_atuacao_id'],
+        }
+
     def save(self, commit=True):
-        formacao = Formacao_Academica(**self.form_to_dict_formacao())
+        curso = Curso(**self.form_to_dict_curso())    
+        formacao = Formacao(**self.form_to_dict_formacao(), curso=curso)
 
         if commit:
+            curso.save()
+            formacao.curso_id = curso.pk
             formacao.save()
+
         return formacao
     

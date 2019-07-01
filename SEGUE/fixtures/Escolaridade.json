@@ -1,0 +1,121 @@
+[
+{
+    "model": "egresso.escolaridade",
+    "pk": 1,
+    "fields": {
+        "descricao": "Sem escolaridade"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 2,
+    "fields": {
+        "descricao": "Prim\u00e1rio incompleto"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 3,
+    "fields": {
+        "descricao": "Prim\u00e1rio completo (4\u00aa s\u00e9rie)"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 4,
+    "fields": {
+        "descricao": "Fundamental incompleto"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 5,
+    "fields": {
+        "descricao": "Fundamental completo (8\u00aa s\u00e9rie)"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 6,
+    "fields": {
+        "descricao": "M\u00e9dio incompleto"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 7,
+    "fields": {
+        "descricao": "M\u00e9dio completo (at\u00e9 3\u00ba ano)"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 8,
+    "fields": {
+        "descricao": "M\u00e9dio t\u00e9cnico incompleto"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 9,
+    "fields": {
+        "descricao": "M\u00e9dio t\u00e9cnico completo"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 10,
+    "fields": {
+        "descricao": "Superior incompleto"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 11,
+    "fields": {
+        "descricao": "Superior completo"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 12,
+    "fields": {
+        "descricao": "Especializa\u00e7\u00e3o"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 13,
+    "fields": {
+        "descricao": "Mestrado"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 14,
+    "fields": {
+        "descricao": "Doutorado"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 15,
+    "fields": {
+        "descricao": "P\u00f3s-doutorado"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 16,
+    "fields": {
+        "descricao": "N\u00e3o sei / N\u00e3o se aplica"
+    }
+},
+{
+    "model": "egresso.escolaridade",
+    "pk": 17,
+    "fields": {
+        "descricao": "Prefiro n\u00e3o dizer"
+    }
+}
+]

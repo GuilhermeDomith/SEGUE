@@ -1,0 +1,191 @@
+{% extends 'base/base.html'%}
+{% load custom_tags %}
+
+{% block main %}
+<div class="section">
+    <form action="{% url 'egresso:dados-pessoais' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="row">
+
+            <!-- Título página -->
+            <div class="col s12">
+                <h1 class="titulo-pagina">Dados Pessoais</h1>
+            </div>
+
+             <!-- Mensagens de erro -->
+             <div class="col s12 color-sec-1">
+                {% if form.errors %}
+                Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
+                {% endif %}
+                {% for error in form.non_field_errors %}
+                {{error}}<br>
+                {% endfor %}
+                {% for error in form.errors %}
+                {{error}}<br>
+                {% endfor %}
+            </div>
+
+            <div class="subtitulo-form col s12">
+                <hr>
+            </div>
+
+            <div class="row">
+                <input type="hidden" name="id" value="{{form.id.value}}">
+                <input type="hidden" name="egresso_id" value="{{egresso.id}}">
+
+                <!-- Nome Completo -->
+                <div class="col s12 m8">
+                {% include 'componentes/input.html' with name_='nome_completo' label='Nome Completo' data_=form.nome_completo %}
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Data Nascimento -->
+                <div class="input-field col s12 m4">
+                    <input id="data_nascimento" name="data_nascimento" type="text" 
+                    {% if form.data_nascimento.errors %}
+                        class="datepicker validate invalid" 
+                    {% else %} 
+                        class="datepicker validate" 
+                    {% endif %}
+                        value="{{ form.data_nascimento.value|date:'d/m/Y'}}">
+
+                    <label for="data_nascimento">Data de Nascimento</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.data_nascimento.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- CPF -->
+                <div class="input-field col s12 m6">
+                    <input id="cpf" name="cpf" type="text" 
+                    {% if form.cpf.errors %}
+                        class="validate invalid" 
+                    {% else %} 
+                        class="validate" 
+                    {% endif %}
+                    value="{{ form.cpf.value|default_if_none:'' }}">
+
+                    <label for="cpf">CPF</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.cpf.errors|first}}">
+                    </span>
+                </div>
+
+                <!-- Doc Identidade -->
+                <div class="input-field col s12 m6">
+                    <input id="identidade" name="identidade" type="text"
+                    {% if form.identidade.errors %}
+                        class="validate invalid" 
+                    {% else %} 
+                        class="validate" 
+                    {% endif %}
+                        value="{{ form.identidade.value|default_if_none:'' }}">
+
+                    <label for="identidade">Nº de Indentidade</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.identidade.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Genero -->
+                <div class="input-field col s12 m6">
+                    <select name="genero_id" class="validate invalid" data-select="{{form.genero_id.value|default_if_none:''}}">
+                            <option value="" disabled selected>Selecione a gênero</option>
+                            {% for g in 'egresso.genero'|values %}
+                            <option value="{{g.id}}">{{g.descricao}}</option>
+                            {% endfor %}
+                    </select>
+                    <label for="genero_id">Gênero</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.genero_id.errors|first}}">
+                    </span>
+                </div>
+            
+                <!-- Estado Civil -->
+                <div class="input-field col s12 m6">
+                    <select name="estado_civil_id" class="validate invalid" data-select="{{form.estado_civil_id.value|default_if_none:''}}">
+                            <option value="" disabled selected>Selecione a estado civil</option>
+                            {% for e in 'egresso.estadocivil'|values %}
+                            <option value="{{e.id}}">{{e.descricao}}</option>
+                            {% endfor %}
+                    </select>
+            
+                    <label for="estado_civil_id">Estado Civil</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.estado_civil_id.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Celular -->
+                <div class="input-field col s12 m4">
+                    <input name="celular" type="text" {% if form.celular.errors %}
+                        class="validate invalid" {% else %} class="validate" {% endif %}
+                        value="{{ form.celular.value}}">
+            
+                    <label for="celular">Celular</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.celular.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Carteira de Motorista -->
+                <div class="input-field col s12 m4">
+                    <input name="carteira_motorista" type="text" {% if form.carteira_motorista.errors %} class="validate invalid" {% else %}
+                        class="validate" {% endif %} value="{{ form.carteira_motorista.value}}">
+            
+                    <label for="carteira_motorista">Carteira de Motorista</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.carteira_motorista.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Escolaridade Mae -->
+                <div class="input-field col s12 m6">
+                    <select name="escolaridade_mae" class="validate invalid" data-select="{{form.escolaridade_mae.value|default_if_none:''}}">
+                        <option value="" disabled selected>Selecione a escolaridade</option>
+                        {% for e in 'egresso.escolaridade'|values %}
+                        <option value="{{e.descricao}}">{{e.descricao}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="escolaridade_mae">Escolaridade da Mae</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.escolaridade_mae.errors|first}}">
+                    </span>
+                </div>
+            
+                <!-- Escolaridade Pai -->
+                <div class="input-field col s12 m6">
+                    <select name="escolaridade_pai" class="validate invalid"
+                        data-select="{{form.escolaridade_pai.value|default_if_none:''}}">
+                        <option value="" disabled selected>Selecione a escolaridade</option>
+                        {% for e in 'egresso.escolaridade'|values %}
+                        <option value="{{e.descricao}}">{{e.descricao}}</option>
+                        {% endfor %}
+                    </select>
+            
+                    <label for="escolaridade_pai">Estado Civil</label>
+                    <span class="helper-text color-sec-2" data-error="{{form.escolaridade_pai.errors|first}}">
+                    </span>
+                </div>
+            </div>
+
+            <div class="col s12 buttons-action">
+                <div class="right">
+                    <a href="{% url 'egresso:meu-curriculo' %}" class="btn waves-effect waves-light">Cancelar</a>
+                    <button class="btn waves-effect waves-light" type="submit" name="action">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block script %} 
+<script>
+    
+</script>
+{% endblock %}

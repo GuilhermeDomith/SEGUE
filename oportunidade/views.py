@@ -3,11 +3,11 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.views.decorators.http import require_http_methods
 
-from .models import Tipo_Oportunidade, Oportunidade
+from .models import TipoOportunidade, Oportunidade
 from .forms import OportunidadeForm
-from empresa.models import Empresa, Area_Atuacao_Empresa
-from egresso.models import Egresso, Endereco, Formacao_Academica
-from curso.models import Curso, Area_Curso, Nivel_Curso
+from empresa.models import Empresa
+from egresso.models import Egresso, Endereco, Formacao
+from curso.models import Curso, AreaAtuacao, NivelCurso
 from account.models import User
 from SEGUE.decorators import is_user
 
@@ -20,9 +20,9 @@ def adicionar_oportunidade(request, codigo=None):
     empresa = Empresa.get_empresa_user(request.user)
 
     data = {
-        'niveis_curso': Nivel_Curso.objects.values(),
+        'niveis_curso': NivelCurso.objects.values(),
 		'cursos': Curso.objects.values(),
-        'tipos_oportunidade': Tipo_Oportunidade.objects.values(),
+        'tipos_oportunidade': TipoOportunidade.objects.values(),
         'empresa': empresa 
 	}
 

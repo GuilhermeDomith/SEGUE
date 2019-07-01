@@ -40,7 +40,7 @@ $(document).ready(function () {
 
     /* Permite alterar a opção selecionada em um select. */
     function select_value_selector(selector, value) {
-        let option = selector.find('option[value='+ value+']')
+        let option = selector.find(`option[value="${value}"]`)
 
         selector.val(value)
             .closest('.select-wrapper')
@@ -56,6 +56,7 @@ $(document).ready(function () {
     /* Obtém todos os select da página e seleciona a opção marcada em data-select.*/
     $('select').each((i, select)=>{
         let data_select = $(select).attr('data-select')
+        console.log(data_select)
         if(data_select != '')
             select_value_selector($(select), data_select)
     })

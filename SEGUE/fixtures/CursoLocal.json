@@ -1,0 +1,72 @@
+[
+{
+    "model": "curso.cursolocal",
+    "pk": 1,
+    "fields": {
+        "nome": "Administra\u00e7\u00e3o - Bacharelado"
+    }
+},
+{
+    "model": "curso.cursolocal",
+    "pk": 2,
+    "fields": {
+        "nome": "Agronomia - Bacharelado"
+    }
+},
+{
+    "model": "curso.cursolocal",
+    "pk": 3,
+    "fields": {
+        "nome": "Alimentos - Tecnologia"
+    }
+},
+{
+    "model": "curso.cursolocal",
+    "pk": 4,
+    "fields": {
+        "nome": "Ci\u00eancias Biol\u00f3gicas - Licenciatura"
+    }
+},
+{
+    "model": "curso.cursolocal",
+    "pk": 5,
+    "fields": {
+        "nome": "Educa\u00e7\u00e3o F\u00edsica - Licenciatura"
+    }
+},
+{
+    "model": "curso.cursolocal",
+    "pk": 6,
+    "fields": {
+        "nome": "Gest\u00e3o Ambiental - Tecnologia"
+    }
+},
+{
+    "model": "curso.cursolocal",
+    "pk": 7,
+    "fields": {
+        "nome": "Gest\u00e3o de Turismo - Tecnologia"
+    }
+},
+{
+    "model": "curso.cursolocal",
+    "pk": 8,
+    "fields": {
+        "nome": "Nutri\u00e7\u00e3o - Bacharelado"
+    }
+},
+{
+    "model": "curso.cursolocal",
+    "pk": 9,
+    "fields": {
+        "nome": "Qu\u00edmica - Licenciatura"
+    }
+},
+{
+    "model": "curso.cursolocal",
+    "pk": 10,
+    "fields": {
+        "nome": "Sistemas para Internet - Tecnologia"
+    }
+}
+]
