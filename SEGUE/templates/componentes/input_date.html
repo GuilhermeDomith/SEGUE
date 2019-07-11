@@ -1,0 +1,15 @@
+<div class="{{grid}}">
+    <div class="input-field">
+        <input id="{% firstof id_ name_ %}" name="{{name_}}" type="text" 
+        {% if data_.errors %}
+            class="datepicker validate invalid" 
+        {% else %} 
+            class="datepicker validate" 
+        {% endif %}
+            value="{{ data_.value|date:'d/m/Y'}}">
+
+        <label for="{{name_}}">{{label}}</label>
+        <span class="helper-text color-sec-2" data-error="{{data_.errors|first}}">
+        </span>
+    </div>
+</div>

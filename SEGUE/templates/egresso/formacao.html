@@ -33,14 +33,11 @@
             <input type="hidden" name="curso_id" value="{{curso_id}}">
 
             <!-- Curso -->
-            <div class="input-field col s12 m6">
-                <input name="nome" type="text" {% if form.nome.errors %}
-                    class="validate invalid" {% else %} class="validate" {% endif %}
-                    value="{{ form.nome.value|default_if_none:'' }}">
-
-                <label>Nome do Curso</label>
-                <span class="helper-text color-sec-2">{{form.nome.errors|first}}</span>
-            </div>
+            {% with grid='col s12 m6'%}
+            {% with name_='nome' label='Nome do Curso' data_=form.nome%}
+            {% include 'componentes/input.html' %}
+            {% endwith %}
+            {% endwith %}
 
             <!-- Nível -->
             <div class="input-field col s12 m6">
@@ -69,26 +66,18 @@
 
 
             <!-- Início do Curso -->
-            <div class="input-field col s12 m6">
-                <input name="ano_inicio" type="number" {% if form.ano_termino.errors %}
-                    class="validate invalid" {% else %} class="validate" {% endif %}
-                    value="{{ form.ano_inicio.value|default_if_none:'' }}">
-
-                <label for="inicio_curso">Início</label>
-                <span class="helper-text color-sec-2" data-error="{{form.ano_inicio.errors|first}}"></span>
-            </div>
-
+            {% with grid='col s12 m6'%}
+            {% with name_='ano_inicio' type_='number' label='Início' data_=form.ano_inicio %}
+            {% include 'componentes/input.html' %}
+            {% endwith %}
+            {% endwith %}
 
             <!-- Término do Curso -->
-            <div class="input-field col s12 m6">
-
-                <input name="ano_termino" type="number" {% if form.ano_termino.errors %}
-                    class="validate invalid" {% else %} class="validate" {% endif %}
-                    value="{{ form.ano_termino.value|default_if_none:'' }}">
-
-                <label for="termino_curso">Término</label>
-                <span class="helper-text color-sec-2" data-error="{{form.ano_termino.errors|first}}"></span>
-            </div>  
+            {% with grid='col s12 m6'%}
+            {% with name_='ano_termino' type_='number' label='Término' data_=form.ano_termino %}
+            {% include 'componentes/input.html' %}
+            {% endwith %}
+            {% endwith %}
 
             <div class="col s12 buttons-action">
                 <div class="right">

@@ -1,12 +1,14 @@
-<div class="input-field">
-    <input id="{% firstof id_ name_ %}" name="{{name_}}" type="{{type_|default:'text'}}" 
-    {% if data_.errors %}
-        class="validate invalid" 
-    {% else %} 
-        class="validate" 
-    {% endif %}
-        value="{{ data_.value|default_if_none:'' }}">
+<div class="{{grid}}">
+    <div class="input-field">
+        <input id="{% firstof id_ name_ %}" name="{{name_}}" type="{{type_|default:'text'}}" 
+        {% if data_.errors %}
+            class="validate invalid" 
+        {% else %} 
+            class="validate" 
+        {% endif %}
+            value="{{ data_.value|default_if_none:'' }}">
 
-    <label for="{{name_}}">{{label}}</label>
-    <span class="helper-text color-sec-2" data-error="{{data_.errors|first}}"></span>
+        <label for="{{name_}}">{{label}}</label>
+        <span class="helper-text color-sec-2" data-error="{{data_.errors|first}}"></span>
+    </div>
 </div>

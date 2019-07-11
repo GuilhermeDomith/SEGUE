@@ -31,115 +31,59 @@
 
             <div class="row">
                 <!-- CEP -->
-                <div class="input-field col s12 m4">
-                    <input id="cep" name="cep" type="text" 
-                    {% if form.cep.errors %}
-                        class="validate invalid" 
-                    {% else %} 
-                        class="validate" 
-                    {% endif %}
-                        value="{{ form.cep.value|default_if_none:'' }}">
-
-                    <label for="cep">CEP</label>
-                    <span class="helper-text color-sec-2" data-error="{{form.cep.errors|first}}">
-                    </span>
-                </div>
+                {% with grid='col s12 m4'%}
+                {% with name_='cep' label='CEP' data_=form.cep%}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
             </div>
 
             <div class="row">
                 <!-- Rua -->
-                <div class="input-field col s12 m8">
-                    <input id="rua" name="rua" type="text" 
-                    {% if form.rua.errors %}
-                        class="validate invalid" 
-                    {% else %} 
-                        class="validate" 
-                    {% endif %}
-                        value="{{ form.rua.value|default_if_none:'' }}">
-
-                    <label for="rua">Rua</label>
-                    <span class="helper-text color-sec-2" data-error="{{form.rua.errors|first}}">
-                    </span>
-                </div>
+                {% with grid='col s12 m8'%}
+                {% with name_='rua' label='Rua' data_=form.rua%}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
 
                 <!-- Número -->
-                <div class="input-field col s12 m4">
-                    <input id="numero" name="numero" type="text"
-                    {% if form.numero.errors %}
-                        class="validate invalid" 
-                    {% else %} 
-                        class="validate" 
-                    {% endif %}
-                        value="{{ form.numero.value|default_if_none:'' }}">
-
-                    <label for="numero">Número</label>
-                    <span class="helper-text color-sec-2" data-error="{{form.numero.errors|first}}">
-                    </span>
-                </div>
+                {% with grid='col s12 m4'%}
+                {% with name_='numero' label='Número' data_=form.numero %}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
             </div>
 
             <div class="row">
                 <!-- Complemento -->
-                <div class="input-field col s12 m6">
-                    <input id="complemento" name="complemento" type="text" 
-                    {% if form.complemento.errors %}
-                        class="validate invalid" 
-                    {% else %} 
-                        class="validate" 
-                    {% endif %}
-                    value="{{ form.complemento.value|default_if_none:'' }}">
-
-                    <label for="complemento">Complemento</label>
-                    <span class="helper-text color-sec-2" data-error="{{form.complemento.errors|first}}">
-                    </span>
-                </div>
+                {% with grid='col s12 m6'%}
+                {% with name_='complemento' label='Complemento' data_=form.complemento%}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
 
                 <!-- Bairro -->
-                <div class="input-field col s12 m6">
-                    <input id="bairro" name="bairro" type="text" 
-                    {% if form.bairro.errors %}
-                        class="validate invalid" 
-                    {% else %} 
-                        class="validate" 
-                    {% endif %}
-                    value="{{ form.bairro.value|default_if_none:'' }}">
-
-                    <label for="bairro">Bairro</label>
-                    <span class="helper-text color-sec-2" data-error="{{form.bairro.errors|first}}">
-                    </span>
-                </div>
+                {% with grid='col s12 m6'%}
+                {% with name_='bairro' label='Bairro' data_=form.bairro %}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
             </div>
 
             <div class="row">
                 <!-- Cidade -->
-                <div class="input-field col s12 m8">
-                    <input id="cidade" name="cidade" type="text" 
-                    {% if form.cidade.errors %}
-                        class="validate invalid" 
-                    {% else %} 
-                        class="validate" 
-                    {% endif %}
-                    value="{{ form.cidade.value|default_if_none:'' }}">
-
-                    <label for="cidade">Cidade</label>
-                    <span class="helper-text color-sec-2" data-error="{{form.cidade.errors|first}}">
-                    </span>
-                </div>
+                {% with grid='col s12 m8'%}
+                {% with name_='cidade' label='Cidade' data_=form.cidade %}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
 
                 <!-- Estado -->
-                <div class="input-field col s12 m4">
-                    <input id="estado" name="estado" type="text" 
-                    {% if form.estado.errors %}
-                        class="validate invalid" 
-                    {% else %} 
-                        class="validate" 
-                    {% endif %}
-                    value="{{ form.estado.value|default_if_none:'' }}">
-
-                    <label for="estado">Estado</label>
-                    <span class="helper-text color-sec-2" data-error="{{form.estado.errors|first}}">
-                    </span>
-                </div>
+                {% with grid='col s12 m4'%}
+                {% with name_='estado' label='Estado' data_=form.estado %}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
             </div>
 
             <div class="col s12 buttons-action">

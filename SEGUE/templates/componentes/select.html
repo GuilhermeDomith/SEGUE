@@ -1,0 +1,14 @@
+<div class="{{grid}}">
+    <div class="input-field">
+        <select id="{% firstof id_ name_ %}" name="{{name_}}" class="validate invalid" 
+            data-select="{{data_.value|default_if_none:''}}">
+            <option value="" disabled selected>Selecione uma opção</option>
+            {% for op in opcoes %}
+            <option value="{{op.value}}">{{op.label}}</option>
+            {% endfor %}
+        </select>
+        <label for="{{name_}}">{{label}}</label>
+        <span class="helper-text color-sec-2" data-error="{{data_.errors|first}}">
+        </span>
+    </div>
+</div>
