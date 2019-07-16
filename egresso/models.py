@@ -97,8 +97,8 @@ class DadosPessoais(models.Model):
 
         dict.update({
             'idade': self.get_idade(),
-            'estado_civil': self.estado_civil.descricao,
-            'genero': self.genero.descricao,
+            'estado_civil': self.estado_civil.descricao if self.estado_civil else None,
+            'genero': self.genero.descricao if self.genero else None,
         })
 
         return dict
@@ -136,7 +136,7 @@ class Egresso(models.Model):
     matricula = models.CharField(max_length=30) #será unique
     is_aluno = models.BooleanField('aluno status', default=False, help_text=_('Designado quando o usuário cadastrado ainda é aluno.'))
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     dados = models.OneToOneField(DadosPessoais, on_delete=models.SET_NULL, null=True)
     endereco = models.OneToOneField(Endereco, on_delete=models.SET_NULL, null=True)
     perfil_sites = models.OneToOneField(PerfilSites, on_delete=models.SET_NULL, null=True)
@@ -177,10 +177,9 @@ class Egresso(models.Model):
 
 class Formacao(models.Model):
     egresso = models.ForeignKey(Egresso, on_delete = models.CASCADE)
-
-    curso = models.OneToOneField(Curso, on_delete=models.CASCADE) 
-    ano_inicio = models.IntegerField(default=0)
-    ano_termino = models.IntegerField(default=0)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    ano_inicio = models.IntegerField()
+    ano_termino = models.IntegerField()
 
     class Meta:
         verbose_name = 'Formação Acadêmica'
@@ -197,7 +196,7 @@ class Formacao(models.Model):
         return dict
 
     def __str__(self):
-        return '%s, %s'%(self.egresso.user.email, self.curso)
+        return '%s, %s'#%(self.egresso.user.email, self.curso)
 
     def __repr__(self):
         return str(self)

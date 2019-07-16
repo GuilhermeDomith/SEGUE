@@ -1,8 +1,9 @@
 from django import forms
 from django.forms.models import model_to_dict
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from egresso.models import Egresso, Formacao, DadosPessoais
 
-from .models import User
+from .models import User, TipoUsuario
 
 
 class UserAdminCreationForm(forms.ModelForm):
@@ -45,4 +46,51 @@ class UserAdminChangeForm(forms.ModelForm):
         user = super(UserAdminChangeForm, self).save(commit=False)
         if commit:
             user.save()
+        return user
+
+
+
+class EgressoForm(forms.ModelForm):
+    nome_completo = forms.CharField()
+    password = forms.CharField()
+    curso_id = forms.IntegerField()
+    ano_inicio = forms.IntegerField()
+    ano_termino = forms.IntegerField()
+
+    class Meta:
+        model = User
+        fields = ('email', )
+
+    def form_to_dict_formacao(self):
+        dict_form = self.cleaned_data
+        return {
+            'curso_id': dict_form['curso_id'],
+            'ano_inicio': dict_form['ano_inicio'],
+            'ano_termino': dict_form['ano_termino'],
+        }
+
+    def save(self, commit=True):
+        data = self.cleaned_data
+        user = super(EgressoForm, self).save(commit=False)
+
+        user.username = data['nome_completo'].rpartition(' ')[0]
+        user.set_password(data["password"])
+        user.tipo_usuario_id = 2
+    
+        dados_pessoais = DadosPessoais(nome_completo=data['nome_completo'])
+        egresso = Egresso()
+        formacao = Formacao(**self.form_to_dict_formacao())
+
+        if commit:
+            user.save()
+            
+            dados_pessoais.save()
+
+            egresso.user=user
+            egresso.dados=dados_pessoais
+            egresso.save()
+
+            formacao.egresso = egresso
+            formacao.save()
+
         return user

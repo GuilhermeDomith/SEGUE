@@ -1,6 +1,8 @@
 $(document).ready(function () {
 
+
     /* Configura os componentes do Materialize*/
+    $('.tabs').tabs();
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
     $('.dropdown-trigger').dropdown();

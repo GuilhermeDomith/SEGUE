@@ -1,7 +1,9 @@
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect, resolve_url
+from django.urls import reverse
 from django.contrib.auth.views import LoginView
-from django.shortcuts import resolve_url
+from django.views.decorators.http import require_http_methods
+from .forms import EgressoForm
 
 
 
@@ -21,3 +23,21 @@ class MyLoginView(LoginView):
             url = '/empresa/oportunidades'
 
         return url or resolve_url(settings.LOGIN_REDIRECT_URL)
+
+
+@require_http_methods(["GET", "POST"])
+def cadastrar_se(request):
+    data = {}
+
+    if request.method == 'GET':
+        form = EgressoForm()
+        data.update({'form': form})
+        return render(request, 'registration/sign-up.html', data)
+
+    form = EgressoForm(request.POST)
+    if not form.is_valid():
+        data.update({'form': form})
+        return render(request, 'registration/sign-up.html', data)
+
+    form.save()
+    return HttpResponseRedirect(reverse('account:login'))

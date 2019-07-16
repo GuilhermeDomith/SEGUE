@@ -149,7 +149,7 @@
                             <td>{{f.curso.nome}}</td>
                             <td>{{f.ano_inicio}}</td>
                             <td>{{f.ano_termino}}</td>
-                            {% if modo_edicao %}
+                            {% if modo_edicao and not f.curso.is_local%}
                             <td>
                                 <a data-confirm="Are you sure?" data-method="delete"
                                     href="{% url 'egresso:excluir-formacao' f.id %}">

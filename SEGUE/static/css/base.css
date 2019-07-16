@@ -15,6 +15,10 @@
     opacity: 0.1;
 }
 
+#tabs-add-formacao{
+    margin-bottom: 20px;
+}
+
 .buttons-action .btn:first-child{
     margin-right: 10px
 }

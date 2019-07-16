@@ -1,0 +1,91 @@
+{% extends 'base/base_clear.html'%}
+{% load custom_tags %}
+{% load static %}
+
+{% block style %} 
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block navbar %}
+<div class="navbar-clear"></div>
+{% endblock %}
+
+{% block main %}
+<section class="section">
+    <div class="row">
+
+        <div id="container-logo" class="col s12 center animated fadeIn delay-1s">
+            <a href="/">
+                <img class="logo" alt="Logo do sistema SEGUE" 
+                    src="{% static 'logo/segue-cor.svg' %}" />
+            </a>
+        </div>
+
+        <form method="POST" action="{% url 'account:sign-up' %}" class="col s12 animated fadeIn">
+            {% csrf_token %}
+
+            <div class="row center">
+
+                <!-- Título página -->
+                <div class="col s12">
+                    <h1 class="titulo-pagina">Login</h1>
+                </div>
+
+                <!-- Mensagem de erro -->
+                <div class="col s12">
+                    {% for error in form.non_field_errors %}
+                    <p class="color-sec-2">{{error}}</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Nome Completo -->
+                {% with grid='col s12 m12'%}
+                {% with name_='nome_completo' label='Nome Completo' data_=form.nome_completo%}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
+
+                <!-- Email -->
+                {% with grid='col s12 m8'%}
+                {% with name_='email' label='Email' data_=form.email%}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
+
+                <!-- Senha -->
+                {% with grid='col s12 m8'%}
+                {% with name_='password' label='Senha' data_=form.password type_='password'%}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
+
+                <!-- Curso -->
+                {% with opcoes_select='curso.curso'|values|get_opcoes_select:'id:nome'%}
+                {% with grid='col s12 m8'%}
+                {% with name_='curso_id' label='Curso' data_=form.curso_id %}
+                {% include 'componentes/select.html' with opcoes=opcoes_select %}
+                {% endwith %}
+                {% endwith %}
+                {% endwith %}
+
+                <!-- Início do Curso -->
+                {% with grid='col s12 m6'%}
+                {% with name_='ano_inicio' type_='number' label='Início' data_=form.ano_inicio %}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
+
+                <!-- Término do Curso -->
+                {% with grid='col s12 m6'%}
+                {% with name_='ano_termino' type_='number' label='Término' data_=form.ano_termino %}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
+
+                <div id="logar-btn" class="col s12">
+                    <button class="btn waves-effect waves-light center" type="submit" name="action">Cadastrar</button>
+                </div>
+            </div>
+        </form>
+    </section>
+    {% endblock %}

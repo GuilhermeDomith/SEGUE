@@ -57,7 +57,8 @@ class Curso(models.Model):
     nome = models.CharField(max_length=100)
 
     nivel_curso = models.ForeignKey(NivelCurso, on_delete=models.SET_NULL, null=True) 
-    area_atuacao = models.ForeignKey(AreaAtuacao, on_delete=models.SET_NULL, null=True) 
+    area_atuacao = models.ForeignKey(AreaAtuacao, on_delete=models.SET_NULL, null=True)
+    is_local = models.BooleanField('Curso Do Instituto', default=False) 
 
     def as_dict(self):
         dict = utils.to_dict(self)
@@ -66,6 +67,7 @@ class Curso(models.Model):
             'nivel_curso': self.nivel_curso.as_dict(),
             'area_atuacao': self.area_atuacao.as_dict(),
         })
+        print(dict)
 
         return dict
 

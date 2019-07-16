@@ -135,6 +135,7 @@ def excluir_formacao(request, id):
 @is_user('egresso')
 def oportunidades(request):
 	user = User.objects.get(email=request.user.email)
+	print(user)
 	egresso = obter_egresso(user=user)
 	oportunidades = []
 

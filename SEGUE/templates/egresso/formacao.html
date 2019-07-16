@@ -3,8 +3,6 @@
 
 {% block main %}
 <div class="section">
-    <form action="{% url 'egresso:add-formacao' %}" method="POST">
-        {% csrf_token %}
         <div class="row">
             <!-- Título página -->
             <div class="col s12">
@@ -16,12 +14,6 @@
                 {% if form.errors %}
                 Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
                 {% endif %}
-                {% for error in form.non_field_errors %}
-                {{error}}<br>
-                {% endfor %}
-                {% for e in form.errors%}
-                {{e}}
-                {% endfor %}
             </div>
 
             <!--Subtítulo Detalhes Oportunidade -->
@@ -29,71 +21,119 @@
                 <hr>
             </div>
 
-            <input type="hidden" name="egresso_id" value="{{egresso.id}}">
-            <input type="hidden" name="curso_id" value="{{curso_id}}">
+            <form action="{% url 'egresso:add-formacao' %}" method="POST" class="row">
+                {% csrf_token %}
+                <input type="hidden" name="egresso_id" value="{{egresso.id}}">
+                <input type="checkbox" name="egresso_id" value="{{egresso.id}}">
 
-            <!-- Curso -->
-            {% with grid='col s12 m6'%}
-            {% with name_='nome' label='Nome do Curso' data_=form.nome%}
-            {% include 'componentes/input.html' %}
-            {% endwith %}
-            {% endwith %}
-
-            <!-- Nível -->
-            <div class="input-field col s12 m6">
-                <select name="nivel_curso_id" data-select="{{form.nivel_curso_id.value|default_if_none:''}}">
-                    <option value="" disabled selected>Selecione o nível</option>
-                    {% for n in 'curso.nivelcurso'|values %}
-                    <option value="{{n.id}}">{{n.descricao}}</option>
-                    {% endfor %}
-                </select>
-                <label>Nível do Curso</label>
-                <span class="helper-text color-sec-2">{{form.nivel_curso_id.errors|first}}</span>
-            </div>
-
-
-            <!-- Área -->
-            <div class="input-field col s12">
-                <select name="area_atuacao_id" class="validate invalid" data-select="{{form.area_atuacao_id.value|default_if_none:''}}">
-                    <option value="" disabled selected>Selecione a área</option>
-                    {% for a in 'curso.areaatuacao'|values %}
-                    <option value="{{a.id}}">{{a.descricao}}</option>
-                    {% endfor %}
-                </select>
-                <label>Área</label>
-                <span class="helper-text color-sec-2" data-error="{{form.area_atuacao_id.errors|first}}"></span>
-            </div>
-
-
-            <!-- Início do Curso -->
-            {% with grid='col s12 m6'%}
-            {% with name_='ano_inicio' type_='number' label='Início' data_=form.ano_inicio %}
-            {% include 'componentes/input.html' %}
-            {% endwith %}
-            {% endwith %}
-
-            <!-- Término do Curso -->
-            {% with grid='col s12 m6'%}
-            {% with name_='ano_termino' type_='number' label='Término' data_=form.ano_termino %}
-            {% include 'componentes/input.html' %}
-            {% endwith %}
-            {% endwith %}
-
-            <div class="col s12 buttons-action">
-                <div class="right">
-                    <a href="{% url 'egresso:meu-curriculo' %}" class="btn waves-effect waves-light">Cancelar</a>
-                    <button class="btn waves-effect waves-light" type="submit" name="action">Salvar</button>
+                <div id="tabs-add-formacao" class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s6"><a href="#curso-externo">Curso Externo</a></li>
+                        <li class="tab col s6"><a href="#curso-local">Curso Local</a></li>
+                    </ul>
                 </div>
-            </div>
+
+
+                {{ form.tipo_curso.value|json_script:"tipo_curso" }}
+
+                <div id="curso-local">
+                    <input type="hidden" name="tipo_curso" value="curso-local">
+                    <div class="row">
+                        <!-- Curso -->
+                        {% with opcoes_select='curso.curso'|values|get_opcoes_select:'id:nome'%}
+                        {% with grid='col s12 m6'%}
+                        {% with name_='curso_id' label='Curso' data_=form.curso_id %}
+                        {% include 'componentes/select.html' with opcoes=opcoes_select %}
+                        {% endwith %}
+                        {% endwith %}
+                        {% endwith %}
+                    </div>
+                </div>
+
+                <div id="curso-externo">
+                    <input type="hidden" name="tipo_curso" value="curso-externo">
+                    <input type="hidden" name="curso_id" value="{{curso_id}}">
+
+                    <!-- Curso -->
+                    <div class="row">
+                        {% with grid='col s12 m6'%}
+                        {% with name_='nome' label='Nome do Curso' data_=form.nome%}
+                        {% include 'componentes/input.html' %}
+                        {% endwith %}
+                        {% endwith %}
+                    </div>
+
+                    <!-- Nível -->
+                    {% with grid='col s12 m6'%}
+                    {% with name_='nivel_curso_id' label='Nível do Curso' data_=form.nivel_curso_id %}
+                    {% with opcoes_select='curso.nivelcurso'|values|get_opcoes_select:'id:descricao' %}
+                    {% include 'componentes/select.html' with opcoes=opcoes_select%}
+                    {% endwith %}
+                    {% endwith %}
+                    {% endwith %}
+
+                    <!-- Área -->
+                    {% with grid='col s12 m6'%}
+                    {% with name_='area_atuacao_id' label='Área' data_=form.area_atuacao_id %}
+                    {% with opcoes_select='curso.areaatuacao'|values|get_opcoes_select:'id:descricao' %}
+                    {% include 'componentes/select.html' with opcoes=opcoes_select%}
+                    {% endwith %}
+                    {% endwith %}
+                    {% endwith %}
+                </div>
+
+                <!-- Início do Curso -->
+                {% with grid='col s12 m6'%}
+                {% with name_='ano_inicio' type_='number' label='Início' data_=form.ano_inicio %}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
+
+                <!-- Término do Curso -->
+                {% with grid='col s12 m6'%}
+                {% with name_='ano_termino' type_='number' label='Término' data_=form.ano_termino %}
+                {% include 'componentes/input.html' %}
+                {% endwith %}
+                {% endwith %}
+
+                <div class="col s12 buttons-action">
+                    <div class="right">
+                        <a href="{% url 'egresso:meu-curriculo' %}" class="btn waves-effect waves-light">Cancelar</a>
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Salvar</button>
+                    </div>
+                </div>'
 
         </div>
     </form>
-
 </div>
 
 {% endblock %}
 
 {% block script %}
 <script>
+    $(document).ready(() => {
+        let tipo_curso = JSON.parse($('#tipo_curso').text())
+        let curso_externo = $('#curso-externo')
+        let curso_externo_child = curso_externo.children()
+        let curso_local = $('#curso-local')
+        let curso_local_child = curso_local.children()
+        
+        let tabs = $('.tabs').tabs({
+            onShow: function(element){
+                if(element.id === 'curso-externo'){
+                    curso_local.empty()
+                    curso_externo.prepend(curso_externo_child)
+                    console.log('EXTERNO')
+                }else{
+                    curso_externo.empty()
+                    curso_local.prepend(curso_local_child)
+                    console.log('LOCAL')
+                }
+            }
+        })
+
+        console.log(tipo_curso)
+        tabs.select(tipo_curso)
+    })
 </script>
 {% endblock %}

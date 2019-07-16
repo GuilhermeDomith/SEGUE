@@ -93,23 +93,56 @@ class FormacaoForm(forms.ModelForm):
         model = Formacao
         fields = ['ano_inicio', 'ano_termino']
 
-    curso_id = forms.IntegerField(required=False)
-    egresso_id = forms.IntegerField(required=False)
+    # Permite selecionar a TAB correta no template
+    tipo_curso = forms.CharField(initial='curso-externo')
 
-    nome = forms.CharField(error_messages={'required': 'O nome do curso é necessário'})
-    nivel_curso_id = forms.IntegerField(error_messages={'required': 'Selecione o nível do curso'})
-    area_atuacao_id = forms.IntegerField(error_messages={'required': 'Selecione o nome do curso'})
+    egresso_id = forms.IntegerField()
+    curso_id = forms.IntegerField(required=False)
+    nome = forms.CharField(required=False)
+    nivel_curso_id = forms.IntegerField(required=False)
+    area_atuacao_id = forms.IntegerField(required=False)
 
     def clean(self):
         cleaned_data = super(FormacaoForm, self).clean()
 
+        print('\n\n', cleaned_data['tipo_curso'], '\n\n')
         inicio = cleaned_data.get('ano_inicio')
         termino = cleaned_data.get('ano_termino')
-        if (inicio and termino) and (inicio > termino):
-            raise forms.ValidationError('O ano de início deve ser menor que o ano de término.')
+        if (inicio and termino) and inicio > termino:
+            cleaned_data['inicio'] = termino
+            cleaned_data['termino'] = inicio
+
+        return cleaned_data
+        
+    def clean_nome(self):
+        tipo_curso = self.cleaned_data.get('tipo_curso')
+        nome = self.cleaned_data.get('nome')
+
+        if tipo_curso == 'curso-externo' and not nome:
+            raise forms.ValidationError('Foneça o nome do curso')
+
+        return nome
+
+    def clean_nivel_curso_id(self):
+        tipo_curso = self.cleaned_data.get('tipo_curso')
+        nivel_curso_id = self.cleaned_data.get('nivel_curso_id')
+
+        if tipo_curso == 'curso-externo' and not nivel_curso_id:
+            raise forms.ValidationError('Selecione o nível do curso')
+
+        return nivel_curso_id
+
+    def clean_area_atuacao_id(self):
+        tipo_curso = self.cleaned_data.get('tipo_curso')
+        area_atuacao_id = self.cleaned_data.get('area_atuacao_id')
+
+        if tipo_curso == 'curso-externo' and not area_atuacao_id:
+            raise forms.ValidationError('Selecione o área de atuação')
+
+        return area_atuacao_id
 
     def form_to_dict_formacao(self):
-        dict_form = self.cleaned_data
+        dict_form = self.clean()
         return {
             'egresso_id': dict_form['egresso_id'],
             'curso_id': dict_form['curso_id'],
@@ -118,7 +151,7 @@ class FormacaoForm(forms.ModelForm):
         }
 
     def form_to_dict_curso(self):
-        dict_form = self.cleaned_data
+        dict_form = self.clean()
         return {
             'id': dict_form['curso_id'],
             'nome': dict_form['nome'],
@@ -127,12 +160,20 @@ class FormacaoForm(forms.ModelForm):
         }
 
     def save(self, commit=True):
-        curso = Curso(**self.form_to_dict_curso())    
-        formacao = Formacao(**self.form_to_dict_formacao(), curso=curso)
+        data = self.clean()
+        formacao = Formacao(**self.form_to_dict_formacao())
+
+        curso = None
+        if data['tipo_curso'] == 'curso-externo':
+            curso = Curso(**self.form_to_dict_curso())    
 
         if commit:
-            curso.save()
-            formacao.curso_id = curso.pk
+            if curso:
+                curso.save()
+                formacao.curso_id = curso.pk
+            else:
+                formacao.curso_id = data['curso_id']
+            
             formacao.save()
 
         return formacao
