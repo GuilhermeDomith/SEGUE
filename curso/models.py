@@ -36,22 +36,6 @@ class NivelCurso(models.Model):
         return self.descricao
 
 
-class CursoLocal(models.Model):
-    nome = models.CharField(max_length=100)
-
-    class Meta:
-        verbose_name = 'Curso Local'
-        verbose_name_plural = 'Cursos Locais'
-
-    def as_dict(self):
-        return utils.to_dict(self)
-
-    def __str__(self):
-        return self.nome
-
-    def __repr__(self):
-        return self.nome
-
 
 class Curso(models.Model):
     nome = models.CharField(max_length=100)

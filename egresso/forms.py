@@ -85,7 +85,7 @@ class PerfilSitesForm(forms.ModelForm):
     def urlize(texto):
         if re.match('http[s]{0,1}://', texto):
             return texto
-        return 'http://%s'%texto if texto else ''
+        return 'http://%s;'%texto if texto else ''
 
 
 class FormacaoForm(forms.ModelForm):

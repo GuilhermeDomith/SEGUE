@@ -1,7 +1,8 @@
 from django import forms
 from django.forms.models import model_to_dict
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from egresso.models import Egresso, Formacao, DadosPessoais
+from egresso.models import Egresso, DadosPessoais
+from empresa.models import Empresa
 
 from .models import User, TipoUsuario
 
@@ -20,8 +21,19 @@ class UserAdminCreationForm(forms.ModelForm):
         user = super(UserAdminCreationForm, self).save(commit=False)
         user.username = user.email.rpartition('@')[0]
         user.set_password(self.cleaned_data["password"])
-        if commit:
-            user.save()
+        user.save()
+
+        user_especifico = None
+        if user.tipo_usuario.pk == 2:
+            dados = DadosPessoais(nome_completo=user.username)
+            dados.save()
+            user_especifico = Egresso(dados=dados)
+        elif user.tipo_usuario.pk == 3:
+            user_especifico = Empresa()
+
+        user_especifico.user = user
+        user_especifico.save()
+        
         return user
 
 

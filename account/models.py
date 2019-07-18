@@ -48,10 +48,10 @@ class TipoUsuario(models.Model):
         verbose_name_plural = _('Tipos de usuário')
 
     def __repr__(self):
-        return '%d - %s'%(self.pk, self.tipo)
+        return '%d - %s;'%(self.pk, self.tipo)
     
     def __str__(self):
-        return '%d - %s'%(self.pk, self.tipo)
+        return '%d - %s;'%(self.pk, self.tipo)
 
 
 

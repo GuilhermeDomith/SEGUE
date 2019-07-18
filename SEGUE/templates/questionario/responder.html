@@ -1,0 +1,191 @@
+{% extends 'base/base.html'%}
+
+{% block main %}
+<section class="section">
+    <!-- Título página -->
+    {% include 'componentes/titulo.html' with label=titulo%}
+    <!-- Mensagens de erro -->
+    {% include 'componentes/erros_form.html'%}
+    {% include 'componentes/subtitulo.html' with label='Relacionado ao Curso'%}
+    
+    <div class="row">
+        <div class="col s12">
+            <p>Tecnologia em Sistemas Para Internet</p>
+            <p>2008 - 2011</p>
+        </div>
+    </div>
+
+    {% include 'componentes/subtitulo.html' with label='Questões'%}
+    <form action="{% url 'questionario:responder' 5 %}" method="POST">
+        <div class="questionario row">
+        
+        
+        
+            <div class="card questao col s12">
+                <div class="card-content texto">
+                    Você já trabalhou na área desta graduação?
+                </div>
+        
+                <div class="card-action opcoes-resposta row">
+                    <div class="group-radio-button col m4" data-select="{{form.tipo_id.value|default_if_none:''}}">
+                        <p>
+                            <label>
+                                <input class="with-gap" name="q-1" type="radio" value=" " />
+                                <span>Não</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q-1" type="radio" value=" " />
+                                <span>Sim, por menos de 1 ano</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q-1" type="radio" value=" " />
+                                <span>Sim, entre 1 e 3 anos</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q-1" type="radio" value=" " />
+                                <span>Sim, entre 4 e 6 anos</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q-1" type="radio" value=" " />
+                                <span>Sim, por mais de 6 anos</span>
+                            </label>
+                        </p>
+                    </div>
+                    <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
+        
+                    {% with grid='col s12 m9'%}
+                    {% with name_='outro_q1' label='Outro' data_='' %}
+                    {% include 'componentes/input.html' %}
+                    {% endwith %}
+                    {% endwith %}
+                </div>
+            </div>
+        
+        
+            <div class="card questao col s12">
+                <div class="card-content texto">
+                    Você realizou outra graduação após se formar em <b>Tecnologia em Sistemas para Internet</b>?
+                </div>
+                <div class="card-action opcoes-resposta row">
+                    <div class="group-radio-button col m3" data-select="{{form.tipo_id.value|default_if_none:''}}">
+                       <p class="">
+                            <label>
+                                <input class="with-gap" name="q2" type="radio" value="Sim" />
+                                <span>Sim</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q2" type="radio" value="Não" />
+                                <span>Não</span>
+                            </label>
+                        </p>
+                    </div>
+                    <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
+                </div>
+            </div>
+        
+        
+            <div class="card questao col s12">
+                <div class="card-content texto">
+                    Qual o principal motivo que o levou a escolher outra graduação?
+                </div>
+                <div class="card-action opcoes-resposta row">
+                    <div class="group-radio-button col m4" data-select="{{form.tipo_id.value|default_if_none:''}}">
+                        <p>
+                            <label>
+                                <input class="with-gap" name="q3" type="radio" value=" " />
+                                <span>Poucas oportunidades de trabalho</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q3" type="radio" value=" " />
+                                <span>Baixos salários</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q3" type="radio" value=" " />
+                                <span>Ampliar conhecimentos</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q3" type="radio" value=" " />
+                                <span>Insatisfação com a área</span>
+                            </label>
+                        </p>
+                    </div>
+                    <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
+        
+                    {% with grid='col s12 m9'%}
+                    {% with name_='outro_q3' label='Outro' data_='' %}
+                    {% include 'componentes/input.html' %}
+                    {% endwith %}
+                    {% endwith %}
+                </div>
+            </div>
+        
+        
+        
+        
+            <div class="card questao col s12">
+                <div class="card-content texto">
+                    Você realizou Pós-graduação na mesma área que o curso <b>Tecnologia em Sistemas para Internet</b>?
+                </div>
+                <div class="card-action opcoes-resposta row">
+                    <div class="group-radio-button col m3" data-select="{{form.tipo_id.value|default_if_none:''}}">
+                        <p>
+                            <label>
+                                <input class="with-gap" name="q4" type="radio" value="Sim" />
+                                <span>Sim</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q4" type="radio" value="Sim" />
+                                <span>Não</span>
+                            </label>
+                        </p>
+                    </div>
+                    <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
+                </div>
+            </div>
+        
+        
+            <div class="card questao col s12">
+                <div class="card-content texto">
+                    Qual o principal motivo que o levou a realizar esta Pós-graduação?
+                </div>
+                <div class="card-action opcoes-resposta row">
+                    <div class="group-radio-button col m4" data-select="{{form.tipo_id.value|default_if_none:''}}">
+                        <p>
+                            <label>
+                                <input class="with-gap" name="q5" type="radio" value=" " />
+                                <span>Baixos salários</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q5" type="radio" value=" " />
+                                <span>Ampliar conhecimentos</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q5" type="radio" value=" " />
+                                <span>Poucas oportunidades de trabalho</span>
+                            </label>
+                        </p>
+                    </div>
+                    <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
+        
+                    {% with grid='col s12 m9'%}
+                    {% with name_='outro_q5' label='Outro' data_='' %}
+                    {% include 'componentes/input.html' %}
+                    {% endwith %}
+                    {% endwith %}
+                </div>
+            </div>
+        
+        
+        
+        
+        
+        
+        </div>
+    </form>
+</section>
+{% endblock %}
+
+{% block script %}
+<script>
+</script>
+{% endblock %}

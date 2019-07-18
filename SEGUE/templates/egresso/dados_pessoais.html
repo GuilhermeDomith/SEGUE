@@ -8,27 +8,11 @@
 
         <div class="row">
 
-            <!-- Título página -->
-            <div class="col s12">
-                <h1 class="titulo-pagina">Dados Pessoais</h1>
-            </div>
-
-             <!-- Mensagens de erro -->
-             <div class="col s12 color-sec-1">
-                {% if form.errors %}
-                Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
-                {% endif %}
-                {% for error in form.non_field_errors %}
-                {{error}}<br>
-                {% endfor %}
-                {% for error in form.errors %}
-                {{error}}<br>
-                {% endfor %}
-            </div>
-
-            <div class="subtitulo-form col s12">
-                <hr>
-            </div>
+              <!-- Título página -->
+            {% include 'componentes/titulo.html' with label='Dados Pessoais'%}
+            <!-- Mensagens de erro -->
+            {% include 'componentes/erros_form.html'%}
+            {% include 'componentes/subtitulo.html'%}
 
             <div class="row">
                 <input type="hidden" name="id" value="{{form.id.value}}">

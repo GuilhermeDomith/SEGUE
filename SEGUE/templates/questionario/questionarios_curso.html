@@ -1,0 +1,67 @@
+{% extends 'base/base.html'%}
+
+{% block main %}
+<section class="section">
+    <!-- Título página -->
+    {% include 'componentes/titulo.html' with label='Questionários'%}
+
+    {% include 'componentes/subtitulo.html' with label='Tecnologia em Sistemas Para Iternet'%}
+
+    <div class="row">
+        <div class="card col m4 s12" style="margin: 5px">
+            <div class="card-content color-prim-1">
+                Questionário de 5 Anos
+            </div>
+            <div class="card-action">
+                <a href="{% url 'questionario:responder' 5 %}" class="color-sec-2">
+                    <i class="material-icons left">list</i> Responder
+                </a>
+            </div>
+        </div>
+    
+        <div class="card col m4 s12 grey lighten-4" style="margin: 5px">
+            <div class="card-content grey-text text-lighten-1">
+                Questionário de 10 Anos
+            </div>
+            <div class="card-action">
+                <a class="grey-text text-lighten-1">
+                    <i class="material-icons left">list</i> Responder
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% include 'componentes/subtitulo.html' with label='Bacharelado em Alimentos'%}
+
+    <div class="row">
+        <div class="card col m4 s12 grey lighten-4" style="margin: 5px">
+            <div class="card-content grey-text text-lighten-1">
+                Questionário de 5 Anos
+            </div>
+            <div class="card-action">
+                <a class="grey-text text-lighten-1">
+                    <i class="material-icons left">list</i> Responder
+                </a>
+            </div>
+        </div>
+    
+        <div class="card col m4 s12 grey lighten-4" style="margin: 5px">
+            <div class="card-content grey-text text-lighten-1">
+                Questionário de 10 Anos
+            </div>
+            <div class="card-action">
+                <a class="grey-text text-lighten-1">
+                    <i class="material-icons left">list</i> Responder
+                </a>
+            </div>
+        </div>
+    </div>
+    
+
+</section>
+{% endblock %}
+
+{% block script %}
+<script>
+</script>
+{% endblock %}

@@ -2,12 +2,7 @@ $(document).ready(function () {
 
 
     /* Configura os componentes do Materialize*/
-    $('.tabs').tabs();
-    $('.sidenav').sidenav();
-    $('.collapsible').collapsible();
-    $('.dropdown-trigger').dropdown();
-    $('.modal').modal();
-    $('select').formSelect();
+    M.AutoInit()
 
     var options_datepicker = {
         format: 'dd/mm/yyyy',

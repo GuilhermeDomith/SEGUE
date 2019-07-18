@@ -5,7 +5,7 @@ from django.views.decorators.http import require_http_methods
 
 from .models import TipoOportunidade, Oportunidade
 from .forms import OportunidadeForm
-from empresa.models import Empresa
+from empresa.models import Empresa, obter_empresa
 from egresso.models import Egresso, Endereco, Formacao
 from curso.models import Curso, AreaAtuacao, NivelCurso
 from account.models import User
@@ -17,7 +17,7 @@ from SEGUE.decorators import is_user
 @is_user('empresa')
 def adicionar_oportunidade(request, codigo=None):
     user = User.objects.get(username=request.user.username)
-    empresa = Empresa.get_empresa_user(request.user)
+    empresa = obter_empresa(user=request.user)
 
     data = {
         'niveis_curso': NivelCurso.objects.values(),
@@ -48,7 +48,7 @@ def adicionar_oportunidade(request, codigo=None):
 @require_http_methods(["GET", "POST"])
 @is_user('empresa')
 def excluir_oportunidade(request, codigo):
-    empresa = Empresa.get_empresa_user(request.user)
+    empresa = obter_empresa(user=request.user)
     oportunidade = empresa.oportunidade_set.get(pk=codigo)
     oportunidade.delete()
     return HttpResponseRedirect(reverse('empresa:oportunidades'))

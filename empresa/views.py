@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.views.decorators.http import require_http_methods
 
-from .models import Empresa
+from .models import Empresa, obter_empresa
 from .forms import EmpresaForm
 from egresso.models import Egresso, Endereco, Formacao
 from curso.models import Curso, AreaAtuacao, NivelCurso
@@ -19,11 +19,11 @@ def editar_dados(request):
 
     data = {}
     user = User.objects.get(email=request.user.email)
-    empresa = Empresa.get_empresa_user(user)
+    empresa = obter_empresa(user=user)
 
     if request.method == "GET":
         if empresa:
-            data.update({'form': EmpresaForm(empresa.__dict__)})
+            data.update({'form': EmpresaForm(empresa.as_dict())})
 
         return render(request, 'empresa/dados_empresa.html', data)
 
@@ -42,7 +42,7 @@ def editar_dados(request):
 @is_user('empresa')
 def oportunidades_lancadas(request):
     user = User.objects.get(email=request.user.email)
-    empresa = Empresa.get_empresa_user(request.user)
+    empresa = obter_empresa(user=request.user)
     oportunidades = empresa.get_oportunidades() if empresa else []
 
     print(oportunidades)

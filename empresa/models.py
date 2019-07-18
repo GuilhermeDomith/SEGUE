@@ -6,7 +6,7 @@ from SEGUE import settings, utils
 
 
 class Empresa(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     razao_social = models.CharField(max_length=100)
     cnpj = models.CharField(max_length=18)
     telefone = models.CharField(max_length=20)
@@ -19,18 +19,21 @@ class Empresa(models.Model):
             return []
 
     def as_dict(self):
-        return utils.to_dict(self)
+        data = utils.to_dict(self)
+        print('\n\n', self.user_id, '\n\n')
+        data.update(user_id=self.user_id)
+        return data
 
     def __str__(self):
-        return self.razao_social
+        return self.razao_social or self.user.email
 
     def __repr__(self):
-        return self.razao_social
+        return str(self)
 
 
-def obter_empresa_user(user):
+def obter_empresa(**args):
     try:
-        empresa = Empresa.objects.get(user=user)
+        empresa = Empresa.objects.get(**args)
         return empresa
     except Empresa.DoesNotExist:
         return None

@@ -70,7 +70,7 @@ class Endereco(models.Model):
         return utils.to_dict(self)
 
     def __str__(self):
-        return '%s, %s, %s'%(self.cidade, self.rua, self.cep)
+        return '%s; %s; %s;'%(self.cidade, self.rua, self.cep)
 
     def __repr__(self):
         return str(self)
@@ -111,7 +111,7 @@ class DadosPessoais(models.Model):
         return now.year - dn.year - ((now.month, now.day) < (dn.month, dn.day))
 
     def __str__(self):
-        return '%s, %s'%(self.cpf, self.nome_completo)
+        return '%s; %s;'%(self.cpf, self.nome_completo)
 
     def __repr__(self):
         return str(self)
@@ -134,13 +134,13 @@ class Egresso(models.Model):
     ''' Os campos email e senha são herdados de User.'''
 
     matricula = models.CharField(max_length=30) #será unique
-    is_aluno = models.BooleanField('aluno status', default=False, help_text=_('Designado quando o usuário cadastrado ainda é aluno.'))
+    is_aluno = models.BooleanField('Até o momento é aluno', default=False, help_text=_('Designado quando o usuário cadastrado ainda é aluno.'))
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     dados = models.OneToOneField(DadosPessoais, on_delete=models.SET_NULL, null=True)
     endereco = models.OneToOneField(Endereco, on_delete=models.SET_NULL, null=True)
     perfil_sites = models.OneToOneField(PerfilSites, on_delete=models.SET_NULL, null=True)
-    raio_atuacao_max = models.IntegerField(default=0, help_text='Raio de distância (Km) para encontrar oportunidades.')
+    raio_atuacao_max = models.IntegerField('Raio de distância para oportunidades', default=100, help_text='Raio de distância máximo em KM para encontrar oportunidades.')
 
     def get_endereco(self):
         try: return self.endereco
@@ -148,6 +148,10 @@ class Egresso(models.Model):
 
     def get_formacoes(self):
         try: return self.formacao_set.all()
+        except Egresso.DoesNotExist: return None
+
+    def find_formacoes(self, **args):
+        try: return self.formacao_set.filter(args)
         except Egresso.DoesNotExist: return None
     
     def get_formacoes_dict(self):
@@ -164,15 +168,13 @@ class Egresso(models.Model):
             'perfil_sites': self.perfil_sites.as_dict() if self.perfil_sites else {}
         })
 
-        print(dict)
-
         return dict
 
     def __str__(self):
-        return '%s, %s'%(self.user.email, self.matricula)
+        return '%s; %s;'%(self.user.email if self.user else None, self.matricula)
 
     def __repr__(self):
-        return '%s, %s'%(self.user.email, self.matricula)
+        return str(self)
 
 
 class Formacao(models.Model):
@@ -196,7 +198,7 @@ class Formacao(models.Model):
         return dict
 
     def __str__(self):
-        return '%s, %s'#%(self.egresso.user.email, self.curso)
+        return '%s; %s; %s;'%(self.curso, self.ano_inicio, self.ano_termino)
 
     def __repr__(self):
         return str(self)

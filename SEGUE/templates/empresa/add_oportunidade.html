@@ -1,7 +1,9 @@
 {% extends 'base/base.html'%}
 
+{% load custom_tags %}
+
 {% block main %}
-<div class="section">
+<section class="section">
     <form action="{% url 'oportunidade:add' %}" class="row" method="POST">
         {% csrf_token %}
 
@@ -28,14 +30,11 @@
             <input type="hidden" name="empresa_id" value="{% if form.empresa_id.value %}{{form.empresa_id.value}}{% else %}{{empresa.id}}{% endif %}">
 
             <!-- Título -->
-            <div class="input-field col s12 m7">
-                <input id="titulo" name="titulo" type="text" {% if form.titulo.errors %} class="validate invalid"
-                    {% else %} class="validate" {% endif %} value="{{ form.titulo.value|default_if_none:'' }}">
-
-                <label for="titulo">Título (Descrição)</label>
-                <span class="helper-text color-sec-2" data-error="{{form.titulo.errors|first}}">
-                </span>
-            </div>
+            {% with grid='col s12 m7'%}
+            {% with name_='titulo' label='Título (Descrição)' data_=form.titulo%}
+            {% include 'componentes/input.html' %}
+            {% endwith %}
+            {% endwith %}
 
             <!-- Tipo de Oportunidade -->
             <div class="col s12">
@@ -53,30 +52,22 @@
             </div>
 
             <!-- Horas por Semana -->
-            <div class="row">
-                <div class="input-field col s12 m4">
-                    <input id="horas_semana" name="horas_semana" type="text" {% if form.horas_semana.errors %}
-                        class="validate invalid" {% else %} class="validate" {% endif %}
-                        value="{{ form.horas_semana.value|default_if_none:'' }}">
-
-                    <label for="horas_semana">Horas/semana</label>
-                    <span class="helper-text color-sec-2" data-error="{{form.horas_semana.errors|first}}">
-                    </span>
-                </div>
-            </div>
+            {% with grid='col s12 m4'%}
+            {% with name_='horas_semana' label='Horas/semana' data_=form.horas_semana%}
+            {% include 'componentes/input.html' %}
+            {% endwith %}
+            {% endwith %}
 
             <!-- Nível Formação Necessário-->
             <div class="row">
-                <div class="input-field col s12 m6">
-                    <select name="nivel_formacao_id" data-select="{{form.nivel_formacao_id.value|default_if_none:''}}">
-                        <option value="" disabled selected>Selecione o nível</option>
-                        {% for n in niveis_curso %}
-                        <option value="{{n.id}}">{{n.descricao}}</option>
-                        {% endfor %}
-                    </select>
-                    <label>Nível de Formação Exigida</label>
-                    <span class="helper-text color-sec-2">{{form.nivel_formacao_id.errors|first}}</span>
-                </div>
+                <!-- Nível -->
+                {% with grid='col s12 m6'%}
+                {% with name_='nivel_formacao_id' label='Nível de Formação Exigida' data_=form.nivel_formacao_id %}
+                {% with opcoes_select='curso.nivelcurso'|values|get_opcoes_select:'id:descricao' %}
+                {% include 'componentes/select.html' with opcoes=opcoes_select%}
+                {% endwith %}
+                {% endwith %}
+                {% endwith %}
 
                 <!-- Curso Necessário -->
                 <div class="input-field col s12 m6">
@@ -93,31 +84,25 @@
             </div>
 
             <!-- Cidade -->
-            <div class="input-field col s12 m8">
-                <input id="cidade" name="cidade" type="text" {% if form.cidade.errors %} class="validate invalid"
-                    {% else %} class="validate" {% endif %} value="{{ form.cidade.value|default_if_none:'' }}">
-
-                <label for="cidade">Cidade</label>
-                <span class="helper-text color-sec-2" data-error="{{form.cidade.errors|first}}">
-                </span>
-            </div>
+            {% with grid='col s12 m8'%}
+            {% with name_='cidade' label='Cidade' data_=form.cidade%}
+            {% include 'componentes/input.html' %}
+            {% endwith %}
+            {% endwith %}
 
             <!-- Estado -->
-            <div class="input-field col s12 m4">
-                <input id="estado" name="estado" type="text" {% if form.estado.errors %} class="validate invalid"
-                    {% else %} class="validate" {% endif %} value="{{ form.estado.value|default_if_none:'' }}">
-
-                <label for="estado">Estado</label>
-                <span class="helper-text color-sec-2" data-error="{{form.estado.errors|first}}">
-                </span>
-            </div>
+            {% with grid='col s12 m4'%}
+            {% with name_='estado' label='Estado' data_=form.estado%}
+            {% include 'componentes/input.html' %}
+            {% endwith %}
+            {% endwith %}
 
             <div class="col s12">
                 <button class="btn waves-effect waves-light right" type="submit" name="action">Salvar</button>
             </div>
         </div>
     </form>
-</div>
+</section>
 {% endblock %}
 
 {% block script %}

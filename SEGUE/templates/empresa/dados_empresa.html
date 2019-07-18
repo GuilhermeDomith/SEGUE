@@ -1,64 +1,43 @@
 {% extends 'base/base.html'%}
 
+{% load custom_tags %}
+
 {% block main %}
 <div class="section">
     <form action="{% url 'empresa:editar-dados' %}" class="row" method="POST">
         {% csrf_token %}
 
-        <!-- Título página -->
-        <div class="col s12">
-            <h1 class="titulo-pagina">Dados da Empresa</h1>
-        </div>
-
+         <!-- Título página -->
+        {% include 'componentes/titulo.html' with label='Dados da Empresa'%}
         <!-- Mensagens de erro -->
-        <div class="col s12 color-sec-1">
-            {% if form.errors %}
-            Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
-            {% endif %}
-            {% for error in form.non_field_errors %}
-            {{error}}<br>
-            {% endfor %}
-        </div>
-
-        <!--Subtítulo Dados Pessoais -->
-        <div class="subtitulo-form col s12">
-            <hr>
-        </div>
+        {% include 'componentes/erros_form.html'%}
+        {% include 'componentes/subtitulo.html'%}
 
         <div class="row">
             <input type="hidden" name="id" value="{{form.id.value}}">
             <input type="hidden" name="user_id" value="{% if form.user_id.value %}{{form.user_id.value}}{% else %}{{user.id}}{% endif%}">
+            
 
             <!-- Razão Social -->
-            <div class="input-field col s12 m7">
-                <input id="razao_social" name="razao_social" type="text" {% if form.razao_social.errors %}
-                    class="validate invalid" {% else %} class="validate" {% endif %}
-                    value="{{ form.razao_social.value|default_if_none:'' }}">
-
-                <label for="razao_social">Razão Social</label>
-                <span class="helper-text color-sec-2" data-error="{{form.razao_social.errors|first}}">
-                </span>
-            </div>
+            {% with grid='col s12 m8'%}
+            {% with name_='razao_social' label='Razão Social' data_=form.razao_social%}
+            {% include 'componentes/input.html' %}
+            {% endwith %}
+            {% endwith %}
 
             <!-- CNPJ -->
-            <div class="input-field col s12 m7">
-                <input id="cnpj" name="cnpj" type="text" {% if form.cnpj.errors %} class="validate invalid" {% else %}
-                    class="validate" {% endif %} value="{{ form.cnpj.value|default_if_none:'' }}">
-
-                <label for="cnpj">CNPJ</label>
-                <span class="helper-text color-sec-2" data-error="{{form.cnpj.errors|first}}">
-                </span>
-            </div>
+            {% with grid='col s12 m7'%}
+            {% with name_='cnpj' label='CNPJ' data_=form.cnpj%}
+            {% include 'componentes/input.html' %}
+            {% endwith %}
+            {% endwith %}
 
             <!-- Telefone -->
-            <div class="input-field col s12 m7">
-                <input id="telefone" name="telefone" type="text" {% if form.telefone.errors %} class="validate invalid"
-                    {% else %} class="validate" {% endif %} value="{{ form.telefone.value|default_if_none:'' }}">
-
-                <label for="telefone">Telefone</label>
-                <span class="helper-text color-sec-2" data-error="{{form.telefone.errors|first}}">
-                </span>
-            </div>
+            {% with grid='col s12 m7'%}
+            {% with name_='telefone' label='Telefone' data_=form.telefone%}
+            {% include 'componentes/input.html' %}
+            {% endwith %}
+            {% endwith %}
 
             <!-- Email -->
             <div class="input-field col s12 m7">
@@ -66,18 +45,6 @@
                 <label for="email">Email</label>
                 </span>
             </div> 
-
-            <!-- Area de atuação -->
-            <div class="input-field col s12 m7">
-                <select name="area_atuacao_id" data-select="{{form.area_atuacao_id.value|default_if_none:''}}">
-                    <option value="" disabled selected>Selecione a área de atuação</option>
-                    {% for a in areas_atuacao %}Nível
-                    <option value="{{a.id}}">{{a.descricao}}</option>
-                    {% endfor %}
-                </select>
-                <label>Área de atuação</label>
-                <span class="helper-text color-sec-2">{{form.area_atuacao_id.errors|first}}</span>
-            </div>
 
             <div class="col s12">
                 <button class="btn waves-effect waves-light right" type="submit" name="action">Salvar</button>

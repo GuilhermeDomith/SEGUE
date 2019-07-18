@@ -18,7 +18,7 @@
                     <li> <a href="/admin/oportunidade/oportunidade/">Oportunidades</a></li>
                     {% elif user.tipo_usuario.tipo == 'egresso' %}
                     <li><a href="{% url 'egresso:meu-curriculo' %}">Meu Currículo</a></li>
-                    <li><a href="{% url 'egresso:meu-curriculo' %}">Questionários</a></li>
+                    <li><a href="{% url 'questionario:listar-todos' %}">Questionários</a></li>
                     <li><a href="{% url 'egresso:oportunidades' %}">Oportunidades</a></li>
                     {% elif user.tipo_usuario.tipo == 'empresa'  %}
                     <li><a href="{% url 'empresa:editar-dados'%}">Dados da Empresa</a></li>
