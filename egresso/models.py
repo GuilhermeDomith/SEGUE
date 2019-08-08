@@ -181,18 +181,37 @@ class Formacao(models.Model):
     egresso = models.ForeignKey(Egresso, on_delete = models.CASCADE)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     ano_inicio = models.IntegerField()
-    ano_termino = models.IntegerField()
+    ano_termino = models.IntegerField(blank=True, null=True)
 
     class Meta:
         verbose_name = 'Formação Acadêmica'
         verbose_name_plural = 'Formações Acadêmicas'
 
+    def anos_corridos_termino(self):
+        termino = self.ano_termino
+        if not termino or termino == 0:
+            return 0
+        else:
+            return datetime.now().year - termino
+
+    def questionario_foi_respondido(self, quest_id):
+        respostas = self.obter_respostas_questionario(quest_id)
+        return len(respostas) > 0 
+
+    def obter_respostas_questionario(self, quest_id):
+        return self.respostaquestionario_set.filter(questionario__pk=quest_id)
+
+    def questionarios_respondidos(self):
+        respostas = self.respostaquestionario_set.all()
+        questionarios = [resp.questionario.id for resp in respostas]
+        return list(set(questionarios))
+
     def as_dict(self):
         dict = utils.to_dict(self)
 
-
         dict.update({
             'curso': self.curso.as_dict() if self.curso else {},
+            'anos_corridos_termino': self.anos_corridos_termino
         })
 
         return dict

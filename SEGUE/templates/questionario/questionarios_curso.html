@@ -10,23 +10,20 @@
     {% for f in formacoes%}
         {% include 'componentes/subtitulo.html' with label=f.curso.nome%}
 
+        <!-- Questionários -->
         <div class="row">
-        {% now "Y" as current_year %}
+        {% for q in 'questionario.questionario'|values %}
+        
+        <!-- Card Questionário-->
         {% with grid='col m4 s12'%}
-        {% with anos=5 curso_id=f.id anos_corridos=current_year|subtract:f.ano_termino%}
-        {% include 'componentes/card_questionario.html' %}
+        {% with curso_id=f.id   anos_corridos_formac=f.anos_corridos_termino%}
+        {% include 'componentes/card_questionario.html' with questionario=q %}
         {% endwith %}
-        {% endwith %}
+        {% endwith %}        
 
-        {% with grid='col m4 s12'%}
-        {% with anos=10 curso_id=f.id anos_corridos=current_year|subtract:f.ano_termino%}
-        {% include 'componentes/card_questionario.html' %}
-        {% endwith %}
-        {% endwith %}
+        {% endfor %}
         </div>
     {% endfor %}
-
-    
 
 </section>
 {% endblock %}

@@ -1,22 +1,22 @@
 {% with color_card='grey lighten-4' color_text='grey-text text-lighten-1'%}
 
-{% if anos_corridos < anos %}    
+{% if anos_corridos_formac < questionario.anos_corridos %}    
 <div class="card {{grid}} {{color_card}} {{color_text}}" style="margin: 5px">
 {% else %}
 <div class="card {{grid}}" style="margin: 5px">
 {% endif %}
     <div class="card-content">
-        <div class="color-prim-1" style="margin-bottom: 10px">Questionário {{anos}} Ano{{anos|pluralize}}</div>
+        <div class="color-prim-1" style="margin-bottom: 10px">Questionário {{questionario.anos_corridos}} Ano{{questionario.anos_corridos|pluralize}}</div>
         <label>
             <i class="material-icons left" style="font-size: 15px; margin-right: 5px;">info</i> 
-            <p>Pode ser respondido {{anos}} ano{{anos|pluralize}} após ter concluído o curso.</p>
+            <p>Pode ser respondido {{questionario.anos_corridos}} ano{{questionario.anos_corridos|pluralize}} após ter concluído o curso.</p>
         </label>
     </div>
     <div class="card-action">
-        {% if anos_corridos < anos %}    
+        {% if anos_corridos_formac < questionario.anos_corridos %}    
         <a class="color-sec-2 {{color_text}}">
         {% else %}
-        <a href="{% url 'questionario:responder' curso_id anos %}" class="color-sec-2">
+        <a href="{% url 'questionario:responder' questionario.id curso_id %}" class="color-sec-2">
         {% endif %}
             <i class="material-icons left">list</i> Responder
         </a>

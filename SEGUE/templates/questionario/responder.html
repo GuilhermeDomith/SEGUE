@@ -3,68 +3,93 @@
 {% block main %}
 <section class="section">
     <!-- Título página -->
-    {% include 'componentes/titulo.html' with label=titulo%}
+    {% with anos=questionario.anos_corridos|stringformat:'s' %}
+    {% include 'componentes/titulo.html' with label='Questionario Após '|add:anos|add:' Anos' %}
+    {% endwith %}
     <!-- Mensagens de erro -->
     {% include 'componentes/erros_form.html'%}
     {% include 'componentes/subtitulo.html' with label='Relacionado ao Curso'%}
-    
+
     <div class="row">
         <div class="col s12">
-            <p>Tecnologia em Sistemas Para Internet</p>
-            <p>2008 - 2011</p>
+            <p>{{formacao.curso.nome}}</p>
+            <p>{{formacao.ano_inicio}} - {{formacao.ano_termino}}</p>
         </div>
     </div>
 
     {% include 'componentes/subtitulo.html' with label='Questões'%}
-    <form action="{% url 'questionario:responder' 5 %}" method="POST">
+    <form action="{% url 'questionario:responder' questionario.id formacao.id %}" method="POST">
         <div class="questionario row">
-        
-        
-        
+
+            <!-- Pesguntas -->
+            {% for questao in questionario.questoes %}
+            <div class="card questao col s12">
+                <div class="card-content texto">
+                    {{questao.pergunta}}
+                </div>
+                <div class="card-action opcoes-resposta row">
+                    <div class="group-radio-button col m4" data-select="{{form.tipo_id.value|default_if_none:''}}">
+                        <p>
+                            {% for opcao in questao.possiveis_respostas %}
+                            <label>
+                                <input class="with-gap" name="{{questao.id}}" type="radio" value="{{opcao.resposta}}" />
+                                <span>{{opcao.resposta}}</span>
+                            </label>
+                            {% endfor%}
+                        </p>
+                    </div>
+                    {% if questao.habilitar_opcao_outro == True %}
+                        {% with grid='col s12 m9'%}
+                        {% with name_='outro_q3' label='Outro Motivo' data_='' %}
+                        {% include 'componentes/input.html' %}
+                        {% endwith %}
+                        {% endwith %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor%}
+
+            <!-- Final Perguntas -->
+
             <div class="card questao col s12">
                 <div class="card-content texto">
                     Você já trabalhou na área desta graduação?
                 </div>
-        
+
                 <div class="card-action opcoes-resposta row">
                     <div class="group-radio-button col m4" data-select="{{form.tipo_id.value|default_if_none:''}}">
                         <p>
                             <label>
                                 <input class="with-gap" name="q-1" type="radio" value=" " />
-                                <span>Não</span>
+                                <span>Não;</span>
                             </label>
                             <label>
                                 <input class="with-gap" name="q-1" type="radio" value=" " />
-                                <span>Sim, por menos de 1 ano</span>
+                                <span>Sim, por menos de 1 ano;</span>
                             </label>
                             <label>
                                 <input class="with-gap" name="q-1" type="radio" value=" " />
-                                <span>Sim, entre 1 e 3 anos</span>
+                                <span>Sim, entre 1 e 3 anos;</span>
                             </label>
                             <label>
                                 <input class="with-gap" name="q-1" type="radio" value=" " />
-                                <span>Sim, entre 4 e 6 anos</span>
+                                <span>Sim, entre 4 e 6 anos;</span>
                             </label>
                             <label>
                                 <input class="with-gap" name="q-1" type="radio" value=" " />
-                                <span>Sim, por mais de 6 anos</span>
+                                <span>Sim, por mais de 6 anos;</span>
                             </label>
                         </p>
                     </div>
                     <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
-        
-                    {% with grid='col s12 m9'%}
-                    {% with name_='outro_q1' label='Outro' data_='' %}
-                    {% include 'componentes/input.html' %}
-                    {% endwith %}
-                    {% endwith %}
                 </div>
             </div>
-        
-        
+
+
+            <!--
             <div class="card questao col s12">
                 <div class="card-content texto">
-                    Você realizou outra graduação após se formar em <b>Tecnologia em Sistemas para Internet</b>?
+                    Você realizou outra graduação após se formar em <b>{{formacao.curso.nome}}</b>?
                 </div>
                 <div class="card-action opcoes-resposta row">
                     <div class="group-radio-button col m3" data-select="{{form.tipo_id.value|default_if_none:''}}">
@@ -82,46 +107,49 @@
                     <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
                 </div>
             </div>
-        
-        
+            -->
+
             <div class="card questao col s12">
                 <div class="card-content texto">
-                    Qual o principal motivo que o levou a escolher outra graduação?
+                    Você realizou outra graduação após se formar em <b>{{formacao.curso.nome}}</b>?
+                    Se sim, qual o principal motivo que o levou a escolher outra graduação?
                 </div>
                 <div class="card-action opcoes-resposta row">
                     <div class="group-radio-button col m4" data-select="{{form.tipo_id.value|default_if_none:''}}">
                         <p>
                             <label>
                                 <input class="with-gap" name="q3" type="radio" value=" " />
-                                <span>Poucas oportunidades de trabalho</span>
+                                <span>Não realizei outra graduação;</span>
                             </label>
                             <label>
                                 <input class="with-gap" name="q3" type="radio" value=" " />
-                                <span>Baixos salários</span>
+                                <span>Sim, pois haviam poucas oportunidades de trabalho;</span>
                             </label>
                             <label>
                                 <input class="with-gap" name="q3" type="radio" value=" " />
-                                <span>Ampliar conhecimentos</span>
+                                <span>Sim, pois os salários eram baixos;</span>
                             </label>
                             <label>
                                 <input class="with-gap" name="q3" type="radio" value=" " />
-                                <span>Insatisfação com a área</span>
+                                <span>Sim, para ampliar conhecimentos;</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q3" type="radio" value=" " />
+                                <span>Sim, pois estava insatisfeito com a área;</span>
                             </label>
                         </p>
                     </div>
                     <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
-        
+
                     {% with grid='col s12 m9'%}
-                    {% with name_='outro_q3' label='Outro' data_='' %}
+                    {% with name_='outro_q3' label='Outro Motivo' data_='' %}
                     {% include 'componentes/input.html' %}
                     {% endwith %}
                     {% endwith %}
                 </div>
             </div>
-        
-        
-        
-        
+
+            <!-- 
             <div class="card questao col s12">
                 <div class="card-content texto">
                     Você realizou Pós-graduação na mesma área que o curso <b>Tecnologia em Sistemas para Internet</b>?
@@ -142,8 +170,8 @@
                     <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
                 </div>
             </div>
-        
-        
+            -->
+
             <div class="card questao col s12">
                 <div class="card-content texto">
                     Qual o principal motivo que o levou a realizar esta Pós-graduação?
@@ -152,34 +180,34 @@
                     <div class="group-radio-button col m4" data-select="{{form.tipo_id.value|default_if_none:''}}">
                         <p>
                             <label>
-                                <input class="with-gap" name="q5" type="radio" value=" " />
-                                <span>Baixos salários</span>
+                                <input class="with-gap" name="q3" type="radio" value=" " />
+                                <span>Não realizei Pós-graduação;</span>
                             </label>
                             <label>
                                 <input class="with-gap" name="q5" type="radio" value=" " />
-                                <span>Ampliar conhecimentos</span>
+                                <span>Sim, pois os salários eram baixos;</span>
                             </label>
                             <label>
                                 <input class="with-gap" name="q5" type="radio" value=" " />
-                                <span>Poucas oportunidades de trabalho</span>
+                                <span>Sim, para ampliar conhecimentos;</span>
+                            </label>
+                            <label>
+                                <input class="with-gap" name="q5" type="radio" value=" " />
+                                <span>Sim, pois haviam poucas oportunidades de trabalho;</span>
                             </label>
                         </p>
                     </div>
                     <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
-        
+
                     {% with grid='col s12 m9'%}
-                    {% with name_='outro_q5' label='Outro' data_='' %}
+                    {% with name_='outro_q5' label='Outro Motivo' data_='' %}
                     {% include 'componentes/input.html' %}
                     {% endwith %}
                     {% endwith %}
                 </div>
             </div>
-        
-        
-        
-        
-        
-        
+
+
         </div>
     </form>
 </section>

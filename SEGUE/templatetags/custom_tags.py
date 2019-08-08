@@ -8,7 +8,7 @@ register = template.Library()
 @register.filter
 def values(model_name):
     model = apps.get_model(model_name)
-    return model.objects.values()
+    return [v.as_dict() for v in model.objects.all()]
 
 @register.filter
 def get_egresso(user):

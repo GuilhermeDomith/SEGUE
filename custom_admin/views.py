@@ -13,10 +13,11 @@ def index_admin(request, extra_context=None):
 
     APPS_EXIBIR = {
         'Account': ['User'],
-        'Curso': ['Curso', 'NivelCurso'],
         'Egresso': ['Egresso', 'Formacao'],
         'Empresa': ['Empresa'],
-        'Oportunidade': ['Oportunidade']
+        'Oportunidade': ['Oportunidade'],
+        'Curso': ['Curso', 'NivelCurso'],
+        'Questionario': ['Questao', 'Questionario']
     }
 
     app_list = admin_site.get_app_list(request)
