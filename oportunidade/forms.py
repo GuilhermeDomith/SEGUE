@@ -3,16 +3,18 @@ from SEGUE import settings
 from .models import Oportunidade
 from account.models import User
 
-class OportunidadeForm(forms.Form):
+class OportunidadeForm(forms.ModelForm):
+
+    class Meta:
+        model = Oportunidade
+        exclude = ['empresa', 'nivel_formacao', 'area_necessaria', 'nivel_necessario', 'tipo']
+        fields = ['estado', 'cidade', 'horas_semana', 'titulo']
+
     id = forms.IntegerField(required=False)
     empresa_id = forms.IntegerField()
-    nivel_formacao_id = forms.IntegerField(error_messages={'required': 'Selecione o nível do curso'})
-    curso_necessario_id = forms.IntegerField(error_messages={'required': 'Selecione o nome do curso'})
     tipo_id = forms.IntegerField(error_messages={'required': 'Selecione o tipo de oportunidade a ser oferecida'})
-    horas_semana = forms.IntegerField()
-    titulo = forms.CharField(max_length=50)
-    cidade = forms.CharField(max_length=60)
-    estado = forms.CharField(max_length=2)
+    nivel_necessario_id = forms.IntegerField(error_messages={'required': 'Selecione o nível do curso'})
+    area_necessaria_id = forms.IntegerField(error_messages={'required': 'Selecione pelo menos uma área necessária'})
 
     def save(self, commit=True):
         oportunidade = Oportunidade(**self.cleaned_data)

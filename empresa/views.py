@@ -5,7 +5,7 @@ from django.views.decorators.http import require_http_methods
 
 from .models import Empresa, obter_empresa
 from .forms import EmpresaForm
-from egresso.models import Egresso, Endereco, Formacao
+from egresso.models import Egresso, Endereco, Formacao, obter_formacoes
 from curso.models import Curso, AreaAtuacao, NivelCurso
 from oportunidade.models import TipoOportunidade, Oportunidade
 from account.models import User
@@ -45,13 +45,12 @@ def oportunidades_lancadas(request):
     empresa = obter_empresa(user=request.user)
     oportunidades = empresa.get_oportunidades() if empresa else []
 
-    print(oportunidades)
     data = {'oportunidades':[]}
     for o in oportunidades:
         oport_dict = o.as_dict()
-        formacoes = Formacao.get_formacoes(
-            curso_id= o.curso_necessario_id, 
-            nivel_formacao= o.nivel_formacao
+        formacoes = obter_formacoes(
+            curso_id=o.area_necessaria_id, 
+            nivel_formacao= o.nivel_necessario_id
         )
 
         oport_dict['egressos'] = [ f.egresso.as_dict() for f in formacoes]

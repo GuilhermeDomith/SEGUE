@@ -8,22 +8,10 @@
         {% csrf_token %}
 
         <!-- Título página -->
-        <div class="col s12">
-            <h1 class="titulo-pagina">Oportunidade</h1>
-        </div>
-
+        {% include 'componentes/titulo.html' with label='Oportunidade'%}
         <!-- Mensagens de erro -->
-        <div class="col s12 color-sec-1">
-            {% if form.errors %}
-            Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
-            {% endif %}
-        </div>
-
-        <!--Subtítulo Detalhes Oportunidade -->
-        <div class="subtitulo-form col s12">
-            <h3>Detalhes da Oportunidade</h3>
-            <hr>
-        </div>
+        {% include 'componentes/erros_form.html'%}
+        {% include 'componentes/subtitulo.html' with label='Detalhes da Oportunidade'%}
 
         <div class="row">
             <input type="hidden" name="id" value="{{form.id.value}}">
@@ -47,41 +35,18 @@
                         </label>
                     </p>
                     {% endfor %}
+                    <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
                 </div>
-                <span class="helper-text color-sec-2">{{form.tipo_id.errors|first}}</span>
             </div>
 
             <!-- Horas por Semana -->
+            <div class="row">
             {% with grid='col s12 m4'%}
             {% with name_='horas_semana' label='Horas/semana' data_=form.horas_semana%}
             {% include 'componentes/input.html' %}
             {% endwith %}
             {% endwith %}
-
-            <!-- Nível Formação Necessário-->
-            <div class="row">
-                <!-- Nível -->
-                {% with grid='col s12 m6'%}
-                {% with name_='nivel_formacao_id' label='Nível de Formação Exigida' data_=form.nivel_formacao_id %}
-                {% with opcoes_select='curso.nivelcurso'|values|get_opcoes_select:'id:descricao' %}
-                {% include 'componentes/select.html' with opcoes=opcoes_select%}
-                {% endwith %}
-                {% endwith %}
-                {% endwith %}
-
-                <!-- Curso Necessário -->
-                <div class="input-field col s12 m6">
-                    <select name="curso_necessario_id" class="validate invalid"
-                        data-select="{{form.curso_necessario_id.value|default_if_none:''}}">
-                        <option value="" disabled selected>Selecione o curso</option>
-                        {% for c in cursos %}
-                        <option value="{{c.id}}">{{c.nome}}</option>
-                        {% endfor %}
-                    </select>
-                    <label>Curso Necessário</label>
-                    <span class="helper-text color-sec-2">{{form.curso_necessario_id.errors|first}}</span>
-                </div>
-            </div>
+            </div>  
 
             <!-- Cidade -->
             {% with grid='col s12 m8'%}
@@ -94,6 +59,26 @@
             {% with grid='col s12 m4'%}
             {% with name_='estado' label='Estado' data_=form.estado%}
             {% include 'componentes/input.html' %}
+            {% endwith %}
+            {% endwith %}
+
+            <!-- Nível Formação Necessário-->
+            <div class="row">
+            {% with grid='col s12 m6'%}
+            {% with name_='nivel_necessario_id' label='Nível de Formação Necessário' data_=form.nivel_necessario_id %}
+            {% with opcoes_select='curso.nivelcurso'|values|get_opcoes_select:'id:descricao' %}
+            {% include 'componentes/select.html' with opcoes=opcoes_select %}
+            {% endwith %}
+            {% endwith %}
+            {% endwith %}
+            </div>
+
+            <!-- Área Necessária -->
+            {% with grid='col s12 m6'%}
+            {% with name_='area_necessaria_id' label='Área de Conhecimento Necessária' data_=form.area_necessaria_id %}
+            {% with opcoes_select='curso.areaatuacao'|values|get_opcoes_select:'id:descricao' %}
+            {% include 'componentes/select.html' with opcoes=opcoes_select%}
+            {% endwith %}
             {% endwith %}
             {% endwith %}
 

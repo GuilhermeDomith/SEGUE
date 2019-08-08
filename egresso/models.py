@@ -151,7 +151,7 @@ class Egresso(models.Model):
         except Egresso.DoesNotExist: return None
 
     def find_formacoes(self, **args):
-        try: return self.formacao_set.filter(args)
+        try: return self.formacao_set.filter(**args)
         except Egresso.DoesNotExist: return None
     
     def get_formacoes_dict(self):

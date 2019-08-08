@@ -26,7 +26,6 @@ class NivelCurso(models.Model):
         verbose_name_plural = 'Níveis Curso'
 
     def as_dict(self):
-        print('teste::', utils.to_dict(self))
         return utils.to_dict(self)
 
     def __str__(self):

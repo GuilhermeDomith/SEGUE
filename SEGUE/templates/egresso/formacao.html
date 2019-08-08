@@ -4,22 +4,12 @@
 {% block main %}
 <div class="section">
         <div class="row">
+
             <!-- Título página -->
-            <div class="col s12">
-                <h1 class="titulo-pagina">Formação Escolar</h1>
-            </div>
-
+            {% include 'componentes/titulo.html' with label='Formação Escolar'%}
             <!-- Mensagens de erro -->
-            <div class="col s12 color-sec-1">
-                {% if form.errors %}
-                Algum campo obrigatório não foi fornecido ou está com valor inválido.<br>
-                {% endif %}
-            </div>
-
-            <!--Subtítulo Detalhes Oportunidade -->
-            <div class="subtitulo-form col s12">
-                <hr>
-            </div>
+            {% include 'componentes/erros_form.html'%}
+            {% include 'componentes/subtitulo.html'%}
 
             <form action="{% url 'egresso:add-formacao' %}" method="POST" class="row">
                 {% csrf_token %}
@@ -65,7 +55,7 @@
 
                     <!-- Nível -->
                     {% with grid='col s12 m6'%}
-                    {% with name_='nivel_curso_id' label='Nível do Curso' data_=form.nivel_curso_id %}
+                    {% with name_='nivel_curso_id' label='Nível' data_=form.nivel_curso_id %}
                     {% with opcoes_select='curso.nivelcurso'|values|get_opcoes_select:'id:descricao' %}
                     {% include 'componentes/select.html' with opcoes=opcoes_select%}
                     {% endwith %}

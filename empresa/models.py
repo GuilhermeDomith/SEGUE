@@ -11,7 +11,6 @@ class Empresa(models.Model):
     cnpj = models.CharField(max_length=18)
     telefone = models.CharField(max_length=20)
 
-
     def get_oportunidades(self):
         try:
             return self.oportunidade_set.all()

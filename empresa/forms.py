@@ -11,9 +11,6 @@ class EmpresaForm(forms.ModelForm):
 
     id = forms.IntegerField(required=False)
     user_id = forms.IntegerField()
-    #razao_social = forms.CharField(max_length=100)
-    #cnpj = forms.CharField(max_length=18)
-    #telefone = forms.CharField(max_length=20)
 
     def save(self, commit=True):
         empresa = Empresa(**self.cleaned_data)

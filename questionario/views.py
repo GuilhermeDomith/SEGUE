@@ -26,5 +26,6 @@ def questionario(request, id):
 def questionarios(request):
     egresso = obter_egresso(user=request.user)
     formacoes = egresso.find_formacoes(curso__is_local= True)
-    print(formacoes)
-    return render(request, 'questionario/questionarios_curso.html')
+    data = {'formacoes': [f.as_dict() for f in formacoes]}
+    print(data)
+    return render(request, 'questionario/questionarios_curso.html', data)

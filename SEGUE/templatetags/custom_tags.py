@@ -25,3 +25,9 @@ def get_opcoes_select(values, value_label):
         )
         opcoes.append(opcao)
     return opcoes
+
+@register.filter
+def subtract(value, arg):
+    value = float(value) if isinstance(value, str) else value
+    arg = float(arg) if isinstance(arg, str) else arg
+    return value - arg

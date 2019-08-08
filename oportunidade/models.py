@@ -1,7 +1,7 @@
 from django.db import models
 from empresa.models import Empresa
 from egresso.models import Egresso
-from curso.models import Curso, NivelCurso
+from curso.models import Curso, NivelCurso, AreaAtuacao
 from SEGUE import utils
 
 class TipoOportunidade(models.Model):
@@ -24,17 +24,19 @@ class TipoOportunidade(models.Model):
 class Oportunidade(models.Model):
     empresa = models.ForeignKey(Empresa, on_delete = models.CASCADE)
     titulo = models.CharField(max_length=100)
-    horas_semana = models.IntegerField()
     tipo = models.ForeignKey(TipoOportunidade, on_delete=models.SET_NULL, null=True)
-    curso_objetivo = models.OneToOneField(Curso, on_delete=models.SET_NULL, null=True)
-    cidade = models.CharField(max_length=60)
+    horas_semana = models.IntegerField()
+    cidade = models.CharField(max_length=60, blank=False, null=False)
     estado = models.CharField(max_length=2)
+    nivel_necessario = models.ForeignKey(NivelCurso, on_delete=models.SET_NULL, null=True) 
+    area_necessaria = models.ForeignKey(AreaAtuacao, on_delete=models.SET_NULL, null=True)
 
     def as_dict(self):
         dict = utils.to_dict(self)
 
         dict.update({
-            'curso_objetivo': utils.to_dict(self.curso_objetivo),
+            'nivel_necessario': utils.to_dict(self.nivel_necessario),
+            'area_necessaria': utils.to_dict(self.area_necessaria),
             'tipo': utils.to_dict(self.tipo),
         })
         
