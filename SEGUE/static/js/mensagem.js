@@ -7,6 +7,21 @@ $(document).ready(function () {
         console.log('offline');
         setTimeout(statusOffline, 2000)
     });
+
+
+    let show_msg = JSON.parse( $('#show_msg').text() );
+    
+    if(show_msg != undefined && 
+        show_msg.titulo != undefined &&
+        show_msg.descricao != undefined)
+        exibirMensagem({
+            titulo: show_msg.titulo,
+            descricao: show_msg.descricao,
+            buttons: [{
+                text: 'Ok',
+                href: '#'
+            }]
+        })
 })
 
 function criarBotaoMensagem(button) {

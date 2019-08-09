@@ -13,11 +13,12 @@
         <!-- Questionários -->
         <div class="row">
         {% for q in 'questionario.questionario'|values %}
-        
+    
+
         <!-- Card Questionário-->
         {% with grid='col m4 s12'%}
-        {% with curso_id=f.id   anos_corridos_formac=f.anos_corridos_termino%}
-        {% include 'componentes/card_questionario.html' with questionario=q %}
+        {% with formacao=f questionario=q %}
+        {% include 'componentes/card_questionario.html' %}
         {% endwith %}
         {% endwith %}        
 

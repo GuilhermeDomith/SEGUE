@@ -35,6 +35,8 @@ class Oportunidade(models.Model):
         dict = utils.to_dict(self)
 
         dict.update({
+            'razao_social': self.empresa.razao_social,
+            'email': self.empresa.user.email,
             'nivel_necessario': utils.to_dict(self.nivel_necessario),
             'area_necessaria': utils.to_dict(self.area_necessaria),
             'tipo': utils.to_dict(self.tipo),

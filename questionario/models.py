@@ -68,9 +68,9 @@ class Questionario(models.Model):
 
 
 class RespostaQuestionario(models.Model):
-    questao = models.OneToOneField(Questao, on_delete=models.PROTECT)
+    questao = models.ForeignKey(Questao, on_delete=models.PROTECT)
     resposta = models.CharField(max_length=255)
-    questionario = models.OneToOneField(Questionario, on_delete=models.PROTECT)
+    questionario = models.ForeignKey(Questionario, on_delete=models.PROTECT)
     formacao = models.ForeignKey(Formacao, on_delete=models.CASCADE)
 
     class Meta:
@@ -82,7 +82,12 @@ class RespostaQuestionario(models.Model):
         return dict
 
     def __str__(self):
-        return 'Questão: %s \nResposta Egresso: %s'%(self.questao.pergunta, self.resposta)
+        return '%s - Q%sQ%s - R: %s'%(
+            self.formacao.egresso.user.email,
+            self.questionario.id, 
+            self.questao.id,
+            self.resposta
+            )
 
     def __repr__(self):
         return str(self)

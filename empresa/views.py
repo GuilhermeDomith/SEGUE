@@ -49,8 +49,8 @@ def oportunidades_lancadas(request):
     for o in oportunidades:
         oport_dict = o.as_dict()
         formacoes = obter_formacoes(
-            curso_id=o.area_necessaria_id, 
-            nivel_formacao= o.nivel_necessario_id
+            curso__area_atuacao=o.area_necessaria, 
+            curso__nivel_curso= o.nivel_necessario
         )
 
         oport_dict['egressos'] = [ f.egresso.as_dict() for f in formacoes]

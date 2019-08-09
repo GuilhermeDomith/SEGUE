@@ -4,6 +4,7 @@ from datetime import datetime
 from django.utils.translation import ugettext_lazy as _
 from curso.models import Curso, AreaAtuacao, NivelCurso
 from SEGUE import settings, utils
+from django.apps import apps
 
 
 class Escolaridade(models.Model):
@@ -158,6 +159,18 @@ class Egresso(models.Model):
         formacoes = self.get_formacoes()
         return [f.as_dict() for f in formacoes]
 
+    def questionarios_para_responder(self):
+        formacoes = self.get_formacoes()
+
+        questionarios = []
+        for f in formacoes:
+            questionarios.append(dict(
+                formacao=f.id,
+                responder=f.questionarios_para_responder()
+            ))
+
+        return questionarios
+
     def as_dict(self):
         dict = utils.to_dict(self)
 
@@ -206,12 +219,19 @@ class Formacao(models.Model):
         questionarios = [resp.questionario.id for resp in respostas]
         return list(set(questionarios))
 
+    def questionarios_para_responder(self):
+        anos = self.anos_corridos_termino()
+        questionarios = apps.get_model('questionario.Questionario').objects.all()
+        respondidos = self.questionarios_respondidos()
+        return [q.id for q in questionarios if q.id not in respondidos and q.anos_corridos <= anos]
+
     def as_dict(self):
         dict = utils.to_dict(self)
 
         dict.update({
             'curso': self.curso.as_dict() if self.curso else {},
-            'anos_corridos_termino': self.anos_corridos_termino
+            'anos_corridos_termino': self.anos_corridos_termino,
+            'questionarios_respondidos': self.questionarios_respondidos()
         })
 
         return dict

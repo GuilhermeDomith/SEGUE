@@ -23,14 +23,20 @@
                     <div class="card">
                         <div class="card-content">
                             <span class="card-title color-sec-2">{{o.titulo}}</span>
-                            <div class="grey-text">{{o.tipo}}</div>
+                            <label>Empresa: </label>
+                            <div class="color-prim-1">{{o.razao_social}}</div>
+                            <div class="color-prim-1">{{o.email}}</div>
+                            <br/>
+                            <label>Informações da Oportunidade: </label>
+                            <div class="grey-text">{{o.tipo.descricao}}</div>
                             <div class="grey-text">{{o.horas_semana}}Hrs/Semana</div>
-                            <div class="grey-text">{{o.nivel_formacao}} - {{o.curso_necessario}}</div>
+                            <div class="grey-text">{{o.nivel_necessario.descricao}} - {{o.area_necessaria.descricao}}</div>
                             <div class="grey-text">{{o.cidade}} - {{o.estado}}</div>
                         </div>
-                        <div class="card-action">
+                        <!--<div class="card-action">
                             <a href="#">Demonstrar Interesse</a>
                         </div>
+                        -->
                     </div>
                     {% empty %}
                     <div class="center">Nenhuma oportunidade encontrada.</div>

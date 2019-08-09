@@ -19,6 +19,7 @@
 
     {% include 'componentes/subtitulo.html' with label='Questões'%}
     <form action="{% url 'questionario:responder' questionario.id formacao.id %}" method="POST">
+
         <div class="questionario row">
 
             <!-- Pesguntas -->
@@ -38,9 +39,10 @@
                             {% endfor%}
                         </p>
                     </div>
-                    {% if questao.habilitar_opcao_outro == True %}
+
+                    {% if questao.habilitar_opcao_outro %}
                         {% with grid='col s12 m9'%}
-                        {% with name_='outro_q3' label='Outro Motivo' data_='' %}
+                        {% with name_=questao.id label='Outro' data_='' %}
                         {% include 'componentes/input.html' %}
                         {% endwith %}
                         {% endwith %}
@@ -50,6 +52,13 @@
             {% endfor%}
 
             <!-- Final Perguntas -->
+
+            <div class="col s12 buttons-action">
+                <div class="right">
+                    <a href="{% url 'egresso:meu-curriculo' %}" class="btn waves-effect waves-light">Responder Depois</a>
+                    <button class="btn waves-effect waves-light" type="submit">Enviar</button>
+                </div>
+            </div>
 
         </div>
     </form>

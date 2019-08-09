@@ -40,7 +40,7 @@
                             {% with n_egresso=o.egressos|length s=o.egressos|length|pluralize%}
                                 {% if n_egresso > 0 %}
                                 <li class="collection-item center">
-                                    <p>Existem n_egresso egresso{{s}} cadastrado{{s}} apto{{s}} para esta oportunidade. </p>
+                                    <p>Há {{n_egresso}} egresso{{s}} cadastrado{{s}} apto{{s}} para esta oportunidade. </p>
                                 </li>
                                 {% else %}
                                 <li class="collection-item center">

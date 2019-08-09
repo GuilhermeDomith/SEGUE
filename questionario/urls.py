@@ -5,6 +5,6 @@ app_name = 'questionario'
 
 urlpatterns = [    
     path('', views.questionarios, name='listar-todos'),
-    path('<int:quest_id>/curso/<int:formacao_id>', views.questionario, name='responder'),
+    path('<int:quest_id>/curso/<int:formacao_id>', views.responder_questionario, name='responder'),
 ]
 

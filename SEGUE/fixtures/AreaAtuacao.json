@@ -1,24 +1,240 @@
 [
-    {
-        "model": "curso.AreaAtuacao",
-        "pk": 1,
-        "fields":{
-            "descricao":"Ciências Humanas"
-        }
-
-    },{
-        "model": "curso.AreaAtuacao",
-        "pk": 2,
-        "fields":{
-            "descricao":"Ciências Exatas"
-        }
-
-    },{
-        "model": "curso.AreaAtuacao",
-        "pk": 3,
-        "fields":{
-            "descricao":"Ciências Biológicas"
-        }
-
+{
+    "model": "curso.areaatuacao",
+    "pk": 4,
+    "fields": {
+        "descricao": "Administra\u00e7\u00e3o;"
     }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 5,
+    "fields": {
+        "descricao": "Agronomia; Engenharia Agr\u00edcola;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 6,
+    "fields": {
+        "descricao": "Zootecnia; Veterin\u00e1ria;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 7,
+    "fields": {
+        "descricao": "Engenharia Ambiental; Engenharia Florestal;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 8,
+    "fields": {
+        "descricao": "Arqueologia;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 9,
+    "fields": {
+        "descricao": "Arquitetura; Design de Interiores;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 10,
+    "fields": {
+        "descricao": "Artes Visuais; Cinema; Audiovisual;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 11,
+    "fields": {
+        "descricao": "Ci\u00eancia da Computa\u00e7\u00e3o; Sistemas da Informa\u00e7\u00e3o;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 12,
+    "fields": {
+        "descricao": "Ci\u00eancias Biol\u00f3gicas; Ciencias Naturais;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 13,
+    "fields": {
+        "descricao": "Nutri\u00e7\u00e3o; Engenharia de Alimentos;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 14,
+    "fields": {
+        "descricao": "Ci\u00eancias Cont\u00e1beis; Ci\u00eancias Econ\u00f4micas;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 15,
+    "fields": {
+        "descricao": "Psicologia; Ci\u00eancias Sociais;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 16,
+    "fields": {
+        "descricao": "Engenharia El\u00e9trica; Eletr\u00f4nica;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 17,
+    "fields": {
+        "descricao": "Dan\u00e7a; Teatro; M\u00fasica;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 18,
+    "fields": {
+        "descricao": "Direito;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 19,
+    "fields": {
+        "descricao": "Turismo; Rela\u00e7\u00f5es Internacionais;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 20,
+    "fields": {
+        "descricao": "Educa\u00e7\u00e3o F\u00edsica;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 21,
+    "fields": {
+        "descricao": "Enfermagem;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 22,
+    "fields": {
+        "descricao": "Medicina;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 23,
+    "fields": {
+        "descricao": "Qu\u00edmica;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 24,
+    "fields": {
+        "descricao": "Farm\u00e1cia;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 25,
+    "fields": {
+        "descricao": "F\u00edsica;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 26,
+    "fields": {
+        "descricao": "Matem\u00e1tica; Estat\u00edstica;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 27,
+    "fields": {
+        "descricao": "Geografia; Cartografia;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 28,
+    "fields": {
+        "descricao": "Hist\u00f3ria;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 29,
+    "fields": {
+        "descricao": "Jornalismo;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 30,
+    "fields": {
+        "descricao": "Fisioterapia;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 31,
+    "fields": {
+        "descricao": "Fonoaudiologia;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 32,
+    "fields": {
+        "descricao": "Letras; Linguas Estrangeiras;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 33,
+    "fields": {
+        "descricao": "Engenharia Civil;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 34,
+    "fields": {
+        "descricao": "Engenharia de Materiais; Engenharia de Produ\u00e7\u00e3o;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 35,
+    "fields": {
+        "descricao": "Gastronomia; Culin\u00e1ria;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 36,
+    "fields": {
+        "descricao": "Pedagogia;"
+    }
+},
+{
+    "model": "curso.areaatuacao",
+    "pk": 37,
+    "fields": {
+        "descricao": "Publicidade e Propaganda;"
+    }
+}
 ]

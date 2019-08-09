@@ -66,8 +66,14 @@ def endereco(request):
 @is_user('egresso')
 def meu_curriculo(request):
 	egresso = obter_egresso(user=request.user)
+	questionarios = egresso.questionarios_para_responder()
+
+	cont = 0
+	for q in questionarios:
+		cont += len(q['responder'])
 
 	data = {
+		'n_quest': cont,
 		'egresso': egresso.as_dict(),
 		'formacoes_escolares': egresso.get_formacoes_dict()
 	}
@@ -134,18 +140,14 @@ def excluir_formacao(request, id):
 @require_http_methods(["GET"])
 @is_user('egresso')
 def oportunidades(request):
-	user = User.objects.get(email=request.user.email)
-	print(user)
-	egresso = obter_egresso(user=user)
+	egresso = obter_egresso(user=request.user)
 	oportunidades = []
 
-	print(egresso)
-
 	if egresso:
-		for f in egresso.formacao_set.all():
+		for f in egresso.get_formacoes():
 			oport = obter_oportunidades(
-				curso__nome=f.curso.nome,
-				curso__nivel_curso=f.curso.nivel_curso
+				area_necessaria=f.curso.area_atuacao,
+				nivel_necessario=f.curso.nivel_curso
 			)
 
 			oportunidades += [o.as_dict() for o in oport]

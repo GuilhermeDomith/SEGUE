@@ -6,12 +6,14 @@
 <div class="section">
     <div class="row">
 
+        {% if n_quest %}
         <div class="col s12 center">
             <span class="color-sec-1">
-                Você tem 1 questionário para ser respondido! <br>
-                Você poderá receber oportunidades depois de responde-lo.
+                Você tem {{n_quest}} questionário{{n_quest|pluralize}} para responder! <br>
+                Você poderá receber oportunidades depois de respondê-lo{{n_quest|pluralize}}.
             </span>
         </div>
+        {% endif %}
 
         <!-- Título página -->
         <div class="col s12">

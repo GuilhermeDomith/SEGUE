@@ -15,6 +15,7 @@
         {% block main %} {% endblock %}
     </main>
 
+    {{ show_msg |json_script:"show_msg" }}
     {% include 'base/includes/msg_dialog.html' %}
     {% block footer %} {% endblock %}
 

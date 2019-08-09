@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Questionario, Questao, PossivelResposta
+from . import models
 
-admin.site.register(Questionario)
-admin.site.register(Questao)
-admin.site.register(PossivelResposta)
+admin.site.register(models.Questionario)
+admin.site.register(models.Questao)
+admin.site.register(models.PossivelResposta)
+admin.site.register(models.RespostaQuestionario)
