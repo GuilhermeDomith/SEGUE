@@ -1,0 +1,107 @@
+[
+{
+    "model": "questionario.possivelresposta",
+    "pk": 1,
+    "fields": {
+        "resposta": "N\u00e3o"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 2,
+    "fields": {
+        "resposta": "Sim, por menos de 1 ano"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 3,
+    "fields": {
+        "resposta": "Sim, entre 1 e 3 anos"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 4,
+    "fields": {
+        "resposta": "Sim, entre 4 e 6 anos"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 5,
+    "fields": {
+        "resposta": "Sim, por mais de 6 anos"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 6,
+    "fields": {
+        "resposta": "N\u00e3o realizei outra gradua\u00e7\u00e3o"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 7,
+    "fields": {
+        "resposta": "Sim, pois haviam poucas oportunidades de trabalho"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 8,
+    "fields": {
+        "resposta": "Sim, pois os sal\u00e1rios eram baixos"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 9,
+    "fields": {
+        "resposta": "Sim, para ampliar conhecimentos"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 10,
+    "fields": {
+        "resposta": "Sim, pois estava insatisfeito com a \u00e1rea"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 11,
+    "fields": {
+        "resposta": "N\u00e3o realizei P\u00f3s-gradua\u00e7\u00e3o"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 12,
+    "fields": {
+        "resposta": "Sim, pois os sal\u00e1rios eram baixos"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 13,
+    "fields": {
+        "resposta": "Sim, para ampliar conhecimentos"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 14,
+    "fields": {
+        "resposta": "Sim, pois haviam poucas oportunidades de trabalho"
+    }
+},
+{
+    "model": "questionario.possivelresposta",
+    "pk": 15,
+    "fields": {
+        "resposta": "Sim, por outro motivo:"
+    }
+}
+]
