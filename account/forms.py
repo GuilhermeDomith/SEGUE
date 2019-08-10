@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.models import model_to_dict
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from egresso.models import Egresso, DadosPessoais
+from egresso.models import Egresso, DadosPessoais, Formacao
 from empresa.models import Empresa
 
 from .models import User, TipoUsuario
@@ -30,6 +30,8 @@ class UserAdminCreationForm(forms.ModelForm):
             user_especifico = Egresso(dados=dados)
         elif user.tipo_usuario.pk == 3:
             user_especifico = Empresa()
+        else:
+            return user
 
         user_especifico.user = user
         user_especifico.save()
