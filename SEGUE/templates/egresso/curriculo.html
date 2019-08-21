@@ -7,11 +7,11 @@
     <div class="row">
 
         {% if n_quest %}
-        <div class="col s12 center">
-            <span class="color-sec-1">
-                Você tem {{n_quest}} questionário{{n_quest|pluralize}} para responder! <br>
-                Você poderá receber oportunidades depois de respondê-lo{{n_quest|pluralize}}.
-            </span>
+        <div class="col s12 center color-sec-1">
+            <p>
+            Você tem {{n_quest}} questionário{{n_quest|pluralize}} para responder!
+            </p>
+            <!--Você poderá receber oportunidades depois de respondê-lo{{n_quest|pluralize}}.-->
         </div>
         {% endif %}
 
@@ -65,20 +65,20 @@
 
         {% with e=egresso.dados comp='componentes/label_curriculo.html'%}
 
-        {% include comp with grid='col s6' esp=4 label='Nome' info=e.nome_completo%}
-        {% include comp with grid='col s6' esp=4 label='Data Nascimento' info=e.data_nascimento%}
+        {% include comp with grid='col m6 s12' esp=4 label='Nome' info=e.nome_completo%}
+        {% include comp with grid='col m6 s12' esp=4 label='Data Nascimento' info=e.data_nascimento%}
 
-        {% include comp with grid='col s6' esp=4 label='Carteira Motorista' info=e.carteira_motorista%}
-        {% include comp with grid='col s6' esp=4 label='Celular' info=e.celular%}
+        {% include comp with grid='col m6 s12' esp=4 label='Carteira Motorista' info=e.carteira_motorista%}
+        {% include comp with grid='col m6 s12' esp=4 label='Celular' info=e.celular%}
 
-        {% include comp with grid='col s6' esp=4 label='CPF' info=e.cpf%}
-        {% include comp with grid='col s6' esp=4 label='Indentidade' info=e.identidade%}
+        {% include comp with grid='col m6 s12' esp=4 label='CPF' info=e.cpf%}
+        {% include comp with grid='col m6 s12' esp=4 label='Indentidade' info=e.identidade%}
 
-        {% include comp with grid='col s6' esp=4 label='Genero' info=e.genero%}
-        {% include comp with grid='col s6' esp=4 label='Estado Civil' info=e.estado_civil%}
+        {% include comp with grid='col m6 s12' esp=4 label='Genero' info=e.genero%}
+        {% include comp with grid='col m6 s12' esp=4 label='Estado Civil' info=e.estado_civil%}
 
-        {% include comp with grid='col s6' esp=4 label='Escolaridade da Mãe' info=e.escolaridade_mae%}
-        {% include comp with grid='col s6' esp=4 label='Escolaridade do Pai' info=e.escolaridade_pai%}
+        {% include comp with grid='col m6 s12' esp=4 label='Escolaridade da Mãe' info=e.escolaridade_mae%}
+        {% include comp with grid='col m6 s12' esp=4 label='Escolaridade do Pai' info=e.escolaridade_pai%}
         
         {% endwith %}
     
@@ -104,14 +104,14 @@
         {% include comp with grid='col s6' esp=3 label='Cep' info=e.cep%}
         </div>
         
-        {% include comp with grid='col s6' esp=3 label='Rua' info=e.rua%}
-        {% include comp with grid='col s6' esp=3 label='Nº' info=e.numero%}
+        {% include comp with grid='col m6 s12' esp=3 label='Rua' info=e.rua%}
+        {% include comp with grid='col m6 s12' esp=3 label='Nº' info=e.numero%}
 
-        {% include comp with grid='col s6' esp=3 label='Bairro' info=e.bairro%}
-        {% include comp with grid='col s6' esp=3 label='Complemento' info=e.complemento%}
+        {% include comp with grid='col m6 s12' esp=3 label='Bairro' info=e.bairro%}
+        {% include comp with grid='col m6 s12' esp=3 label='Complemento' info=e.complemento%}
 
-        {% include comp with grid='col s6' esp=3 label='Cidade' info=e.cidade%}
-        {% include comp with grid='col s6' esp=3 label='Estado' info=e.estado|upper%}
+        {% include comp with grid='col m6 s12' esp=3 label='Cidade' info=e.cidade%}
+        {% include comp with grid='col m6 s12' esp=3 label='Estado' info=e.estado|upper%}
         
         {% endwith %}
 
