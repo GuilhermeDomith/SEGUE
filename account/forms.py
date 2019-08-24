@@ -87,7 +87,8 @@ class EgressoForm(forms.ModelForm):
         data = self.cleaned_data
         user = super(EgressoForm, self).save(commit=False)
 
-        user.username = data['nome_completo'].rpartition(' ')[0]
+        nome = data['nome_completo']
+        user.username = nome.partition(' ')[0] if ' ' in nome else nome
         user.set_password(data["password"])
         user.tipo_usuario_id = 2
     
