@@ -9,6 +9,12 @@
             {% include 'componentes/titulo.html' with label='Formação Escolar'%}
             <!-- Mensagens de erro -->
             {% include 'componentes/erros_form.html'%}
+            <!-- Mensagem de erro -->
+            <div class="col s12">
+                {% for error in form.non_field_errors %}
+                <p class="color-sec-1">- {{error}}</p>
+                {% endfor %}
+            </div>
             {% include 'componentes/subtitulo.html'%}
 
             <form action="{% url 'egresso:add-formacao' %}" method="POST" class="row">
@@ -74,14 +80,14 @@
 
                 <!-- Início do Curso -->
                 {% with grid='col s12 m6'%}
-                {% with name_='ano_inicio' type_='number' label='Início' data_=form.ano_inicio %}
+                {% with name_='ano_inicio' type_='number' label='Ano Início' data_=form.ano_inicio %}
                 {% include 'componentes/input.html' %}
                 {% endwith %}
                 {% endwith %}
 
                 <!-- Término do Curso -->
                 {% with grid='col s12 m6'%}
-                {% with name_='ano_termino' type_='number' label='Término' data_=form.ano_termino %}
+                {% with name_='ano_termino' type_='number' label='Ano Término (Previsão Término)' data_=form.ano_termino %}
                 {% include 'componentes/input.html' %}
                 {% endwith %}
                 {% endwith %}

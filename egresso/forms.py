@@ -105,12 +105,17 @@ class FormacaoForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super(FormacaoForm, self).clean()
 
-        print('\n\n', cleaned_data['tipo_curso'], '\n\n')
         inicio = cleaned_data.get('ano_inicio')
         termino = cleaned_data.get('ano_termino')
-        if (inicio and termino) and inicio > termino:
-            cleaned_data['inicio'] = termino
-            cleaned_data['termino'] = inicio
+        
+        if not inicio or inicio < 1900 or inicio > 2999:
+            raise forms.ValidationError('Foneça um ano válido para o ano de início')
+
+        if not termino or termino < 1900 or termino > 2999:
+            raise forms.ValidationError('Foneça um ano válido para o ano de término')
+
+        if inicio > termino:
+            raise forms.ValidationError('Ano de início deve ser menor que o ano de término')
 
         return cleaned_data
         

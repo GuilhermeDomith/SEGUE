@@ -83,6 +83,23 @@ class EgressoForm(forms.ModelForm):
             'ano_termino': dict_form['ano_termino'],
         }
 
+    def clean(self):
+        cleaned_data = super(EgressoForm, self).clean()
+
+        inicio = cleaned_data.get('ano_inicio')
+        termino = cleaned_data.get('ano_termino')
+        
+        if not inicio or inicio < 1900 or inicio > 2999:
+            raise forms.ValidationError('Foneça um ano válido para o ano de início')
+
+        if not termino or termino < 1900 or termino > 2999:
+            raise forms.ValidationError('Foneça um ano válido para o ano de término')
+
+        if inicio > termino:
+            raise forms.ValidationError('Ano de início deve ser menor que o ano de término')
+
+        return cleaned_data
+
     def save(self, commit=True):
         data = self.cleaned_data
         user = super(EgressoForm, self).save(commit=False)
