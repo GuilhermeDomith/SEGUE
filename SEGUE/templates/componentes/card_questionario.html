@@ -1,9 +1,9 @@
 {% with color_card='grey lighten-4' color_text='grey-text text-lighten-1'%}
 
 {% if formacao.anos_corridos_termino < questionario.anos_corridos %}    
-<div class="card {{grid}} {{color_card}} {{color_text}}" style="margin: 5px">
+<div class="card {{grid}} {{color_card}} {{color_text}}" style="margin-left: 10px">
 {% else %}
-<div class="card {{grid}}" style="margin: 5px">
+<div class="card {{grid}}" style="margin-left: 10px">
 {% endif %}
     <div class="card-content">
         <div class="color-prim-1" style="margin-bottom: 10px">Questionário {{questionario.anos_corridos}} Ano{{questionario.anos_corridos|pluralize}}</div>

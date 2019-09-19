@@ -245,6 +245,14 @@ color: #43a047 !important;
     .font-2{
         font-size: 1em;
     }
+
+    .card-content, .card-action{
+        padding: 5px !important;
+    }
+    .card-content{
+        min-height: 115px;
+    }
+
 }
 
 /** Only Mobile */

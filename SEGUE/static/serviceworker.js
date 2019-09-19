@@ -1,4 +1,4 @@
-const VERSAO = 8.2
+const VERSAO = 8.3
 
 const CACHE_ESTATICO = `SEGUE_ES_v${VERSAO}`
 const CACHE_DINAMICO = `SEGUE_DI_v${VERSAO}`
