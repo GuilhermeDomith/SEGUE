@@ -18,11 +18,30 @@ Criar a plataforma SEGUE - Sistema Estratégico de Gestão Unificada de Egressos
 
 <p align="center">
     <strong>Cadastro do Currículo<strong>
+    <br/><br/>
     <img src="screenshots/profile_screen.png"
     width="80%">
 </p>
 
-Oportunidades              |  Questionários
-:-------------------------:|:-------------------------:
-![Oportunidades](screenshots/opportunities_screen.png)  |  ![Questionários](screenshots/questionnaires_screen.png)
+<table>
+    <td>
+        <p align="center">
+            <strong>Oportunidades<strong>
+            <br/><br/>
+            <img src="screenshots/opportunities_screen.png"
+            width="80%">
+        </p>
+    </td>
+    <td>
+        <p align="center">
+            <strong>Questionários<strong>
+            <br/><br/>
+            <img src="screenshots/questionnaires_screen.png"
+            width="80%">
+        </p>
+    </td>
+</table>
+
+
+
 
