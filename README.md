@@ -8,9 +8,10 @@
 [![Teste o protótipo SEGUE](https://img.shields.io/badge/Test-Heroku%20APP-blueviolet)](https://segueapp.herokuapp.com)
 [![Relatório do Projeto SEGUE](https://img.shields.io/badge/PDF-Relat%C3%B3rio%20do%20Projeto-red)](Relatorio_SEGUE.pdf)
 
-Usuário Cadastrado: 
+Usuários Cadastrados: 
 
-**Email:** guilherme@email.com | **Senha:** guilherme
+Egresso - **Email:** guilherme@email.com | **Senha:** guilherme
+Empresa - **Email:** empresa2@email.com  | **Senha:** empresa2
 
 
 **1. Objetivo**
